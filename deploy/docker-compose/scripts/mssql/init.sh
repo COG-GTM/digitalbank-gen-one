@@ -22,7 +22,8 @@ echo ====                                                                       
 
 # run the init.sql script to create the databases and user
 
-/opt/mssql-tools/bin/sqlcmd -S 0.0.0.0 -U sa -P Demo123! -i /usr/src/init.sql
+# credentials come from the container environment (SA_PASSWORD, DB_APP_PASSWORD)
+SQLCMDPASSWORD="$SA_PASSWORD" /opt/mssql-tools/bin/sqlcmd -S 0.0.0.0 -U sa -v APP_PASSWORD="$DB_APP_PASSWORD" -i /usr/src/init.sql
 
 echo ====                                                                                  ====
 echo ====                                                                                  ====

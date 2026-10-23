@@ -17,7 +17,20 @@ spec:
     spec:
       containers:
       - name: digital-bank-broker
-        image: digisic/digitalbroker:latest        
+        image: digisic/digitalbroker:latest
+        env:
+          - name: ARTEMIS_USER
+            valueFrom:
+              secretKeyRef:
+                name: digibank-secrets
+                key: artemis-user
+          - name: ARTEMIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: digibank-secrets
+                key: artemis-password
+          - name: CREATE_ARGUMENTS
+            value: "--user $(ARTEMIS_USER) --password $(ARTEMIS_PASSWORD) --silent --http-host 0.0.0.0 --relax-jolokia"
         ports:
           - name: broker-port-1
             containerPort: 8161

@@ -47,7 +47,7 @@ public class SampleData implements CommandLineRunner, Ordered {
 			Users owner = sampleDataService.createSampleMaleUser();
 			
 			LOG.info("**     Username: " + SampleDataService.SMPL_MALE_EMAIL);
-			LOG.info("**     Password: " + SampleDataService.SMPL_COMMON_PASSWORD);
+			LOG.info("**     Password: from IO_DIGISIC_BANK_SAMPLE_PASSWORD (random if unset)");
 			
 			
 			// ******************************************************************
@@ -60,7 +60,7 @@ public class SampleData implements CommandLineRunner, Ordered {
 			Users coowner = sampleDataService.createSampleFemaleUser();
 	
 			LOG.info("**     Username: " + SampleDataService.SMPL_FEMALE_EMAIL);
-			LOG.info("**     Password: " + SampleDataService.SMPL_COMMON_PASSWORD);
+			LOG.info("**     Password: from IO_DIGISIC_BANK_SAMPLE_PASSWORD (random if unset)");
 			
 			// ******************************************************************
 			// Personal Savings Account

@@ -22,6 +22,22 @@ spec:
           - name: db-credit-port
             containerPort: 8443
         env:
+          # Secrets: create with deploy/k8s/digitalbank/README.md (never commit values)
+          - name: IO_DIGISIC_CREDIT_API_JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: digibank-secrets
+                key: credit-jwt-secret
+          - name: IO_DIGISIC_CREDIT_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: digibank-secrets
+                key: credit-admin-password
+          - name: DIGISIC_KEYSTORE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: digibank-secrets
+                key: keystore-password
           # Debug Options
           - name: LOGGING_LEVEL_IO_DIGISIC_CREDIT
             value: "INFO"
@@ -33,9 +49,15 @@ spec:
           - name: SPRING_ARTEMIS_PORT
             value: "61616"
           - name: SPRING_ARTEMIS_USER
-            value: "admin"
+            valueFrom:
+              secretKeyRef:
+                name: digibank-secrets
+                key: artemis-user
           - name: SPRING_ARTEMIS_PASSWORD
-            value: "admin"
+            valueFrom:
+              secretKeyRef:
+                name: digibank-secrets
+                key: artemis-password
           # Credit Application Process
           - name: IO_DIGISIC_CREDIT_APP_PROCESS_ENABLED
             value: "true"
@@ -45,7 +67,16 @@ spec:
           - name: IO_DIGISIC_PARTNER_CREDIT_APP_REQUEST
             value: "CREDIT.APP.REQUEST"
           - name: IO_DIGISIC_PARTNER_CREDIT_APP_RESPONSE
-            value: "CREDIT.APP.RESPONSE"            
+            value: "CREDIT.APP.RESPONSE"
+        volumeMounts:
+          - name: keystore
+            mountPath: /usr/local/tomcat/conf/digisic.p12
+            subPath: digisic.p12
+            readOnly: true
+      volumes:
+        - name: keystore
+          secret:
+            secretName: digibank-keystore
 
 ---
 

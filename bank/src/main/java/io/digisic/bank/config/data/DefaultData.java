@@ -7,6 +7,7 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
@@ -29,6 +30,7 @@ import io.digisic.bank.repository.TransactionCategoryRepository;
 import io.digisic.bank.repository.TransactionStateRepository;
 import io.digisic.bank.repository.TransactionTypeRepository;
 import io.digisic.bank.service.UserService;
+import io.digisic.bank.util.RandomSecrets;
 
 
 @Component
@@ -39,7 +41,10 @@ public class DefaultData implements CommandLineRunner, Ordered {
 	
 	// API Administrator unique details
 	private static String ADMIN_API_USER_EMAIL 	= "admin@demo.io";
-	private static String ADMIN_API_USER_PASS 	= "Demo123!";
+	
+	// Injected from IO_DIGISIC_BANK_ADMIN_PASSWORD; a random password is generated when absent
+	@Value("${io.digisic.bank.admin.password:}")
+	private String adminPassword;
 	
 	@Autowired
 	private RoleRepository roleRepository;
@@ -99,7 +104,11 @@ public class DefaultData implements CommandLineRunner, Ordered {
 			LOG.info("** Loading Default API Admin User ...");
 			
 			Faker faker = new Faker(new Locale("en-US"));
-			Users user = new Users(ADMIN_API_USER_EMAIL, ADMIN_API_USER_PASS);
+			if (adminPassword == null || adminPassword.trim().isEmpty()) {
+				LOG.warn("** IO_DIGISIC_BANK_ADMIN_PASSWORD is not set; the API admin user was created with a random password.");
+			}
+			
+			Users user = new Users(ADMIN_API_USER_EMAIL, RandomSecrets.orRandom(adminPassword));
 			UserProfile userProfile = new UserProfile();
 			
 			String gender = faker.demographic().sex().substring(0,1);

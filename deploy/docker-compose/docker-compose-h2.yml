@@ -8,6 +8,10 @@ services:
     image: digisic/digitalbroker:latest
     container_name: broker
     hostname: broker
+    environment:
+      ARTEMIS_USER: ${ARTEMIS_USER:?set ARTEMIS_USER}
+      ARTEMIS_PASSWORD: ${ARTEMIS_PASSWORD:?set ARTEMIS_PASSWORD}
+      CREATE_ARGUMENTS: --user ${ARTEMIS_USER:?set ARTEMIS_USER} --password ${ARTEMIS_PASSWORD:?set ARTEMIS_PASSWORD} --silent --http-host 0.0.0.0 --relax-jolokia
     ports:
       - "8161:8161"
       - "61616:61616"
@@ -27,12 +31,17 @@ services:
       # Logging Options
       LOGGING_LEVEL_IO_DIGISIC_CREDIT: INFO
 
+      # Secrets (injected from the environment / .env, never committed)
+      IO_DIGISIC_CREDIT_API_JWT_SECRET: ${CREDIT_JWT_SECRET:?set CREDIT_JWT_SECRET}
+      IO_DIGISIC_CREDIT_ADMIN_PASSWORD: ${CREDIT_ADMIN_PASSWORD:?set CREDIT_ADMIN_PASSWORD}
+      DIGISIC_KEYSTORE_PASSWORD: ${KEYSTORE_PASSWORD:?set KEYSTORE_PASSWORD}
+
       # Digital Broker Connection
       SPRING_ARTEMIS_MODE: native
       SPRING_ARTEMIS_HOST: broker
       SPRING_ARTEMIS_PORT: 61616
-      SPRING_ARTEMIS_USER: admin
-      SPRING_ARTEMIS_PASSWORD: admin
+      SPRING_ARTEMIS_USER: ${ARTEMIS_USER:?set ARTEMIS_USER}
+      SPRING_ARTEMIS_PASSWORD: ${ARTEMIS_PASSWORD:?set ARTEMIS_PASSWORD}
 
       # Credit Application Process
       IO_DIGISIC_CREDIT_APP_PROCESS_ENABLED: 'true'
@@ -49,6 +58,7 @@ services:
       - digitalnet
     volumes:
       - digitalcredit:/usr/local/tomcat/conf
+      - ${KEYSTORE_FILE:?set KEYSTORE_FILE}:/usr/local/tomcat/conf/digisic.p12:ro
     depends_on:
       - broker
     restart: unless-stopped
@@ -68,13 +78,19 @@ services:
 
       # Logging Options
       LOGGING_LEVEL_IO_DIGISIC_BANK: INFO
+
+      # Secrets (injected from the environment / .env, never committed)
+      IO_DIGISIC_BANK_API_JWT_SECRET: ${BANK_JWT_SECRET:?set BANK_JWT_SECRET}
+      IO_DIGISIC_BANK_ADMIN_PASSWORD: ${BANK_ADMIN_PASSWORD:?set BANK_ADMIN_PASSWORD}
+      IO_DIGISIC_BANK_SAMPLE_PASSWORD: ${BANK_SAMPLE_PASSWORD:-}
+      DIGISIC_KEYSTORE_PASSWORD: ${KEYSTORE_PASSWORD:?set KEYSTORE_PASSWORD}
       
       # Digital Broker connection
       SPRING_ARTEMIS_MODE: native
       SPRING_ARTEMIS_HOST: broker
       SPRING_ARTEMIS_PORT: 61616
-      SPRING_ARTEMIS_USER: admin
-      SPRING_ARTEMIS_PASSWORD: admin
+      SPRING_ARTEMIS_USER: ${ARTEMIS_USER:?set ARTEMIS_USER}
+      SPRING_ARTEMIS_PASSWORD: ${ARTEMIS_PASSWORD:?set ARTEMIS_PASSWORD}
 
       # Digital Credit Connection
       IO_DIGISIC_CREDIT_ENABLED: 'true'
@@ -83,7 +99,7 @@ services:
       IO_DIGISIC_CREDIT_PORT: 8080 
       IO_DIGISIC_CREDIT_CONTEXT-PATH: /credit
       IO_DIGISIC_CREDIT_USERNAME: admin@demo.io
-      IO_DIGISIC_CREDIT_PASSWORD: Demo123!
+      IO_DIGISIC_CREDIT_PASSWORD: ${CREDIT_ADMIN_PASSWORD:?set CREDIT_ADMIN_PASSWORD}
 
       # Digital Credit Application Process JMS Queues
       IO_DIGISIC_PARTNER_CREDIT_APP_REQUEST: CREDIT.APP.REQUEST
@@ -101,7 +117,7 @@ services:
       
       # Open Banking API Service
       IO_DIGISIC_BANK_OBP_ENABLED: 'true'
-      IO_DIGISIC_BANK_OBP_CONSUMER_KEY: vwfpvwfr1kngt0up2jelebzmvxrhst4vhxvw1jm3
+      IO_DIGISIC_BANK_OBP_CONSUMER_KEY: ${OBP_CONSUMER_KEY:-}
       IO_DIGISIC_BANK_OBP_VERSION: v4.0.0
       IO_DIGISIC_BANK_OBP_PROTOCOL: https
       IO_DIGISIC_BANK_OBP_HOST: openbankingservices.io
@@ -115,6 +131,7 @@ services:
       - digitalnet
     volumes:
       - digitalbank:/usr/local/tomcat/conf
+      - ${KEYSTORE_FILE:?set KEYSTORE_FILE}:/usr/local/tomcat/conf/digisic.p12:ro
     depends_on:
       - broker
       - credit

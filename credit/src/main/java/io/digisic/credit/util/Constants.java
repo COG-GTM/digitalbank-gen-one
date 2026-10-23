@@ -68,7 +68,8 @@ public class Constants {
 	public static final String HAS_ROLE_API					= "hasRole('" + Patterns.ROLE_API + "')";
 	
 	// API
-	public static final String API_SECRET					= "%C&F)J@NcRfUjXn2r5u8x/A?D(G-KaPd";
+	public static final String API_JWT_SECRET_PROPERTY		= "io.digisic.credit.api.jwt.secret";
+	public static final String API_JWT_SECRET_ENV			= "IO_DIGISIC_CREDIT_API_JWT_SECRET";
 	public static final String API_AUTH_HEADER				= "Authorization";
 	public static final String API_TOKEN_BEGIN				= "Bearer ";
 	

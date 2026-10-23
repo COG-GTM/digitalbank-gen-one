@@ -23,6 +23,7 @@ import io.digisic.credit.model.security.Role;
 import io.digisic.credit.model.security.Users;
 import io.digisic.credit.repository.CreditApplicationRepository;
 import io.digisic.credit.util.Constants;
+import io.digisic.credit.util.RandomSecrets;
 
 @Service
 @Transactional
@@ -369,7 +370,7 @@ public class CreditApplicationService {
 		else { // User does not exist in the system
 			
 			// Create user account
-			user = new Users (app.getEmailAddress(), "Demo123!");
+			user = new Users (app.getEmailAddress(), RandomSecrets.password());
 			UserProfile profile = new UserProfile();
 			
 			// Fill the User Profile with the Application details

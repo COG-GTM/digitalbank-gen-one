@@ -12,7 +12,7 @@ GO
 
 IF NOT EXISTS (SELECT NAME from master.dbo.syslogins WHERE NAME = N'digitaluser')
 BEGIN
-	CREATE LOGIN digitaluser WITH PASSWORD = N'Demo123!';
+	CREATE LOGIN digitaluser WITH PASSWORD = N'$(APP_PASSWORD)';
 	USE [digitalbank];
 
 	EXEC sp_changedbowner 'digitaluser';

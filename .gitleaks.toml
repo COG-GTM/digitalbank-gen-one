@@ -1,0 +1,16 @@
+title = "digitalbank-gen-one"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Build output, verified false positives and non-production test fixtures"
+paths = [
+  '''(^|/)target/''',
+  # base64-encoded font data (pdfmake), not credentials
+  '''bank/src/main/resources/static/js/lib/data-table/vfs_fonts\.js''',
+  # canned virtual-service response used by unit tests
+  '''bank/src/test/resources/spec/openbanking/vs/obp-post-login-rsp\.txt''',
+  # load-test scenario for a disposable test user
+  '''test-automation/src/test/taurus/tests/api/component tests/user management/Login User_scenarios\.yml''',
+]

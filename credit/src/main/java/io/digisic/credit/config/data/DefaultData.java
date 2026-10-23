@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
@@ -21,12 +22,17 @@ import io.digisic.credit.repository.TransactionCategoryRepository;
 import io.digisic.credit.repository.TransactionStateRepository;
 import io.digisic.credit.repository.TransactionTypeRepository;
 import io.digisic.credit.service.UserService;
+import io.digisic.credit.util.RandomSecrets;
 
 
 @Component
 public class DefaultData implements CommandLineRunner, Ordered {
 
 	private static final Logger LOG = LoggerFactory.getLogger(DefaultData.class);
+
+	// Injected from IO_DIGISIC_CREDIT_ADMIN_PASSWORD; a random password is generated when absent
+	@Value("${io.digisic.credit.admin.password:}")
+	private String adminPassword;
 
 	@Autowired
 	private RoleRepository roleRepository;
@@ -74,7 +80,11 @@ public class DefaultData implements CommandLineRunner, Ordered {
 			
 			LOG.info("** Loading Default User...");
 			
-			Users user = new Users("admin@demo.io", "Demo123!");
+			if (adminPassword == null || adminPassword.trim().isEmpty()) {
+				LOG.warn("** IO_DIGISIC_CREDIT_ADMIN_PASSWORD is not set; the API admin user was created with a random password.");
+			}
+			
+			Users user = new Users("admin@demo.io", RandomSecrets.orRandom(adminPassword));
 			UserProfile userProfile = new UserProfile();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-DD");
 			

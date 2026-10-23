@@ -54,11 +54,11 @@ Digital Bank can be deployed as a single standalone application service or be de
 
 * Web Interface @ https://{hostname}:{port}/bank
   * Sample user data is created when the application is started. User credentials for these users are as follows:
-    * jsmith@demo.io/Demo123!
-    * nsmith@demo.io/Demo123!
+    * jsmith@demo.io (password: `IO_DIGISIC_BANK_SAMPLE_PASSWORD`, random if unset)
+    * nsmith@demo.io (password: `IO_DIGISIC_BANK_SAMPLE_PASSWORD`, random if unset)
 * Swagger UI @ https://{hostname}:{port}/bank/swagger-ui.html
   * The API Admin user credentials are as follows:
-    * admin@demo.io/Demo123!
+    * admin@demo.io (password: `IO_DIGISIC_BANK_ADMIN_PASSWORD`, random if unset)
 
 ## Built With
 

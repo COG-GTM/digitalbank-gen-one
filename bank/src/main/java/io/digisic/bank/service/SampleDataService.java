@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import io.digisic.bank.model.Account;
@@ -15,6 +16,7 @@ import io.digisic.bank.model.UserProfile;
 import io.digisic.bank.model.security.Role;
 import io.digisic.bank.model.security.Users;
 import io.digisic.bank.util.Constants;
+import io.digisic.bank.util.RandomSecrets;
 import com.github.javafaker.Faker;
 
 @Service
@@ -27,13 +29,16 @@ public class SampleDataService {
 	@Autowired
 	private UserService userService;
 	
+	// Injected from IO_DIGISIC_BANK_SAMPLE_PASSWORD; a random password is generated when absent
+	@Value("${io.digisic.bank.sample.password:}")
+	private String samplePassword;
+	
 	// Data Generator
 	private static Faker faker = new Faker(new Locale("en-US"));
 
 	// Public Data
 	public static String SMPL_MALE_EMAIL 				= "jsmith@demo.io";
 	public static String SMPL_FEMALE_EMAIL 				= "nsmith@demo.io";
-	public static String SMPL_COMMON_PASSWORD 			= "Demo123!";
 	public static String SMPL_MALE_FIRST_NAME			= "Josh";
 	public static String SMPL_FEMALE_FIRST_NAME			= "Nicole";
 	public static String SMPL_COMMON_LAST_NAME			= "Smith";
@@ -51,11 +56,21 @@ public class SampleDataService {
 	private static String homePhone = faker.numerify("###-###-####");
 	
 	/*
+	 * Sample user password, generated once per instance when not configured
+	 */
+	public synchronized String getSamplePassword() {
+		if (samplePassword == null || samplePassword.trim().isEmpty()) {
+			samplePassword = RandomSecrets.password();
+		}
+		return samplePassword;
+	}
+	
+	/*
 	 * Create Male User
 	 */
 	public Users createSampleMaleUser() {
 		
-		Users male = new Users(SMPL_MALE_EMAIL, SMPL_COMMON_PASSWORD);
+		Users male = new Users(SMPL_MALE_EMAIL, getSamplePassword());
 		UserProfile maleProfile = new UserProfile();
 		String maleSsn = faker.numerify("###-##-####");
 		
@@ -93,7 +108,7 @@ public class SampleDataService {
 	 */
 	public Users createSampleFemaleUser() {
 		
-		Users female = new Users(SMPL_FEMALE_FIRST_NAME, SMPL_COMMON_PASSWORD);
+		Users female = new Users(SMPL_FEMALE_FIRST_NAME, getSamplePassword());
 		UserProfile femaleProfile = new UserProfile();
 		
 		String femaleSsn = faker.numerify("###-##-####");
