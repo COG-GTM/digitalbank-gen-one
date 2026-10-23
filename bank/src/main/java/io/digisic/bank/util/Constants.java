@@ -6,6 +6,9 @@ public class Constants {
 	public static final String COO_REMEBER_ME 		= "remeber-me";
 	
 	
+	// Spring Profiles
+	public static final String PROFILE_DEV			= "dev";
+	
 	// Session Management
 	public static final String COO_JSESSION_ID		= "JSESSIONID";
 	public static final String SESSION_MAX			= "io.digisic.max.sessions";
