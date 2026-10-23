@@ -125,6 +125,9 @@ public class Constants {
 	public static final String URI_API_ACCT_OWNER		= "/api/v1/account/{id}/owner";
 	public static final String URI_API_ACCT_COOWNER		= "/api/v1/account/{id}/coowner";
 	public static final String URI_API_ACCT_XFER		= "/api/v1/account/{id}/transfer";
+	public static final String URI_API_ACCT_PEND		= "/api/v1/account/pending";
+	public static final String URI_API_ACCT_PEND_APPR	= "/api/v1/account/pending/{id}/approve";
+	public static final String URI_API_ACCT_PEND_REJ	= "/api/v1/account/pending/{id}/reject";
 	public static final String URI_API_DATA_ACCT_TYP	= "/api/v1/data/account/type";
 	public static final String URI_API_DATA_ACCT_TYP_CHK= "/api/v1/data/account/type/checking";
 	public static final String URI_API_DATA_ACCT_TYP_SAV= "/api/v1/data/account/type/savings";

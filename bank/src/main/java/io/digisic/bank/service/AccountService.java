@@ -7,18 +7,28 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.digisic.bank.exception.RestForbiddenException;
+import io.digisic.bank.exception.RestNotAcceptableException;
+import io.digisic.bank.exception.RestObjectNotFoundException;
+import io.digisic.bank.exception.TransactionLimitException;
 import io.digisic.bank.model.Account;
 import io.digisic.bank.model.AccountStanding;
 import io.digisic.bank.model.AccountTransaction;
 import io.digisic.bank.model.AccountType;
 import io.digisic.bank.model.OwnershipType;
+import io.digisic.bank.model.PendingTransaction;
 import io.digisic.bank.model.TransactionCategory;
 import io.digisic.bank.model.TransactionState;
 import io.digisic.bank.model.TransactionType;
@@ -28,6 +38,7 @@ import io.digisic.bank.repository.AccountStandingRepository;
 import io.digisic.bank.repository.AccountTransactionRepository;
 import io.digisic.bank.repository.AccountTypeRepository;
 import io.digisic.bank.repository.OwnershipTypeRepository;
+import io.digisic.bank.repository.PendingTransactionRepository;
 import io.digisic.bank.repository.TransactionCategoryRepository;
 import io.digisic.bank.repository.TransactionStateRepository;
 import io.digisic.bank.repository.TransactionTypeRepository;
@@ -38,6 +49,9 @@ import io.digisic.bank.util.Constants;
 public class AccountService {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
+	
+	@PersistenceContext
+	private EntityManager entityManager;
 	
 	@Autowired
 	private AccountRepository accountRepository;
@@ -62,6 +76,21 @@ public class AccountService {
 	
 	@Autowired
 	private TransactionCategoryRepository transactionCategoryRepository;
+	
+	@Autowired
+	private PendingTransactionRepository pendingTransactionRepository;
+	
+	// Maximum single debit, any channel. Zero or negative disables the limit.
+	@Value("${io.digisic.bank.limit.per-transaction:10000.00}")
+	private BigDecimal perTransactionLimit = new BigDecimal("10000.00");
+	
+	// Maximum total debits per account per calendar day, any channel. Zero or negative disables the limit.
+	@Value("${io.digisic.bank.limit.daily:20000.00}")
+	private BigDecimal dailyLimit = new BigDecimal("20000.00");
+	
+	// Payments above this amount are held for a second approver. Zero or negative disables the hold.
+	@Value("${io.digisic.bank.limit.approval-threshold:5000.00}")
+	private BigDecimal approvalThreshold = new BigDecimal("5000.00");
 	
 	
 	/*
@@ -351,6 +380,7 @@ public class AccountService {
 	 * Delete an Account
 	 */
 	public void deleteAccount (Account account) {
+		releasePendingReferences(account);
 		accountRepository.delete(account);
 	}
 	
@@ -358,6 +388,9 @@ public class AccountService {
 	 * Delete All Accounts for User
 	 */
 	public void deleteAllAccounts(Users user) {
+		for (Account account : accountRepository.findByOwner(user)) {
+			releasePendingReferences(account);
+		}
 		accountRepository.deleteByOwner(user);
 	}
 	
@@ -436,7 +469,105 @@ public class AccountService {
 		
 		LOG.debug("Debit Transaction from Account:");
 		
-		account = this.getAccountById(account.getId());
+		// Lock the account row so concurrent debits are validated against the latest balance and daily total
+		account = this.getAccountByIdForUpdate(account.getId());
+		
+		validateDebit(account, accountTransaction.getAmount(), accountTransaction.getTransactionDate());
+		
+		postDebit(account, accountTransaction);
+	}
+	
+	/*
+	 * Checks a proposed debit against the available balance plus arranged overdraft limit,
+	 * the per-transaction limit and the daily limit. Throws TransactionLimitException on breach.
+	 */
+	public void validateDebit(Account account, BigDecimal amount, Date transactionDate) {
+		
+		if (amount == null || amount.signum() != 1) {
+			throw new TransactionLimitException("The withdraw amount ($" + amount + ") must be greater than $0.00");
+		}
+		
+		if (isLimitEnabled(perTransactionLimit) && amount.compareTo(perTransactionLimit) > 0) {
+			throw new TransactionLimitException("The withdraw amount ($" + amount
+												+ ") exceeds the per-transaction limit ($" + perTransactionLimit + ").");
+		}
+		
+		BigDecimal overdraftLimit = account.getAccountType().getOverdraftLimit();
+		if (overdraftLimit == null) {
+			overdraftLimit = BigDecimal.ZERO;
+		}
+		BigDecimal maxAvailable = account.getCurrentBalance().add(overdraftLimit);
+		
+		if (amount.compareTo(maxAvailable) > 0) {
+			throw new TransactionLimitException("The withdraw amount ($" 
+												+ amount
+												+ ") is greater than the available balance ($"
+												+ account.getCurrentBalance() + ") and overdraft limit ($"
+												+ overdraftLimit + ").");
+		}
+		
+		if (isLimitEnabled(dailyLimit)) {
+			BigDecimal debitedToday = getDailyDebitTotal(account, transactionDate == null ? new Date() : transactionDate);
+			
+			if (debitedToday.add(amount).compareTo(dailyLimit) > 0) {
+				throw new TransactionLimitException("The withdraw amount ($" + amount
+													+ ") would exceed the daily limit ($" + dailyLimit
+													+ "). Already debited today: $" + debitedToday + ".");
+			}
+		}
+	}
+	
+	/*
+	 * True when a payment of this amount must be approved by a second user before posting.
+	 */
+	public boolean requiresApproval(BigDecimal amount) {
+		return isLimitEnabled(approvalThreshold) && amount != null && amount.compareTo(approvalThreshold) > 0;
+	}
+	
+	private boolean isLimitEnabled(BigDecimal limit) {
+		return limit != null && limit.signum() == 1;
+	}
+	
+	/*
+	 * Sum of customer debits (excluding fees) posted to the account on the calendar day of the given date
+	 */
+	private BigDecimal getDailyDebitTotal(Account account, Date date) {
+		
+		Calendar start = Calendar.getInstance();
+		start.setTime(date);
+		start.set(Calendar.HOUR_OF_DAY, 0);
+		start.set(Calendar.MINUTE, 0);
+		start.set(Calendar.SECOND, 0);
+		start.set(Calendar.MILLISECOND, 0);
+		Calendar end = (Calendar) start.clone();
+		end.add(Calendar.DATE, 1);
+		end.add(Calendar.MILLISECOND, -1);
+		
+		List<AccountTransaction> debits = accountTransactionRepository
+				.findAllByAccountAndAmountLessThanAndTransactionDateBetween(account, BigDecimal.ZERO, start.getTime(), end.getTime());
+		
+		BigDecimal total = BigDecimal.ZERO;
+		if (debits != null) {
+			for (AccountTransaction debit : debits) {
+				if (debit.getTransactionCategory() != null 
+						&& Constants.ACCT_TRAN_CAT_FEE_CODE.equals(debit.getTransactionCategory().getCode())) {
+					continue;
+				}
+				total = total.add(debit.getAmount().abs());
+			}
+		}
+		
+		return total;
+	}
+	
+	/*
+	 * Debit used only to generate back-dated synthetic sample data. No limit checks.
+	 */
+	void sampleDebitTransaction(Account account, AccountTransaction accountTransaction) {
+		postDebit(this.getAccountById(account.getId()), accountTransaction);
+	}
+	
+	private void postDebit(Account account, AccountTransaction accountTransaction) {
 		
 		List<AccountTransaction> atl = account.getAcountTransactionList();
 		
@@ -497,6 +628,17 @@ public class AccountService {
 	 * AccountTransaction can be a partial object but must contain the transaction amount.
 	 */
 	public void transfer(Account fromAccount, Account toAccount, AccountTransaction accountTransaction) {
+		executeTransfer(fromAccount, toAccount, accountTransaction, true);
+	}
+	
+	/*
+	 * Transfer used only to generate back-dated synthetic sample data. No limit checks.
+	 */
+	void sampleTransfer(Account fromAccount, Account toAccount, AccountTransaction accountTransaction) {
+		executeTransfer(fromAccount, toAccount, accountTransaction, false);
+	}
+	
+	private void executeTransfer(Account fromAccount, Account toAccount, AccountTransaction accountTransaction, boolean enforceLimits) {
 		
 		LOG.debug("Transfer Between Accounts:");
 		
@@ -507,7 +649,11 @@ public class AccountService {
 		fromAt.setTransactionDate(accountTransaction.getTransactionDate());
 		fromAt.setDescription("Transfer to Account (" + toAccount.getAccountNumber() + ")");
 		fromAt.setTransactionType(transactionTypeRepository.findByCode(Constants.ACCT_TRAN_TYPE_XFER_CODE));
-		debitTransaction(fromAccount, fromAt);
+		if (enforceLimits) {
+			debitTransaction(fromAccount, fromAt);
+		} else {
+			sampleDebitTransaction(fromAccount, fromAt);
+		}
 		
 		// To Transaction
 		toAccount = this.getAccountById(toAccount.getId());
@@ -519,6 +665,149 @@ public class AccountService {
 		creditTransaction(toAccount, toAt);
 		
 		LOG.debug("Transfer Between Accounts: Accounts Updated.");
+	}
+	
+	/*
+	 * Hold a debit, credit or transfer for maker-checker approval instead of posting it.
+	 * Debits are validated against limits now (fail fast) and again when approved.
+	 */
+	public PendingTransaction submitForApproval(Account account, Account toAccount, AccountTransaction accountTransaction,
+												boolean debit, Users maker) {
+		
+		account = this.getAccountById(account.getId());
+		boolean isDebit = debit || toAccount != null;
+		
+		if (isDebit) {
+			validateDebit(account, accountTransaction.getAmount(), null);
+		}
+		
+		PendingTransaction pending = new PendingTransaction();
+		pending.setAccount(account);
+		pending.setToAccount(toAccount);
+		pending.setAmount(accountTransaction.getAmount());
+		pending.setDebit(isDebit);
+		pending.setDescription(accountTransaction.getDescription());
+		pending.setTransactionType(accountTransaction.getTransactionType());
+		pending.setMaker(maker);
+		pending.setStatus(PendingTransaction.STATUS_PENDING);
+		pending.setCreatedDate(new Date());
+		
+		LOG.info("Maker-Checker: transaction held PENDING for approval (account id " + account.getId() + ").");
+		
+		return pendingTransactionRepository.save(pending);
+	}
+	
+	/*
+	 * Approve and post a pending transaction. The checker must be a different user than the maker.
+	 */
+	public PendingTransaction approvePendingTransaction(Long id, Users checker) {
+		
+		PendingTransaction pending = getPendingForDecision(id, checker);
+		
+		AccountTransaction transaction = new AccountTransaction();
+		transaction.setAmount(pending.getAmount());
+		transaction.setDescription(pending.getDescription());
+		transaction.setTransactionType(pending.getTransactionType());
+		
+		if (pending.isTransfer()) {
+			transfer(pending.getAccount(), pending.getToAccount(), transaction);
+		} else if (pending.isDebit()) {
+			debitTransaction(pending.getAccount(), transaction);
+		} else {
+			creditTransaction(pending.getAccount(), transaction);
+			
+			if (pending.isOpeningDeposit()) {
+				Account opened = this.getAccountById(pending.getAccount().getId());
+				opened.setOpeningBalance(pending.getAmount());
+				accountRepository.save(opened);
+			}
+		}
+		
+		return decide(pending, checker, PendingTransaction.STATUS_APPROVED);
+	}
+	
+	/*
+	 * Reject a pending transaction without posting it. The checker must be a different user than the maker.
+	 */
+	public PendingTransaction rejectPendingTransaction(Long id, Users checker) {
+		PendingTransaction pending = decide(getPendingForDecision(id, checker), checker, PendingTransaction.STATUS_REJECTED);
+		
+		// An admin-opened account whose opening deposit is rejected was never funded; remove it
+		if (pending.isOpeningDeposit() && pending.getAccount() != null) {
+			Account unfunded = this.getAccountById(pending.getAccount().getId());
+			if (unfunded.getCurrentBalance().signum() == 0) {
+				deleteAccount(unfunded);
+			}
+		}
+		return pending;
+	}
+	
+	/*
+	 * Hold the opening deposit of an account opened by an admin for maker-checker approval.
+	 */
+	public PendingTransaction submitOpeningDepositForApproval(Account account, AccountTransaction deposit, Users maker) {
+		PendingTransaction pending = submitForApproval(account, null, deposit, false, maker);
+		pending.setOpeningDeposit(true);
+		return pendingTransactionRepository.save(pending);
+	}
+	
+	/*
+	 * Before an account is deleted: cancel its undecided requests, and keep decided ones
+	 * (audit history) with the account foreign key cleared.
+	 */
+	private void releasePendingReferences(Account account) {
+		for (PendingTransaction pending : pendingTransactionRepository.findByAccountOrToAccount(account, account)) {
+			if (PendingTransaction.STATUS_PENDING.equals(pending.getStatus())) {
+				pendingTransactionRepository.delete(pending);
+			} else {
+				pending.detachAccount(account);
+				pendingTransactionRepository.save(pending);
+			}
+		}
+	}
+	
+	public List<PendingTransaction> getPendingTransactions() {
+		return pendingTransactionRepository.findAllByStatus(PendingTransaction.STATUS_PENDING);
+	}
+	
+	private PendingTransaction getPendingForDecision(Long id, Users checker) {
+		
+		PendingTransaction pending = pendingTransactionRepository.findByIdForUpdate(id).orElse(null);
+		
+		if (pending == null) {
+			throw new RestObjectNotFoundException("Object Not Found. Unable to locate object with id " + id);
+		}
+		
+		if (!PendingTransaction.STATUS_PENDING.equals(pending.getStatus())) {
+			throw new RestNotAcceptableException("Pending transaction " + id + " has already been " + pending.getStatus() + ".");
+		}
+		
+		if (checker == null || pending.getMaker() == null || Objects.equals(pending.getMaker().getId(), checker.getId())) {
+			throw new RestForbiddenException("Maker-checker: the user who initiated a transaction cannot approve or reject it.");
+		}
+		
+		return pending;
+	}
+	
+	private PendingTransaction decide(PendingTransaction pending, Users checker, String status) {
+		pending.setChecker(checker);
+		pending.setStatus(status);
+		pending.setDecidedDate(new Date());
+		
+		LOG.info("Maker-Checker: pending transaction " + pending.getId() + " " + status + ".");
+		
+		return pendingTransactionRepository.save(pending);
+	}
+	
+	private Account getAccountByIdForUpdate(Long id) {
+		Optional<Account> act = accountRepository.findByIdForUpdate(id);
+		Account account = act.isPresent() ? act.get() : getAccountById(id);
+		
+		// The row is locked, but an instance already in the persistence context keeps its old state; reload it
+		if (entityManager != null && entityManager.contains(account)) {
+			entityManager.refresh(account);
+		}
+		return account;
 	}
 	
 	/*

@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -29,6 +30,7 @@ import io.digisic.bank.exception.RestNotAcceptableException;
 import io.digisic.bank.exception.RestObjectNotFoundException;
 import io.digisic.bank.model.Account;
 import io.digisic.bank.model.AccountTransaction;
+import io.digisic.bank.model.PendingTransaction;
 import io.digisic.bank.model.AccountType;
 import io.digisic.bank.model.OwnershipType;
 import io.digisic.bank.model.TransactionType;
@@ -257,11 +259,18 @@ public class AccountController extends CommonController {
 			OwnershipType ot = accountService.getOwnershipTypeByCode(account.getOwnerTypeCode());
 			
 			newAccount.setName(account.getAccountName());
-			newAccount.setOpeningBalance(account.getOpeningDeposit());
+			newAccount.setOpeningBalance(BigDecimal.ZERO);
 			newAccount.setAccountType(at);
 			newAccount.setOwnershipType(ot);
 			newAccount.setOwner(getUserById(id));
 			accountService.createNewAccount(newAccount);
+			
+			// Admin-initiated opening deposit is held for a second approver (maker-checker)
+			AccountTransaction openingDeposit = new AccountTransaction();
+			openingDeposit.setAmount(account.getOpeningDeposit());
+			openingDeposit.setDescription(PendingTransaction.OPENING_DEPOSIT);
+			openingDeposit.setTransactionType(accountService.getTransactionTypeByCode(Constants.ACCT_TRAN_TYPE_DEPOSIT_CODE));
+			accountService.submitOpeningDepositForApproval(newAccount, openingDeposit, getAuthenticatedUser());
 			
 		} else {
 			throw new RestNotAcceptableException("The initial deposit ($" 
@@ -378,19 +387,14 @@ public class AccountController extends CommonController {
 			LOG.debug("REST New Transaction: Transaction Action will be CREDIT");
 		}
 		
-		// if it is a DEBIT Transaction
+		// Admin postings and high-value payments are held for a second approver (maker-checker)
+		if (hasRole(authUser, Role.ROLE_ADMIN) || (bDebit && accountService.requiresApproval(transaction.getAmount()))) {
+			return ResponseEntity.status(HttpStatus.ACCEPTED)
+								 .body(accountService.submitForApproval(account, null, transaction, bDebit, authUser));
+		}
+		
+		// if it is a DEBIT Transaction (balance, overdraft and payment limits are enforced by AccountService)
 		if (bDebit) {
-			
-			// check that amount is not greater than available
-			BigDecimal maxAvailable = account.getCurrentBalance().add(account.getAccountType().getOverdraftLimit());
-			
-			if (transaction.getAmount().compareTo(maxAvailable) == 1) {
-				throw new RestNotAcceptableException ("The withdraw amount ($" 
-						 							  + transaction.getAmount()
-						 							  + ") is greater than the available balance ($"
-						 							  + account.getCurrentBalance() + ") and overdraft limit ($"
-						 							  + account.getAccountType().getOverdraftLimit() + ").");
-			}
 			
 			// Add new Debit Transaction
 			accountService.debitTransaction(account, transaction);
@@ -431,9 +435,46 @@ public class AccountController extends CommonController {
 			}
 		}
 		
+		// Admin-initiated and high-value transfers are held for a second approver (maker-checker)
+		if (hasRole(authUser, Role.ROLE_ADMIN) || accountService.requiresApproval(transaction.getAmount())) {
+			return ResponseEntity.status(HttpStatus.ACCEPTED)
+								 .body(accountService.submitForApproval(fromAccount, toAccount, transaction, true, authUser));
+		}
+		
+		// Balance, overdraft and payment limits are enforced by AccountService
 		accountService.transfer(fromAccount, toAccount, transaction);
 		
 		return ResponseEntity.ok(accountService.getLastTwoAccountTransactions(fromAccount));
+	}
+	
+	/*
+	 * ADMIN Role
+	 * Get transactions awaiting maker-checker approval
+	 */
+	@PreAuthorize(Constants.HAS_ROLE_ADMIN)
+	@GetMapping(Constants.URI_API_ACCT_PEND)
+	public ResponseEntity<?> getPendingTransactions() {
+		return ResponseEntity.ok(accountService.getPendingTransactions());
+	}
+	
+	/*
+	 * ADMIN Role
+	 * Approve a pending transaction (approver must differ from initiator)
+	 */
+	@PreAuthorize(Constants.HAS_ROLE_ADMIN)
+	@PostMapping(Constants.URI_API_ACCT_PEND_APPR)
+	public ResponseEntity<?> approvePendingTransaction(@PathVariable(Constants.PATH_VARIABLE_ID) Long id) {
+		return ResponseEntity.ok(accountService.approvePendingTransaction(id, getAuthenticatedUser()));
+	}
+	
+	/*
+	 * ADMIN Role
+	 * Reject a pending transaction (approver must differ from initiator)
+	 */
+	@PreAuthorize(Constants.HAS_ROLE_ADMIN)
+	@PostMapping(Constants.URI_API_ACCT_PEND_REJ)
+	public ResponseEntity<?> rejectPendingTransaction(@PathVariable(Constants.PATH_VARIABLE_ID) Long id) {
+		return ResponseEntity.ok(accountService.rejectPendingTransaction(id, getAuthenticatedUser()));
 	}
 	
 	/*
