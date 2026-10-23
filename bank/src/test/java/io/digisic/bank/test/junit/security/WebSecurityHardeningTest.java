@@ -1,6 +1,7 @@
 package io.digisic.bank.test.junit.security;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -20,6 +21,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
+import io.digisic.bank.model.Account;
+import io.digisic.bank.service.AccountService;
 import io.digisic.bank.service.SampleDataService;
 
 /**
@@ -33,6 +36,9 @@ public class WebSecurityHardeningTest {
 
 	@Autowired
 	private MockMvc mvc;
+
+	@Autowired
+	private AccountService accountService;
 
 	private static RequestPostProcessor customer() {
 		return user(SampleDataService.SMPL_MALE_EMAIL).roles("USER");
@@ -50,6 +56,32 @@ public class WebSecurityHardeningTest {
 		mvc.perform(post("/account/update").with(customer())
 				.param("id", "1").param("newName", "Renamed"))
 			.andExpect(status().isForbidden());
+	}
+
+	@Test
+	public void accountRenameWithCsrfHeaderIsAccepted() throws Exception {
+		Account account = accountService.getSavingsAccounts().get(0);
+		String original = account.getName();
+		try {
+			mvc.perform(post("/account/update").with(customer()).with(csrf().asHeader())
+					.param("id", account.getId().toString()).param("newName", "Renamed via header"))
+				.andExpect(status().isOk());
+			assertEquals("Renamed via header", accountService.getAccountById(account.getId()).getName());
+		} finally {
+			Account restore = accountService.getAccountById(account.getId());
+			restore.setName(original);
+			accountService.updateAccount(restore);
+		}
+	}
+
+	@Test
+	public void accountViewsSendCsrfHeaderWithRenameRequests() throws Exception {
+		mvc.perform(get("/account/savings-view").with(customer()))
+			.andExpect(status().isOk())
+			.andExpect(content().string(containsString("\"X-XSRF-TOKEN\"")));
+		mvc.perform(get("/account/checking-view").with(customer()))
+			.andExpect(status().isOk())
+			.andExpect(content().string(containsString("\"X-XSRF-TOKEN\"")));
 	}
 
 	@Test
