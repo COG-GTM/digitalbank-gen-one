@@ -1,5 +1,6 @@
 package io.digisic.credit.config;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorContro
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorViewResolver;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.hateoas.MediaTypes;
+import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -43,12 +45,31 @@ public class LegacyErrorController extends BasicErrorController {
 		return response;
 	}
 	
+	private static int specificity(MediaType type) {
+		if (type.isWildcardType()) {
+			return 0;
+		}
+		if (!type.isWildcardSubtype()) {
+			return 3;
+		}
+		return type.getSubtypeSuffix() != null ? 2 : 1;
+	}
+	
 	private static boolean acceptsHal(HttpServletRequest request) {
 		
 		String accept = request.getHeader("Accept");
 		if (accept == null || accept.isBlank()) {
 			return true;
 		}
-		return MediaType.parseMediaTypes(accept).stream().anyMatch(m -> m.isCompatibleWith(MediaTypes.HAL_JSON));
+		try {
+			// the most specific entry covering HAL decides, so an explicit q=0 exclusion wins over */*
+			return MediaType.parseMediaTypes(accept).stream()
+				.filter(m -> m.includes(MediaTypes.HAL_JSON))
+				.max(Comparator.comparingInt(LegacyErrorController::specificity))
+				.map(m -> m.getQualityValue() > 0)
+				.orElse(false);
+		} catch (InvalidMediaTypeException e) {
+			return false;
+		}
 	}
 }
