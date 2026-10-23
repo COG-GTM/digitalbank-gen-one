@@ -63,13 +63,15 @@ public class AtmLocationSearchTrnxRepoTest {
 	public void positiveResultTest() throws Exception {
 
 		final String zipcode = "11749";
-		final int expResultSize = new ObjectMapper()
+		// the recorded positive transaction returns 20 ATMs (atms_count 50, first page)
+		final int expResultSize = 20;
+		final int fixtureSize = new ObjectMapper()
 				.readTree(VirtualServiceFixtures.responseBody(TRANSACTION_REPO + "/positive/AtmSearch_PositiveResults-rsp.txt"))
 				.get("atms").size();
 
 		List<AtmLocation> locations = searchService.searchATMLocations(zipcode);
 
-		Assertions.assertTrue(expResultSize > 0);
+		Assertions.assertEquals(expResultSize, fixtureSize, "recorded positive fixture changed");
 		Assertions.assertEquals(expResultSize, locations.size());
 	}
 
