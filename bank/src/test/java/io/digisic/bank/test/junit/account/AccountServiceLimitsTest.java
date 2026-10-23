@@ -290,12 +290,51 @@ public class AccountServiceLimitsTest {
 	}
 
 	@Test
-	public void deletingAccountRemovesItsPendingTransactionsFirst() {
+	public void deletingAccountCancelsUndecidedAndKeepsDecidedHistory() {
+		PendingTransaction undecided = givenPending(false, null, "10.00");
+		PendingTransaction decided = new PendingTransaction();
+		decided.setAccount(account);
+		decided.setStatus(PendingTransaction.STATUS_APPROVED);
+		when(pendingTransactionRepository.findByAccountOrToAccount(account, account))
+			.thenReturn(java.util.Arrays.asList(undecided, decided));
+
 		accountService.deleteAccount(account);
 
 		org.mockito.InOrder order = org.mockito.Mockito.inOrder(pendingTransactionRepository, accountRepository);
-		order.verify(pendingTransactionRepository).deleteByAccountAndStatusOrToAccountAndStatus(account, "PENDING", account, "PENDING");
+		order.verify(pendingTransactionRepository).delete(undecided);
+		order.verify(pendingTransactionRepository).save(decided);
 		order.verify(accountRepository).delete(account);
+		Assertions.assertNull(decided.getAccount());
+		Assertions.assertEquals(account.getId(), decided.getAccountId());
+	}
+
+	@Test
+	public void approvedOpeningDepositSetsOpeningBalance() {
+		givenPending(false, null, "250.00").setOpeningDeposit(true);
+
+		accountService.approvePendingTransaction(1L, checker);
+
+		Assertions.assertEquals(0, new BigDecimal("250.00").compareTo(account.getOpeningBalance()));
+	}
+
+	@Test
+	public void ordinaryCreditDescribedAsOpeningDepositKeepsOpeningBalance() {
+		account.setOpeningBalance(new BigDecimal("500.00"));
+		givenPending(false, null, "25.00").setDescription(PendingTransaction.OPENING_DEPOSIT);
+
+		accountService.approvePendingTransaction(1L, checker);
+
+		Assertions.assertEquals(0, new BigDecimal("500.00").compareTo(account.getOpeningBalance()));
+	}
+
+	@Test
+	public void rejectedOpeningDepositRemovesUnfundedAccount() {
+		account.setCurrentBalance(BigDecimal.ZERO);
+		givenPending(false, null, "100.00").setOpeningDeposit(true);
+
+		accountService.rejectPendingTransaction(1L, checker);
+
+		org.mockito.Mockito.verify(accountRepository).delete(account);
 	}
 
 	// --- helpers ---------------------------------------------------------------------------------

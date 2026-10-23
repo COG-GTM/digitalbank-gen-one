@@ -270,7 +270,7 @@ public class AccountController extends CommonController {
 			openingDeposit.setAmount(account.getOpeningDeposit());
 			openingDeposit.setDescription(PendingTransaction.OPENING_DEPOSIT);
 			openingDeposit.setTransactionType(accountService.getTransactionTypeByCode(Constants.ACCT_TRAN_TYPE_DEPOSIT_CODE));
-			accountService.submitForApproval(newAccount, null, openingDeposit, false, getAuthenticatedUser());
+			accountService.submitOpeningDepositForApproval(newAccount, openingDeposit, getAuthenticatedUser());
 			
 		} else {
 			throw new RestNotAcceptableException("The initial deposit ($" 

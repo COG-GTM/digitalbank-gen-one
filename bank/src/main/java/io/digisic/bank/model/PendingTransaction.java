@@ -36,8 +36,16 @@ public class PendingTransaction {
 
 	@JsonIgnore
 	@ManyToOne (fetch = FetchType.EAGER)
-	@JoinColumn(name = "account_id", nullable = false)
+	@JoinColumn(name = "account_id")
 	private Account account;
+
+	@JsonIgnore
+	private Long accountRef;
+
+	@JsonIgnore
+	private Long toAccountRef;
+
+	private boolean openingDeposit;
 
 	@JsonIgnore
 	@ManyToOne (fetch = FetchType.EAGER)
@@ -79,12 +87,12 @@ public class PendingTransaction {
 
 	@JsonProperty("accountId")
 	public Long getAccountId() {
-		return account == null ? null : account.getId();
+		return account == null ? accountRef : account.getId();
 	}
 
 	@JsonProperty("toAccountId")
 	public Long getToAccountId() {
-		return toAccount == null ? null : toAccount.getId();
+		return toAccount == null ? toAccountRef : toAccount.getId();
 	}
 
 	@JsonProperty("makerId")
@@ -111,6 +119,7 @@ public class PendingTransaction {
 
 	public void setAccount(Account account) {
 		this.account = account;
+		this.accountRef = account == null ? this.accountRef : account.getId();
 	}
 
 	public Account getToAccount() {
@@ -119,6 +128,7 @@ public class PendingTransaction {
 
 	public void setToAccount(Account toAccount) {
 		this.toAccount = toAccount;
+		this.toAccountRef = toAccount == null ? this.toAccountRef : toAccount.getId();
 	}
 
 	public BigDecimal getAmount() {
@@ -193,4 +203,23 @@ public class PendingTransaction {
 		this.decidedDate = decidedDate;
 	}
 
+	public boolean isOpeningDeposit() {
+		return openingDeposit;
+	}
+
+	public void setOpeningDeposit(boolean openingDeposit) {
+		this.openingDeposit = openingDeposit;
+	}
+
+	/*
+	 * Drop the foreign key to a deleted account; the account id stays on the record for audit.
+	 */
+	public void detachAccount(Account deleted) {
+		if (account != null && account.getId().equals(deleted.getId())) {
+			account = null;
+		}
+		if (toAccount != null && toAccount.getId().equals(deleted.getId())) {
+			toAccount = null;
+		}
+	}
 }

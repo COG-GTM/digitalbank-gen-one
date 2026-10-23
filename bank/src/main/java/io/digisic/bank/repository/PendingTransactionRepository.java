@@ -21,7 +21,7 @@ public interface PendingTransactionRepository extends CrudRepository<PendingTran
 	@Query("select p from PendingTransaction p where p.id = :id")
 	public Optional<PendingTransaction> findByIdForUpdate (@Param("id") Long id);
 
-	public void deleteByAccountAndStatusOrToAccountAndStatus (Account account, String status, Account toAccount, String toStatus);
+	public List<PendingTransaction> findByAccountOrToAccount (Account account, Account toAccount);
 
 	public List<PendingTransaction> findAllByStatus (String status);
 

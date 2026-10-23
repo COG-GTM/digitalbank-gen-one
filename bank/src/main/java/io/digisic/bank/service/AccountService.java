@@ -380,8 +380,7 @@ public class AccountService {
 	 * Delete an Account
 	 */
 	public void deleteAccount (Account account) {
-		pendingTransactionRepository.deleteByAccountAndStatusOrToAccountAndStatus(account, PendingTransaction.STATUS_PENDING,
-																					  account, PendingTransaction.STATUS_PENDING);
+		releasePendingReferences(account);
 		accountRepository.delete(account);
 	}
 	
@@ -390,8 +389,7 @@ public class AccountService {
 	 */
 	public void deleteAllAccounts(Users user) {
 		for (Account account : accountRepository.findByOwner(user)) {
-			pendingTransactionRepository.deleteByAccountAndStatusOrToAccountAndStatus(account, PendingTransaction.STATUS_PENDING,
-																					  account, PendingTransaction.STATUS_PENDING);
+			releasePendingReferences(account);
 		}
 		accountRepository.deleteByOwner(user);
 	}
@@ -718,7 +716,7 @@ public class AccountService {
 		} else {
 			creditTransaction(pending.getAccount(), transaction);
 			
-			if (PendingTransaction.OPENING_DEPOSIT.equals(pending.getDescription())) {
+			if (pending.isOpeningDeposit()) {
 				Account opened = this.getAccountById(pending.getAccount().getId());
 				opened.setOpeningBalance(pending.getAmount());
 				accountRepository.save(opened);
@@ -732,7 +730,40 @@ public class AccountService {
 	 * Reject a pending transaction without posting it. The checker must be a different user than the maker.
 	 */
 	public PendingTransaction rejectPendingTransaction(Long id, Users checker) {
-		return decide(getPendingForDecision(id, checker), checker, PendingTransaction.STATUS_REJECTED);
+		PendingTransaction pending = decide(getPendingForDecision(id, checker), checker, PendingTransaction.STATUS_REJECTED);
+		
+		// An admin-opened account whose opening deposit is rejected was never funded; remove it
+		if (pending.isOpeningDeposit() && pending.getAccount() != null) {
+			Account unfunded = this.getAccountById(pending.getAccount().getId());
+			if (unfunded.getCurrentBalance().signum() == 0) {
+				deleteAccount(unfunded);
+			}
+		}
+		return pending;
+	}
+	
+	/*
+	 * Hold the opening deposit of an account opened by an admin for maker-checker approval.
+	 */
+	public PendingTransaction submitOpeningDepositForApproval(Account account, AccountTransaction deposit, Users maker) {
+		PendingTransaction pending = submitForApproval(account, null, deposit, false, maker);
+		pending.setOpeningDeposit(true);
+		return pendingTransactionRepository.save(pending);
+	}
+	
+	/*
+	 * Before an account is deleted: cancel its undecided requests, and keep decided ones
+	 * (audit history) with the account foreign key cleared.
+	 */
+	private void releasePendingReferences(Account account) {
+		for (PendingTransaction pending : pendingTransactionRepository.findByAccountOrToAccount(account, account)) {
+			if (PendingTransaction.STATUS_PENDING.equals(pending.getStatus())) {
+				pendingTransactionRepository.delete(pending);
+			} else {
+				pending.detachAccount(account);
+				pendingTransactionRepository.save(pending);
+			}
+		}
 	}
 	
 	public List<PendingTransaction> getPendingTransactions() {
