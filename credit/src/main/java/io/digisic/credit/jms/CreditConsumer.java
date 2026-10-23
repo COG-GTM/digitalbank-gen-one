@@ -3,7 +3,7 @@ package io.digisic.credit.jms;
 import java.io.IOException;
 import java.util.HashMap;
 
-import javax.jms.JMSException;
+import jakarta.jms.JMSException;
 import org.springframework.jms.support.JmsHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
