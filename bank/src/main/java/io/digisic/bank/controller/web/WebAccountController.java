@@ -4,11 +4,16 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.List;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +21,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.digisic.bank.model.Account;
 import io.digisic.bank.model.AccountTransaction;
 import io.digisic.bank.model.security.Users;
+import io.digisic.bank.security.sca.PaymentOtpService;
 import io.digisic.bank.service.AccountService;
 import io.digisic.bank.service.UserService;
 import io.digisic.bank.util.Constants;
@@ -38,6 +46,9 @@ public class WebAccountController extends WebCommonController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PaymentOtpService paymentOtpService;
 	
 		
 	@GetMapping(Constants.URI_CHK_ADD)
@@ -433,7 +444,9 @@ public class WebAccountController extends WebCommonController {
 	@PostMapping(Constants.URI_WITHDRAW)
 	public String withdraw (Principal principal, Model model,
 							@ModelAttribute(MODEL_ATT_ACCOUNT) Account account,
-							@ModelAttribute(MODEL_ATT_ACCT_TRANS) AccountTransaction accountTransaction) {
+							@ModelAttribute(MODEL_ATT_ACCT_TRANS) AccountTransaction accountTransaction,
+							@RequestParam(required=false) String otpChallengeId,
+							@RequestParam(required=false) String otp) {
 		
 		// Set Display Defaults
 		setDisplayDefaults(principal, model);
@@ -492,6 +505,19 @@ public class WebAccountController extends WebCommonController {
 			
 		}
 		
+		// Strong customer authentication: OTP bound to source account, payee (cash) and amount
+		Map<String, String> otpFields = new LinkedHashMap<>();
+		otpFields.put("id", String.valueOf(account.getId()));
+		otpFields.put("amount", accountTransaction.getAmount().toPlainString());
+		
+		String otpView = requirePaymentOtp(model, user, PaymentOtpService.OP_WITHDRAW, account,
+										   PaymentOtpService.PAYEE_CASH, "Cash withdrawal",
+										   accountTransaction.getAmount(), otpChallengeId, otp,
+										   Constants.URI_ACCOUNT + Constants.URI_WITHDRAW, otpFields);
+		if (otpView != null) {
+			return otpView;
+		}
+		
 		// Set Transaction Description
 		accountTransaction.setDescription("Online Withdrawl");
 		
@@ -544,7 +570,9 @@ public class WebAccountController extends WebCommonController {
 	public String transfer (Principal principal, Model model,
 							@ModelAttribute(MODEL_ATT_FROM_ACCOUNT) Long fromAccount,
 							@ModelAttribute(MODEL_ATT_TO_ACCOUNT) Long toAccount,
-							@ModelAttribute(MODEL_ATT_ACCT_TRANS) AccountTransaction accountTransaction) {
+							@ModelAttribute(MODEL_ATT_ACCT_TRANS) AccountTransaction accountTransaction,
+							@RequestParam(required=false) String otpChallengeId,
+							@RequestParam(required=false) String otp) {
 		
 		// Set Display Defaults
 		setDisplayDefaults(principal, model);
@@ -573,6 +601,20 @@ public class WebAccountController extends WebCommonController {
 						 									 + accountTransaction.getAmount()
 						 									 + ") must be greater than $0.00");
 				}else {
+				
+					// Strong customer authentication: OTP bound to source account, payee account and amount
+					Map<String, String> otpFields = new LinkedHashMap<>();
+					otpFields.put(MODEL_ATT_FROM_ACCOUNT, String.valueOf(fromAcct.getId()));
+					otpFields.put(MODEL_ATT_TO_ACCOUNT, String.valueOf(toAcct.getId()));
+					otpFields.put("amount", accountTransaction.getAmount().toPlainString());
+					
+					String otpView = requirePaymentOtp(model, user, PaymentOtpService.OP_TRANSFER, fromAcct,
+													   PaymentOtpService.payeeAccount(toAcct.getId()), describe(toAcct),
+													   accountTransaction.getAmount(), otpChallengeId, otp,
+													   Constants.URI_ACCOUNT + Constants.URI_XFER_BETWEEN, otpFields);
+					if (otpView != null) {
+						return otpView;
+					}
 				
 					// Execute Transfer
 					accountService.transfer(fromAcct, toAcct, accountTransaction);
@@ -623,4 +665,74 @@ public class WebAccountController extends WebCommonController {
 	}
 	
 
+	/*
+	 * Returns null when a valid OTP for exactly this payment was supplied; otherwise issues a new
+	 * challenge (or re-prompts for the current one) and returns the OTP confirmation view.
+	 */
+	private String requirePaymentOtp(Model model, Users user, String operation, Account fromAcct,
+									 String payee, String payeeLabel, BigDecimal amount,
+									 String otpChallengeId, String otp, String action,
+									 Map<String, String> otpFields) {
+		
+		if (paymentOtpService.isLocked(user.getUsername())) {
+			return lockedOut();
+		}
+		
+		if (otpChallengeId != null && otp != null && !otp.trim().isEmpty()) {
+			
+			if (paymentOtpService.verify(otpChallengeId, otp, user.getUsername(), operation,
+										 fromAcct.getId(), payee, amount)) {
+				return null;
+			}
+			
+			if (paymentOtpService.isLocked(user.getUsername())) {
+				return lockedOut();
+			}
+			
+			model.addAttribute(MODEL_ATT_ERROR_MSG, "The one-time passcode is not valid for this payment.");
+		}
+		
+		String challengeId = otpChallengeId;
+		
+		if (!paymentOtpService.isActive(challengeId, user.getUsername())) {
+			
+			String description = operation + " of $" + amount.toPlainString() + " from " + describe(fromAcct) + " to " + payeeLabel;
+			challengeId = paymentOtpService.issue(user, operation, fromAcct.getId(), payee, amount, description).getId();
+		}
+		
+		model.addAttribute("otpChallengeId", challengeId);
+		model.addAttribute("otpAction", action);
+		model.addAttribute("otpFields", otpFields);
+		model.addAttribute("otpOperation", PaymentOtpService.OP_WITHDRAW.equals(operation) ? "Withdraw" : "Transfer");
+		model.addAttribute("otpFrom", describe(fromAcct));
+		model.addAttribute("otpPayee", payeeLabel);
+		model.addAttribute("otpAmount", amount.toPlainString());
+		
+		return Constants.VIEW_PAYMENT_OTP;
+	}
+	
+	private String lockedOut() {
+		
+		ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		HttpSession session = attrs.getRequest().getSession(false);
+		if (session != null) {
+			session.invalidate();
+		}
+		SecurityContextHolder.clearContext();
+		
+		if (attrs.getResponse() != null) {
+			String path = attrs.getRequest().getContextPath();
+			Cookie rememberMe = new Cookie(Constants.COO_REMEMBER_ME_NAME, null);
+			rememberMe.setPath(path.isEmpty() ? "/" : path);
+			rememberMe.setMaxAge(0);
+			attrs.getResponse().addCookie(rememberMe);
+		}
+		
+		return "redirect:" + Constants.URI_LOGIN_LOCKED;
+	}
+	
+	private static String describe(Account account) {
+		return account.getName() + " (" + account.getAccountNumber() + ")";
+	}
+	
 }

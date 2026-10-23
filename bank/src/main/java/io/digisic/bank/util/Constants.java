@@ -2,12 +2,9 @@ package io.digisic.bank.util;
 
 public class Constants {
 	
-	// Cookies
-	public static final String COO_REMEBER_ME 		= "remeber-me";
-	
-	
 	// Session Management
 	public static final String COO_JSESSION_ID		= "JSESSIONID";
+	public static final String COO_REMEMBER_ME_NAME	= "remember-me";
 	public static final String SESSION_MAX			= "io.digisic.max.sessions";
 	
 	// API
@@ -50,6 +47,7 @@ public class Constants {
 	public static final String URI_ROOT 			= "/";
 	public static final String URI_LOGIN 			= "/login";
 	public static final String URI_LOGIN_ERR 		= "/login?error";
+	public static final String URI_LOGIN_LOCKED 	= "/login?locked";
 	public static final String URI_REGISTER 		= "/register";
 	public static final String URI_SIGNUP 			= "/signup";
 	public static final String URI_LOGOUT 			= "/logout";
@@ -166,6 +164,7 @@ public class Constants {
 	public static final String VIEW_DEPOSIT 		= "deposit";
 	public static final String VIEW_WITHDRAW 		= "withdraw";
 	public static final String VIEW_XFER_BETWEEN 	= "xfer-between";
+	public static final String VIEW_PAYMENT_OTP 	= "payment-otp";
 	public static final String VIEW_CREDIT_APP 		= "credit-app";
 	public static final String VIEW_CREDIT_APP_ST 	= "credit-app-status";
 	public static final String VIEW_CREDIT_VIEW 	= "credit-view";

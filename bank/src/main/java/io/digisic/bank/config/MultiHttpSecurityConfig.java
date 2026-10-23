@@ -1,5 +1,8 @@
 package io.digisic.bank.config;
 
+import java.security.SecureRandom;
+import java.util.Base64;
+import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +18,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import io.digisic.bank.security.JwtTokenFilterConfigurer;
@@ -107,6 +112,33 @@ public class MultiHttpSecurityConfig {
 		@Value("${io.digisic.max.sessions}")
 		private String propMaxSessions;
 		
+		@Value("${io.digisic.bank.security.remember-me.key:}")
+		private String propRememberMeKey;
+		
+		/*
+		 * Remember-me signing key: configured per install, otherwise a random key generated at startup.
+		 */
+		private String rememberMeKey() {
+			
+			if (propRememberMeKey != null && !propRememberMeKey.trim().isEmpty()) {
+				return propRememberMeKey.trim();
+			}
+			
+			LOG.warn("io.digisic.bank.security.remember-me.key not set; using a random key (remember-me cookies will not survive a restart).");
+			
+			byte[] key = new byte[32];
+			new SecureRandom().nextBytes(key);
+			return Base64.getEncoder().encodeToString(key);
+		}
+		
+		private ExceptionMappingAuthenticationFailureHandler loginFailureHandler() {
+			
+			ExceptionMappingAuthenticationFailureHandler handler = new ExceptionMappingAuthenticationFailureHandler();
+			handler.setDefaultFailureUrl(Constants.URI_LOGIN_ERR);
+			handler.setExceptionMappings(Collections.singletonMap(LockedException.class.getName(), Constants.URI_LOGIN_LOCKED));
+			return handler;
+		}
+		
 		@Override
         protected void configure(HttpSecurity http) throws Exception {
 			
@@ -121,10 +153,15 @@ public class MultiHttpSecurityConfig {
 				.cors().disable()
 				.authorizeRequests()
 					.antMatchers(PUBLIC).permitAll()
+					.antMatchers(Constants.URI_LOGIN).permitAll()
+					// Payments always need a full (password) login; a remember-me cookie alone is not enough
+					.antMatchers(Constants.URI_ACCOUNT + Constants.URI_WITHDRAW,
+								 Constants.URI_ACCOUNT + Constants.URI_XFER_BETWEEN)
+						.access(Constants.HAS_ROLE_USER + " and isFullyAuthenticated()")
 					.anyRequest().hasRole(Patterns.ROLE_USER)
 					.and()
 				.formLogin()
-					.failureUrl(Constants.URI_LOGIN_ERR)
+					.failureHandler(loginFailureHandler())
 					.defaultSuccessUrl(Constants.URI_HOME)
 					.loginPage(Constants.URI_LOGIN).permitAll()
 					.and()
@@ -134,7 +171,7 @@ public class MultiHttpSecurityConfig {
 					.deleteCookies(Constants.COO_JSESSION_ID).permitAll()
 					.and()
 				.rememberMe()
-					.key(Constants.COO_REMEBER_ME)
+					.key(rememberMeKey())
 					.tokenValiditySeconds(86400)
 					.and()
 				.sessionManagement()

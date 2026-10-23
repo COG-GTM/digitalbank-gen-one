@@ -59,6 +59,9 @@ public class Users implements UserDetails, Serializable {
 	private boolean accountNonLocked = true;
 	private boolean credentialsNonExpired = true;
 
+	@JsonIgnore
+	private Integer failedLoginAttempts = 0;
+
 	@Valid
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "profile_id")
@@ -178,6 +181,14 @@ public class Users implements UserDetails, Serializable {
 	 */
 	public void setAccountNonLocked(boolean accountNonLocked) {
 		this.accountNonLocked = accountNonLocked;
+	}
+
+	public int getFailedLoginAttempts() {
+		return failedLoginAttempts == null ? 0 : failedLoginAttempts;
+	}
+
+	public void setFailedLoginAttempts(int failedLoginAttempts) {
+		this.failedLoginAttempts = failedLoginAttempts;
 	}
 
 	/**

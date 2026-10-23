@@ -27,6 +27,13 @@
                            <span aria-hidden="true">&times;</span>
                        </button>
                    </div>
+                	<div id="locked-alert" class="sufee-alert alert with-close alert-danger alert-dismissible fade show" th:if="${param.locked}">
+                       <span class="badge badge-pill badge-danger">Locked</span>
+                           This user account has been locked after too many failed login attempts. Please contact the bank to unlock it.
+                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                           <span aria-hidden="true">&times;</span>
+                       </button>
+                   </div>
                 	<div class="sufee-alert alert with-close alert-success alert-dismissible fade show" th:if="${param.logout}">
                        <span class="badge badge-pill badge-success">Success</span>
                            Logout completed.
