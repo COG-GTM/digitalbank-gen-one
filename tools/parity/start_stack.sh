@@ -106,14 +106,14 @@ run_app() { # name artifact args...
 }
 
 # ---------- credit ----------
-run_app credit "$CREDIT_ART" --server.port="$CREDIT_PORT" \
+run_app credit "$CREDIT_ART" --server.port="$CREDIT_PORT" --server.address=127.0.0.1 \
   --io.digisic.credit.app.process.enabled=true --io.digisic.credit.app.process.time="$CREDIT_PROCESS_TIME" \
   "${JMS_ARGS[@]}"
 wait_for credit "$CREDIT_URL/api/v1/health" 180
 log "credit up at $CREDIT_URL"
 
 # ---------- bank ----------
-run_app bank "$BANK_ART" --server.port="$BANK_PORT" \
+run_app bank "$BANK_ART" --server.port="$BANK_PORT" --server.address=127.0.0.1 \
   --io.digisic.credit.enabled=true --io.digisic.credit.protocol=https --io.digisic.credit.host=localhost \
   --io.digisic.credit.port="$CREDIT_PORT" --io.digisic.credit.context-path=/credit \
   --io.digisic.credit.username=admin@demo.io --io.digisic.credit.password='Demo123!' \

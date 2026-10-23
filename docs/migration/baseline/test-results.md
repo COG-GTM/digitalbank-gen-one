@@ -25,5 +25,5 @@ After the flows `replay.py` reads the database through the admin REST API (`admi
 `GET /api/v1/users`, `GET /api/v1/account`, `GET /api/v1/account/{id}` + `/transaction` for the accounts created by
 the run, `GET /api/v1/credit/references`, and Digital Credit `GET /credit/api/v1/users`; stored under `db_snapshot`
 in the run JSON (`db-snapshot.json` here). For ad-hoc inspection the H2 console is enabled by the harness at
-`https://localhost:8443/bank/h2-console` (JDBC URL `jdbc:h2:mem:testdb`, user `sa`, empty password; reachable for any
-logged-in or anonymous user as in legacy).
+`https://localhost:8443/bank/h2-console` (JDBC URL `jdbc:h2:mem:testdb`, user `sa`, empty password). The legacy security config permits `/h2-console/**` without login, so the harness binds both
+apps to `127.0.0.1` (`--server.address`) and sets `web-allow-others=false`; nothing is reachable off the VM.

@@ -58,6 +58,9 @@ def flat(o, prefix=""):
             yield from flat(v, "%s[%d]" % (prefix, i))
     else:
         yield prefix, o
+        return
+    if not o:
+        yield prefix, "{EMPTY_%s}" % type(o).__name__.upper()
 
 
 def compare(a, b):
@@ -98,7 +101,8 @@ def main():
     extra = sorted(set(ms) - set(ls))
     snap = compare(mask_strings(stabilize(L.get("db_snapshot", {}), "credit-decision")),
                    mask_strings(stabilize(M.get("db_snapshot", {}), "credit-decision")))
-    failed += bool(snap)
+    failed += bool(snap) + len(extra)
+    failed += bool(L["meta"].get("error")) + bool(M["meta"].get("error"))
     summary = {"legacy": a.legacy, "migrated": a.migrated, "steps": len(results),
                "pass": sum(r["result"] == "PASS" for r in results), "fail": failed,
                "info": sum(r["result"] == "INFO" for r in results), "missing_in_migrated": [r["id"] for r in results if r["result"] == "MISSING"],
