@@ -14,8 +14,8 @@
    "172": "{OBP_ACCT:RBOSGB2L}",
    "4": "{USER:admin@demo.io}",
    "71": "{USER:jsmith@demo.io}",
-   "75": "{USER:nsmith@demo.io}",
-   "158": "{USER:parity.tester@demo.io}",
+   "75": "{USER:parity.tester@demo.io}",
+   "78": "{USER:nsmith@demo.io}",
    "174": "{ACCT:api-checking}"
   },
   "mock_requests": [
@@ -257,7 +257,7 @@
      "JSESSIONID"
     ]
    },
-   "elapsed_ms": 48
+   "elapsed_ms": 59
   },
   {
    "id": "ui.home.anonymous",
@@ -274,7 +274,7 @@
     "location": "{BANK}/login",
     "content_type": null
    },
-   "elapsed_ms": 15
+   "elapsed_ms": 12
   },
   {
    "id": "ui.login.page",
@@ -333,7 +333,7 @@
      "text": "Digital Bank User Name Password Remember Me Sign in Don't have account ? Sign Up Here"
     }
    },
-   "elapsed_ms": 677
+   "elapsed_ms": 615
   },
   {
    "id": "ui.login.bad",
@@ -357,7 +357,7 @@
      "remember-me"
     ]
    },
-   "elapsed_ms": 206
+   "elapsed_ms": 171
   },
   {
    "id": "ui.login.error.page",
@@ -415,7 +415,7 @@
      "text": "Digital Bank Error Invalid credentials or access not granted due to user account status or an existing user session. \u00d7 User Name Password Remember Me Sign in Don't have account ? Sign Up Here"
     }
    },
-   "elapsed_ms": 9
+   "elapsed_ms": 11
   },
   {
    "id": "ui.signup.page",
@@ -593,7 +593,7 @@
      "text": "Digital Bank Title Please select Mr. Ms. Mrs. First Name ex. James Last Name ex. Smith Gender M F Date of Birth ex. MM/DD/YYYY Social Security Number ex. 123-45-6789 Email Address ex. user@gmail.com Password Confirm Password Next Already have account ? Sign in"
     }
    },
-   "elapsed_ms": 36
+   "elapsed_ms": 33
   },
   {
    "id": "ui.signup.submit",
@@ -765,7 +765,7 @@
      "text": "Digital Bank Address ex. 123 Digital Lane Locality ex. Internet City Region ex. CA Postal Code ex. 94302 Country ex. US Home Phone ex. (547) 392-5436 Mobile Phone ex. (547) 392-5436 Work Phone ex. (547) 392-5436 Agree the terms and policy Register"
     }
    },
-   "elapsed_ms": 45
+   "elapsed_ms": 26
   },
   {
    "id": "ui.register.submit",
@@ -842,7 +842,7 @@
      "text": "Digital Bank Success Registration Successful. Please Login. \u00d7 User Name Password Remember Me Sign in Don't have account ? Sign Up Here"
     }
    },
-   "elapsed_ms": 107
+   "elapsed_ms": 114
   },
   {
    "id": "ui.signup.duplicate_email",
@@ -1035,7 +1035,7 @@
      "text": "Digital Bank Error An account is already registered with the Social Security Number provided. Login with the existing account or provide another social security number. \u00d7 Title Please select Mr. Ms. Mrs. First Name ex. James Last Name ex. Smith Gender M F Date of Birth ex. MM/DD/YYYY Social Security Number ex. 123-45-6789 Email Address ex. user@gmail.com Password Confirm Password Next Already have account ? Sign in"
     }
    },
-   "elapsed_ms": 42
+   "elapsed_ms": 41
   },
   {
    "id": "ui.login.good",
@@ -1059,7 +1059,7 @@
      "JSESSIONID"
     ]
    },
-   "elapsed_ms": 92
+   "elapsed_ms": 94
   },
   {
    "id": "ui.home.no_accounts",
@@ -1110,7 +1110,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 0 You have 0 Notification[s] 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Dashboard Welcome Parity Account Balance Summary Deposit vs. Withdraw (Last 3 Months) Withdraw By Category (Last 3 Months) Deposit By Category (Last 3 Months)"
     }
    },
-   "elapsed_ms": 594
+   "elapsed_ms": 540
   },
   {
    "id": "ui.checking.add.page",
@@ -1226,7 +1226,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 0 You have 0 Notification[s] 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Create Checking Welcome Parity New Checking Account Select Checking Account Type Standard Checking Interest Checking Select Account Ownership Individual Joint Account Name ex. Short descriptive name to easily identify account Initial Deposit Amount ex. Minimum opening deposit is $25.00 Submit Reset"
     }
    },
-   "elapsed_ms": 191
+   "elapsed_ms": 182
   },
   {
    "id": "ui.checking.add.below_min",
@@ -1356,7 +1356,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 0 You have 0 Notification[s] 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Create Checking Welcome Parity New Checking Account Error The initial deposit ($1.00) entered does not meet the minimum amount ($25.00) required. Please enter a valid deposit amount. \u00d7 Select Checking Account Type Standard Checking Interest Checking Select Account Ownership Individual Joint Account Name ex. Short descriptive name to easily identify account Initial Deposit Amount ex. Minimum opening deposit is $25.00 Submit Reset"
     }
    },
-   "elapsed_ms": 140
+   "elapsed_ms": 136
   },
   {
    "id": "ui.checking.add",
@@ -1434,7 +1434,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 1 You have 1 Notification[s] New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} View Checking Accounts Welcome Parity Confirmation Successfully created new Standard Checking account named Parity Checking \u00d7 Parity Checking Account: Standard Checking Ownership: Individual Account Number: 486130006 Interest Rate: 0.0% Balance: $500.00 Transactions Date Category Description Amount Balance {TS} Income 845320075 (DPT) - Deposit $500.00 $500.00"
     }
    },
-   "elapsed_ms": 261
+   "elapsed_ms": 279
   },
   {
    "id": "ui.savings.add.page",
@@ -1550,7 +1550,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 1 You have 1 Notification[s] New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Create Savings Welcome Parity New Savings Account Select Savings Account Type Savings Money Market Select Account Ownership Individual Joint Account Name ex. Short descriptive name to easily identify account Initial Deposit ex. Minimum opening deposit is $25.00 Submit Reset"
     }
    },
-   "elapsed_ms": 110
+   "elapsed_ms": 141
   },
   {
    "id": "ui.savings.add",
@@ -1628,7 +1628,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} View Savings Accounts Welcome Parity Confirmation Successfully created new Savings account named Parity Savings \u00d7 Parity Savings Account: Savings Ownership: Joint Account Number: 486130007 Interest Rate: 1.85% Balance: $2500.00 Transactions Date Category Description Amount Balance {TS} Income 845320076 (DPT) - Deposit $2500.00 $2500.00"
     }
    },
-   "elapsed_ms": 264
+   "elapsed_ms": 250
   },
   {
    "id": "ui.checking.view",
@@ -1692,7 +1692,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} View Checking Accounts Welcome Parity Parity Checking Account: Standard Checking Ownership: Individual Account Number: 486130006 Interest Rate: 0.0% Balance: $500.00 Transactions Date Category Description Amount Balance {TS} Income 845320075 (DPT) - Deposit $500.00 $500.00"
     }
    },
-   "elapsed_ms": 115
+   "elapsed_ms": 131
   },
   {
    "id": "ui.savings.view",
@@ -1756,7 +1756,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} View Savings Accounts Welcome Parity Parity Savings Account: Savings Ownership: Joint Account Number: 486130007 Interest Rate: 1.85% Balance: $2500.00 Transactions Date Category Description Amount Balance {TS} Income 845320076 (DPT) - Deposit $2500.00 $2500.00"
     }
    },
-   "elapsed_ms": 109
+   "elapsed_ms": 148
   },
   {
    "id": "ui.deposit.page",
@@ -1845,7 +1845,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Deposit Welcome Parity Deposit into Account Account for Deposit ---------- Select Account ----------- Parity Checking (Standard Checking) Parity Savings (Savings) Deposit Amount ex. 25.00 Submit Reset"
     }
    },
-   "elapsed_ms": 154
+   "elapsed_ms": 122
   },
   {
    "id": "ui.deposit",
@@ -1919,7 +1919,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} View Checking Accounts Welcome Parity Parity Checking Account: Standard Checking Ownership: Individual Account Number: 486130006 Interest Rate: 0.0% Balance: $625.50 Transactions Date Category Description Amount Balance {TS} Income 845320077 (DPT) - Online Deposit $125.50 $625.50 {TS} Income 845320075 (DPT) - Deposit $500.00 $500.00"
     }
    },
-   "elapsed_ms": 221
+   "elapsed_ms": 227
   },
   {
    "id": "ui.deposit.zero",
@@ -2020,7 +2020,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Deposit Welcome Parity Deposit into Account Error The deposit amount ($0.00) must be greater than $0.00 \u00d7 Account for Deposit ---------- Select Account ----------- Parity Checking (Standard Checking) Parity Savings (Savings) Deposit Amount ex. 25.00 Submit Reset"
     }
    },
-   "elapsed_ms": 117
+   "elapsed_ms": 121
   },
   {
    "id": "ui.withdraw.page",
@@ -2109,7 +2109,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Withdraw Welcome Parity Withdraw from Account Account for Withdraw ---------- Select Account ----------- Parity Checking (Standard Checking) Parity Savings (Savings) Withdraw Amount ex. 25.00 Submit Reset"
     }
    },
-   "elapsed_ms": 151
+   "elapsed_ms": 121
   },
   {
    "id": "ui.withdraw",
@@ -2284,7 +2284,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Withdraw Welcome Parity Withdraw from Account Error The withdraw amount ($100000.00) is greater than the available balance ($605.25) and overdraft limit ($25.00). \u00d7 Account for Withdraw ---------- Select Account ----------- Parity Checking (Standard Checking) Parity Savings (Savings) Withdraw Amount ex. 25.00 Submit Reset"
     }
    },
-   "elapsed_ms": 133
+   "elapsed_ms": 130
   },
   {
    "id": "ui.xfer.page",
@@ -2385,7 +2385,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Internal Transfer Welcome Parity Transfer Between Accounts From Account ---------- Select Account ----------- Parity Checking (Standard Checking) Parity Savings (Savings) To Account ---------- Select Account ----------- Parity Checking (Standard Checking) Parity Savings (Savings) Transfer Amount ex. $25.00 Submit Reset"
     }
    },
-   "elapsed_ms": 109
+   "elapsed_ms": 143
   },
   {
    "id": "ui.xfer",
@@ -2460,7 +2460,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} View Checking Accounts Welcome Parity Parity Checking Account: Standard Checking Ownership: Individual Account Number: 486130006 Interest Rate: 0.0% Balance: $905.25 Transactions Date Category Description Amount Balance {TS} Income 845320080 (TRN) - Transfer from Account (486130007) $300.00 $905.25 {TS} Misc 845320078 (WTH) - Online Withdrawl $-20.25 $605.25 {TS} Income 845320077 (DPT) - Online Deposit $125.50 $625.50 {TS} Income 845320075 (DPT) - Deposit $500.00 $500.00"
     }
    },
-   "elapsed_ms": 253
+   "elapsed_ms": 273
   },
   {
    "id": "ui.xfer.insufficient_funds",
@@ -2574,7 +2574,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Internal Transfer Welcome Parity Transfer Between Accounts Error The amount ($999999.00) requested for transfer is more than the available balance ($905.25). \u00d7 From Account ---------- Select Account ----------- Parity Checking (Standard Checking) Parity Savings (Savings) To Account ---------- Select Account ----------- Parity Checking (Standard Checking) Parity Savings (Savings) Transfer Amount ex. $25.00 Submit Reset"
     }
    },
-   "elapsed_ms": 122
+   "elapsed_ms": 118
   },
   {
    "id": "ui.checking.history",
@@ -2641,7 +2641,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} View Checking Accounts Welcome Parity Parity Checking Account: Standard Checking Ownership: Individual Account Number: 486130006 Interest Rate: 0.0% Balance: $905.25 Transactions Date Category Description Amount Balance {TS} Income 845320080 (TRN) - Transfer from Account (486130007) $300.00 $905.25 {TS} Misc 845320078 (WTH) - Online Withdrawl $-20.25 $605.25 {TS} Income 845320077 (DPT) - Online Deposit $125.50 $625.50 {TS} Income 845320075 (DPT) - Deposit $500.00 $500.00"
     }
    },
-   "elapsed_ms": 143
+   "elapsed_ms": 109
   },
   {
    "id": "ui.savings.history",
@@ -2708,7 +2708,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} View Savings Accounts Welcome Parity Parity Savings Account: Savings Ownership: Joint Account Number: 486130007 Interest Rate: 1.85% Balance: $2200.00 Transactions Date Category Description Amount Balance {TS} Misc 845320079 (TRN) - Transfer to Account (486130006) $-300.00 $2200.00 {TS} Income 845320076 (DPT) - Deposit $2500.00 $2500.00"
     }
    },
-   "elapsed_ms": 105
+   "elapsed_ms": 103
   },
   {
    "id": "ui.account.rename",
@@ -2762,7 +2762,7 @@
      "paymentTerm": 0
     }
    },
-   "elapsed_ms": 24
+   "elapsed_ms": 19
   },
   {
    "id": "ui.home.accounts",
@@ -2813,7 +2813,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Dashboard Welcome Parity Account Balance Summary Deposit vs. Withdraw (Last 3 Months) Withdraw By Category (Last 3 Months) Deposit By Category (Last 3 Months)"
     }
    },
-   "elapsed_ms": 129
+   "elapsed_ms": 127
   },
   {
    "id": "ui.profile.page",
@@ -2964,7 +2964,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Profile Welcome Parity Update Profile Title Please select Mr. Ms. Mrs. First Name ex. James Last Name ex. Smith Home Phone ex. (547) 392-5436 Mobile Phone ex. (547) 392-5436 Work Phone ex. (547) 392-5436 Address ex. 123 Digital Lane Locality ex. Internet City Region ex. CA Postal Code ex. 94302 Country ex. US Submit Reset"
     }
    },
-   "elapsed_ms": 129
+   "elapsed_ms": 118
   },
   {
    "id": "ui.profile.update",
@@ -3136,7 +3136,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Profile Welcome Parity Update Profile Success Profile Updated Successfully. \u00d7 Title Please select Mr. Ms. Mrs. First Name ex. James Last Name ex. Smith Home Phone ex. (547) 392-5436 Mobile Phone ex. (547) 392-5436 Work Phone ex. (547) 392-5436 Address ex. 123 Digital Lane Locality ex. Internet City Region ex. CA Postal Code ex. 94302 Country ex. US Submit Reset"
     }
    },
-   "elapsed_ms": 97
+   "elapsed_ms": 101
   },
   {
    "id": "ui.password.page",
@@ -3221,7 +3221,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Password Management Welcome Parity Change Password Update New Password Current Password New Password Confirm New Password Update Password Updating\u2026"
     }
    },
-   "elapsed_ms": 135
+   "elapsed_ms": 127
   },
   {
    "id": "ui.password.wrong_current",
@@ -3313,7 +3313,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Password Management Welcome Parity Change Password Error Current Password does not match what is on record. Please enter the correct current password. \u00d7 Update New Password Current Password New Password Confirm New Password Update Password Updating\u2026"
     }
    },
-   "elapsed_ms": 184
+   "elapsed_ms": 221
   },
   {
    "id": "ui.password.mismatch",
@@ -3405,7 +3405,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Password Management Welcome Parity Change Password Success Password Updated Successfully. \u00d7 Update New Password Current Password New Password Confirm New Password Update Password Updating\u2026"
     }
    },
-   "elapsed_ms": 271
+   "elapsed_ms": 268
   },
   {
    "id": "ui.password.change",
@@ -3497,7 +3497,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Password Management Welcome Parity Change Password Error Current Password does not match what is on record. Please enter the correct current password. \u00d7 Update New Password Current Password New Password Confirm New Password Update Password Updating\u2026"
     }
    },
-   "elapsed_ms": 239
+   "elapsed_ms": 203
   },
   {
    "id": "ui.atm.search.results",
@@ -3551,7 +3551,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} ATM Locations Welcome Parity ATM Location Search Results 7ELEVEN-FCTI 1700 VETERANS HIGHWAY,ISLANDIA,NY,11749,USA 1700 VETERANS HIGHWAY ISLANDIA, NY., 11749 USA Distance: 0.58 Miles 7ELEVEN-FCTI 2140 MOTOR PKWY,HAUPPAUGE,NY,11788,USA 2140 MOTOR PKWY HAUPPAUGE, NY., 11788 USA Distance: 1.1 Miles 7ELEVEN-FCTI 166 E SUFFOLK,CENTRAL ISLIP,NY,11722,USA 166 E SUFFOLK CENTRAL ISLIP, NY., 11722 USA Distance: 1.3 Miles 7ELEVEN-FCTI 722 TOWNLINE RD,HAUPPAUGE,NY,11788,USA 722 TOWNLINE RD HAUPPAUGE, NY., 11788 USA Distance: 1.7 Miles 7ELEVEN-FCTI 450 PECONIC STREET,RONKONKOMA,NY,11779,USA 450 PECONIC STREET RONKONKOMA, NY., 11779 USA Distance: 1.7 Miles 7ELEVEN-FCTI 1074 MOTOR PWKY,CENTRAL ISLIP,NY,11722,USA 1074 MOTOR PWKY CENTRAL ISLIP, NY., 11722 USA Distance: 2.2 Miles STERLING NATIONAL BANK 845 WHEELER RD,HAUPPAUGE,NY,11788,USA 845 WHEELER RD HAUPPAUGE, NY., 11788 USA Distance: 2.2 Miles 7ELEVEN-FCTI 121 CARLETON AVENUE,CENTRAL ISLIP,NY,11722,USA 121 CARLETON AVENUE CENTRAL ISLIP, NY., 11722 USA Distance: 2.2 Miles 7ELEVEN-FCTI 250 SMITHTOWN BLVD,NESCONSET,NV,11787,USA 250 SMITHTOWN BLVD NESCONSET, NV., 11787 USA Distance: 2.3 Miles 7ELEVEN-FCTI 602 SMITHTOWN BY PASS,SMITHTOWN,NY,11787,USA 602 SMITHTOWN BY PASS SMITHTOWN, NY., 11787 USA Distance: 2.3 Miles 7ELEVEN-FCTI 235 SMITHTOWN BLVD,NESCONSET,NY,11767,USA 235 SMITHTOWN BLVD NESCONSET, NY., 11767 USA Distance: 2.3 Miles 7ELEVEN-FCTI 81 SHEPPARD LN,SMITHTOWN,NY,11787,USA 81 SHEPPARD LN SMITHTOWN, NY., 11787 USA Distance: 2.4 Miles 7ELEVEN-FCTI 876 JOHNSON AVENUE,RONKONKOMA,NY,11779,USA 876 JOHNSON AVENUE RONKONKOMA, NY., 11779 USA Distance: 2.4 Miles 7ELEVEN-FCTI 70-82 WEST SUFFOLK AV,CENTRAL ISLIP,NY,11722,USA 70-82 WEST SUFFOLK AV CENTRAL ISLIP, NY., 11722 USA Distance: 2.5 Miles 7ELEVEN-FCTI 512 GIBBS POND RD,NESCONSET,NY,11767,USA 512 GIBBS POND RD NESCONSET, NY., 11767 USA Distance: 2.6 Miles 7ELEVEN-FCTI 383 SMITHTOWN BLVD,LAKE RONKONKOMA,NY,11779,USA 383 SMITHTOWN BLVD LAKE RONKONKOMA, NY., 11779 USA Distance: 2.8 Miles 7ELEVEN-FCTI 56 LOWELL AVE,ISLIP TERRACE,NY,11752,USA 56 LOWELL AVE ISLIP TERRACE, NY., 11752 USA Distance: 2.8 Miles 7ELEVEN-FCTI 710 ROUTE 347,SMITHTOWN,NY,11787,USA 710 ROUTE 347 SMITHTOWN, NY., 11787 USA Distance: 2.9 Miles 7ELEVEN-FCTI 193 CALEBS PATH,CENTRAL ISLIP,NY,11722,USA 193 CALEBS PATH CENTRAL ISLIP, NY., 11722 USA Distance: 3.0 Miles 7ELEVEN-FCTI 1684 EXPRESSWAY DR. S,HAUPPAUGE,NY,11788,USA 1684 EXPRESSWAY DR. S HAUPPAUGE, NY., 11788 USA Distance: 3.3 Miles"
     }
    },
-   "elapsed_ms": 171
+   "elapsed_ms": 159
   },
   {
    "id": "ui.atm.search.zero_results",
@@ -3607,7 +3607,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} ATM Locations Welcome Parity ATM Location Search Results Zero Results Unfortunately, no ATM locations were found for the Zip Code provided. \u00d7"
     }
    },
-   "elapsed_ms": 147
+   "elapsed_ms": 124
   },
   {
    "id": "ui.atm.search.service_unavailable",
@@ -3663,7 +3663,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} ATM Locations Welcome Parity ATM Location Search Results Service Unavailable The ATM Location Search service is temporarily unavailable. We applogize for any inconvenience this may cause. Please try again at a later time. \u00d7"
     }
    },
-   "elapsed_ms": 139
+   "elapsed_ms": 127
   },
   {
    "id": "ui.visa.page",
@@ -3745,7 +3745,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} VISA Transfer Welcome Parity Direct Payment to VISA VISA Account Number ---------- Select Account ----------- ------ Account Ending in 123 ------ ------ Account Ending in 456 ------ Transfer Amount Amount to be transferred to VISA account Submit to VISA"
     }
    },
-   "elapsed_ms": 109
+   "elapsed_ms": 115
   },
   {
    "id": "ui.visa.approved",
@@ -3800,7 +3800,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} VISA Transfer Results Welcome Parity VISA Direct Payment Response Approval Status = Approved Approval Code = 98765X CAVV Result Code = 8 VISA Transaction Identifier = 875806056061895"
     }
    },
-   "elapsed_ms": 144
+   "elapsed_ms": 130
   },
   {
    "id": "ui.visa.not_approved",
@@ -3855,7 +3855,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} VISA Transfer Results Welcome Parity VISA Direct Payment Response Approval Status = Transaction Not Approved Approval Code = 98765X CAVV Result Code = 8 VISA Transaction Identifier = 875806056061895"
     }
    },
-   "elapsed_ms": 139
+   "elapsed_ms": 122
   },
   {
    "id": "ui.visa.insufficient_funds",
@@ -3910,7 +3910,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} VISA Transfer Results Welcome Parity VISA Direct Payment Response Approval Status = Insufficient Funds Approval Code = 98765X CAVV Result Code = 8 VISA Transaction Identifier = 875806056061895"
     }
    },
-   "elapsed_ms": 126
+   "elapsed_ms": 130
   },
   {
    "id": "ui.visa.invalid_merchant",
@@ -3965,7 +3965,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} VISA Transfer Results Welcome Parity VISA Direct Payment Response Approval Status = Denied Invalid Merchant Approval Code = 98765X CAVV Result Code = 8 VISA Transaction Identifier = 875806056061895"
     }
    },
-   "elapsed_ms": 124
+   "elapsed_ms": 131
   },
   {
    "id": "ui.obp.add.page",
@@ -4063,7 +4063,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Link External Account Welcome Parity Add Open Banking Account Open Banking Providers ---------- Select Provider ----------- Royal Bank of Scotland Metro Bank plc HSBC Bank Lloyds Bank plc Username Enter Username Password Enter Password Submit Reset"
     }
    },
-   "elapsed_ms": 149
+   "elapsed_ms": 120
   },
   {
    "id": "ui.obp.add",
@@ -4157,7 +4157,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Add External Account Welcome Parity Add Open Banking Account Royal Bank of Scotland ---------- Select Account ----------- Gold Checking Personal Checking Submit Reset"
     }
    },
-   "elapsed_ms": 309
+   "elapsed_ms": 273
   },
   {
    "id": "ui.obp.add_account",
@@ -4238,7 +4238,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} View External Accounts Welcome Parity Gold Account Bank: Royal Bank of Scotland Account Number: 546387432 Balance: $1035.97 Transactions Date Description Amount Balance 2017-09-19T00:00:00Z (POS) - Point of Sale - Pharmaceutical $58.62 $1035.97 2017-07-22T00:00:00Z (POS) - Point of Sale - Amazon.com $123.82 $1094.59"
     }
    },
-   "elapsed_ms": 539
+   "elapsed_ms": 555
   },
   {
    "id": "ui.obp.view",
@@ -4309,7 +4309,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} View External Accounts Welcome Parity Gold Account Bank: Royal Bank of Scotland Account Number: 546387432 Balance: $1035.97 Transactions Date Description Amount Balance 2017-09-19T00:00:00Z (POS) - Point of Sale - Pharmaceutical $58.62 $1035.97 2017-07-22T00:00:00Z (POS) - Point of Sale - Amazon.com $123.82 $1094.59"
     }
    },
-   "elapsed_ms": 338
+   "elapsed_ms": 324
   },
   {
    "id": "ui.home.with_obp",
@@ -4360,7 +4360,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Dashboard Welcome Parity Account Balance Summary Deposit vs. Withdraw (Last 3 Months) Withdraw By Category (Last 3 Months) Deposit By Category (Last 3 Months)"
     }
    },
-   "elapsed_ms": 119
+   "elapsed_ms": 132
   },
   {
    "id": "ui.credit.app.page",
@@ -4655,7 +4655,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: 2.1.0.local Date: {DATE} Credit Application Welcome Parity Credit Card Summary PURCHASE APR 0% intro APR for 15 months; 16.24% - 26.24% variable APR after that ANNUAL FEE $0 TRANSFER INFO 0% intro APR for 15 months; 16.24% - 26.24% variable APR after that; 3% fee on the amounts transferred within the first 15 months BONUS OFFER Earn a one-time $150 cash bonus once you spend $500 on purchases within 3 months from account opening REWARDS INFO Earn unlimited 1.5% cash back on every purchase, every day CREDIT LEVEL Excellent Personal Information Title Please select Mr. Ms. Mrs. First Name Last Name Date of Birth Social Security Number Gender M F Contact Information Home Phone Mobile Phone Work Phone Address Locality Region Postal Code Country Email Address Financial Information Employment Status Please select Employed Self-Employed Retired Student Unemployed Total Annual Income Monthly Rent/Mortgage Monthly Auto Loan Payment(s) Monthly Other Loan Payment(s) Monthly Minimum Credit Card Payment(s) Credit Card Spend Per Month (Optional) Do You Have Bank Accounts? Please select Checking and Savings Checking Only Savings Only Neither If Offered, Would You Be Interested In Blank Checks To Use For Cash Advances? (Optional) Yes No If Approved, Do You Plan To Transfer Any Balances From Other Non-Digital Credit Credit Cards? (Optional) Yes No Additional Information We need your agreement to receive by electronic means only communications regarding your application, including notice of our decision on your application and important account opening information regarding rates, fees and other costs related to the credit card for which you are applying. Please review the terms of our Electronic Communications Disclosure. I have reviewed and agree to the terms of the Electronic Communications Disclosure. I confirm that I have an active email address and the ability to access, view and print PDF files. Before you submit your application, please read through these Important Disclosures, which contain additional information about eligibility, rates, fees, and other costs, as applicable. Apply"
     }
    },
-   "elapsed_ms": 136
+   "elapsed_ms": 139
   },
   {
    "id": "ui.credit.app.submit",
@@ -4701,7 +4701,7 @@
     "location": "{BANK}/credit/credit-app-status",
     "content_type": null
    },
-   "elapsed_ms": 138
+   "elapsed_ms": 168
   },
   {
    "id": "ui.credit.status.final",
@@ -4749,10 +4749,10 @@
       }
      ],
      "alerts": [],
-     "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit Rewards VISA External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: {MONEY}.0.local Date: {DATE} Credit Application Status Welcome Parity Credit Application Status Application Number: 728934001 Application Date: {DATE} Credit Score: 555 Risk Score: 10 Application Status: Approved Status Detail: Thank you for your interest in a Digital Credit account. Digital Credit has reviewed your application, and it has been approved for a new credit line of {MONEY} with a qualified APR of {MONEY}%."
+     "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit Rewards VISA External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: {MONEY}.0.local Date: {DATE} Credit Application Status Welcome Parity Credit Application Status Application Number: 728934001 Application Date: {DATE} Credit Score: 362 Risk Score: 10 Application Status: Approved Status Detail: Thank you for your interest in a Digital Credit account. Digital Credit has reviewed your application, and it has been approved for a new credit line of {MONEY} with a qualified APR of {MONEY}%."
     }
    },
-   "elapsed_ms": 94
+   "elapsed_ms": 136
   },
   {
    "id": "ui.credit.view",
@@ -4805,10 +4805,10 @@
       }
      ],
      "alerts": [],
-     "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit Rewards VISA External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: {MONEY}.0.local Date: {DATE} View Credit Accounts Welcome Parity Rewards VISA Card Number: xxxx xxxx xxxx 6038 Credit Limit: {MONEY} APR: {MONEY}% Available Balance: {MONEY} Minimum Payment Due: {MONEY} Payment Due Date: {DATE} Current Balance: {MONEY} Transactions Date Category Description Amount Balance"
+     "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit Rewards VISA External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 2 You have 2 Notification[s] New Savings account named Parity Savings created New Standard Checking account named Parity Checking created 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: {MONEY}.0.local Date: {DATE} View Credit Accounts Welcome Parity Rewards VISA Card Number: xxxx xxxx xxxx 4155 Credit Limit: {MONEY} APR: {MONEY}% Available Balance: {MONEY} Minimum Payment Due: {MONEY} Payment Due Date: {DATE} Current Balance: {MONEY} Transactions Date Category Description Amount Balance"
     }
    },
-   "elapsed_ms": 532
+   "elapsed_ms": 623
   },
   {
    "id": "ui.logout",
@@ -4829,7 +4829,7 @@
      "remember-me"
     ]
    },
-   "elapsed_ms": 6
+   "elapsed_ms": 10
   },
   {
    "id": "ui.logout.page",
@@ -4890,7 +4890,7 @@
      "text": "Digital Bank Success Logout completed. \u00d7 User Name Password Remember Me Sign in Don't have account ? Sign Up Here"
     }
    },
-   "elapsed_ms": 5
+   "elapsed_ms": 6
   },
   {
    "id": "ui.home.after_logout",
@@ -4907,7 +4907,7 @@
     "location": "{BANK}/login",
     "content_type": null
    },
-   "elapsed_ms": 4
+   "elapsed_ms": 3
   },
   {
    "id": "ui.login.old_password",
@@ -4931,7 +4931,7 @@
      "remember-me"
     ]
    },
-   "elapsed_ms": 84
+   "elapsed_ms": 102
   },
   {
    "id": "ui.login.new_password",
@@ -4955,7 +4955,7 @@
      "JSESSIONID"
     ]
    },
-   "elapsed_ms": 135
+   "elapsed_ms": 112
   },
   {
    "id": "ui.error.404",
@@ -4979,7 +4979,7 @@
      "timestamp": "{TS}"
     }
    },
-   "elapsed_ms": 23
+   "elapsed_ms": 22
   },
   {
    "id": "ui.promotions",
@@ -5003,7 +5003,7 @@
      "timestamp": "{TS}"
     }
    },
-   "elapsed_ms": 8
+   "elapsed_ms": 7
   },
   {
    "id": "ui.seed.login",
@@ -5078,7 +5078,7 @@
      "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 0 You have 0 Notification[s] 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: {MONEY}.0.local Date: {DATE} Dashboard Welcome Josh Account Balance Summary Deposit vs. Withdraw (Last 3 Months) Withdraw By Category (Last 3 Months) Deposit By Category (Last 3 Months)"
     }
    },
-   "elapsed_ms": 139
+   "elapsed_ms": 171
   },
   {
    "id": "ui.seed.checking.view",
@@ -5133,16 +5133,16 @@
          "type": "checkbox",
          "name": "selectSwitch",
          "id": null,
-         "value": "131"
+         "value": "134"
         }
        ]
       }
      ],
      "alerts": [],
-     "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 0 You have 0 Notification[s] 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: {MONEY}.0.local Date: {DATE} View Checking Accounts Welcome Josh Joint Checking Account: Standard Checking Ownership: Joint Account Number: 486130005 Interest Rate: {MONEY}% Balance: {MONEY} Transactions Date Category Description Amount Balance {TS} Bills & Utilities 845320074 (CHK) - Aufderhar and Sons Mortgage {MONEY} {MONEY} {TS} Bills & Utilities 845320073 (CHK) - Boyle LLC Electric & Gas {MONEY} {MONEY} {TS} Food & Dinning 845320072 (CHK) - Bay Leaves Chopped Market {MONEY} {MONEY} {TS} Misc 845320070 (TRN) - Transfer to Account (486130001) {MONEY} {MONEY} {TS} Income 845320069 (DDP) - Satterfield-Tromp {MONEY} {MONEY} {TS} Education 845320068 (CHK) - Brookville University {MONEY} {MONEY} {TS} Gifts & Donations 845320067 (CHK) - Gauguin {MONEY} {MONEY} {TS} Business Services 845320066 (CRG) - Mosciski, Turcotte and Schultz {MONEY} {MONEY} {TS} Bills & Utilities 845320065 (CHK) - McClureland Water & Sewer {MONEY} {MONEY} {TS} Education 845320064 (CRG) - Seagull Books {MONEY} {MONEY} {TS} Health & Fitness 845320063 (CRG) - PUERTO RICO CHILDRENS HOSPITAL {MONEY} {MONEY} {TS} Income 845320062 (DDP) - O'Keefe-Emard {MONEY} {MONEY} {TS} Bills & Utilities 845320061 (CHK) - Kerluke Group Mortgage {MONEY} {MONEY} {TS} Bills & Utilities 845320060 (CHK) - Hermann-Crooks Electric & Gas {MONEY} {MONEY} {TS} Food & Dinning 845320059 (CHK) - Mulled Cider Spices Market {MONEY} {MONEY} {TS} Misc 845320057 (TRN) - Transfer to Account (486130001) {MONEY} {MONEY} {TS} Income 845320056 (DDP) - Prohaska and Sons {MONEY} {MONEY} {TS} Education 845320055 (CHK) - Brighthurst Technical College {MONEY} {MONEY} {TS} Gifts & Donations 845320054 (CHK) - Caravaggio {MONEY} {MONEY} {TS} Business Services 845320053 (CRG) - Schneider, Corkery and Johnson {MONEY} {MONEY} {TS} Bills & Utilities 845320052 (CHK) - East Gusfurt Water & Sewer {MONEY} {MONEY} {TS} Education 845320051 (CRG) - Harlequin Enterprises Ltd {MONEY} {MONEY} {TS} Health & Fitness 845320050 (CRG) - AVERA WESKOTA MEMORIAL MEDICAL CENTER {MONEY} {MONEY} {TS} Income 845320049 (DPT) - Deposit {MONEY} {MONEY}"
+     "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 0 You have 0 Notification[s] 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: {MONEY}.0.local Date: {DATE} View Checking Accounts Welcome Josh Joint Checking Account: Standard Checking Ownership: Joint Account Number: 486130005 Interest Rate: {MONEY}% Balance: {MONEY} Transactions Date Category Description Amount Balance {TS} Bills & Utilities 845320074 (CHK) - Wiegand-Nitzsche Mortgage {MONEY} {MONEY} {TS} Bills & Utilities 845320073 (CHK) - Hartmann, Vandervort and Rau Electric & Gas {MONEY} {MONEY} {TS} Food & Dinning 845320072 (CHK) - Herbes de Provence Market {MONEY} {MONEY} {TS} Misc 845320070 (TRN) - Transfer to Account (486130001) {MONEY} {MONEY} {TS} Income 845320069 (DDP) - Schumm Group {MONEY} {MONEY} {TS} Education 845320068 (CHK) - Ironbarrow College {MONEY} {MONEY} {TS} Gifts & Donations 845320067 (CHK) - Chagall {MONEY} {MONEY} {TS} Business Services 845320066 (CRG) - Gusikowski Inc {MONEY} {MONEY} {TS} Bills & Utilities 845320065 (CHK) - North Nikita Water & Sewer {MONEY} {MONEY} {TS} Education 845320064 (CRG) - Belknap Press {MONEY} {MONEY} {TS} Health & Fitness 845320063 (CRG) - LABETTE HEALTH {MONEY} {MONEY} {TS} Income 845320062 (DDP) - Cruickshank, Herzog and Rogahn {MONEY} {MONEY} {TS} Bills & Utilities 845320061 (CHK) - McKenzie Group Mortgage {MONEY} {MONEY} {TS} Bills & Utilities 845320060 (CHK) - Smith, Goodwin and Lind Electric & Gas {MONEY} {MONEY} {TS} Food & Dinning 845320059 (CHK) - Spearmint Market {MONEY} {MONEY} {TS} Misc 845320057 (TRN) - Transfer to Account (486130001) {MONEY} {MONEY} {TS} Income 845320056 (DDP) - Collier, Stark and Orn {MONEY} {MONEY} {TS} Education 845320055 (CHK) - Flowerlake TAFE {MONEY} {MONEY} {TS} Gifts & Donations 845320054 (CHK) - Bernini {MONEY} {MONEY} {TS} Business Services 845320053 (CRG) - Feest-Roberts {MONEY} {MONEY} {TS} Bills & Utilities 845320052 (CHK) - East Aaron Water & Sewer {MONEY} {MONEY} {TS} Education 845320051 (CRG) - Hackett Publishing Company {MONEY} {MONEY} {TS} Health & Fitness 845320050 (CRG) - PURCELL MUNICIPAL HOSPITAL {MONEY} {MONEY} {TS} Income 845320049 (DPT) - Deposit {MONEY} {MONEY}"
     }
    },
-   "elapsed_ms": 108
+   "elapsed_ms": 135
   },
   {
    "id": "ui.seed.savings.view",
@@ -5197,7 +5197,7 @@
          "type": "checkbox",
          "name": "selectSwitch",
          "id": null,
-         "value": "79"
+         "value": "82"
         }
        ]
       },
@@ -5210,16 +5210,16 @@
          "type": "checkbox",
          "name": "selectSwitch",
          "id": null,
-         "value": "124"
+         "value": "127"
         }
        ]
       }
      ],
      "alerts": [],
-     "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 0 You have 0 Notification[s] 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: {MONEY}.0.local Date: {DATE} View Savings Accounts Welcome Josh Indiviudal Savings Account: Money Market Ownership: Individual Account Number: 486130001 Interest Rate: {MONEY}% Balance: {MONEY} Joint Savings Account: Savings Ownership: Joint Account Number: 486130004 Interest Rate: {MONEY}% Balance: {MONEY} Transactions Date Category Description Amount Balance {TS} Income 845320008 (INT) - Interest Income {MONEY} {MONEY} {TS} Income 845320071 (TRN) - Transfer from Account (486130005) {MONEY} {MONEY} {TS} Income 845320007 (INT) - Interest Income {MONEY} {MONEY} {TS} Income 845320058 (TRN) - Transfer from Account (486130005) {MONEY} {MONEY} {TS} Income 845320006 (INT) - Interest Income {MONEY} {MONEY} {TS} Income 845320005 (DPT) - PSA^A Dividend {MONEY} {MONEY} {TS} Income 845320004 (INT) - Interest Income {MONEY} {MONEY} {TS} Income 845320003 (INT) - Interest Income {MONEY} {MONEY} {TS} Income 845320002 (INT) - Interest Income {MONEY} {MONEY} {TS} Income 845320001 (DPT) - Deposit {MONEY} {MONEY}"
+     "text": "Digital Bank Home Banking Accounts Checking View Checking New Checking Savings View Savings New Savings Credit New Application External Link External Account View External Accounts Transactions / Transfers Deposit Withdraw Transfer Between Accounts VISA Direct Transfer Find ATM Locations 0 You have 0 Notification[s] 0 You have 0 Unread Mail[s] My Profile Change Password Create Data Delete Data Logout Digital Bank \u00d7 Version: {MONEY}.0.local Date: {DATE} View Savings Accounts Welcome Josh Indiviudal Savings Account: Money Market Ownership: Individual Account Number: 486130001 Interest Rate: {MONEY}% Balance: {MONEY} Joint Savings Account: Savings Ownership: Joint Account Number: 486130004 Interest Rate: {MONEY}% Balance: {MONEY} Transactions Date Category Description Amount Balance {TS} Income 845320008 (INT) - Interest Income {MONEY} {MONEY} {TS} Income 845320071 (TRN) - Transfer from Account (486130005) {MONEY} {MONEY} {TS} Income 845320007 (INT) - Interest Income {MONEY} {MONEY} {TS} Income 845320058 (TRN) - Transfer from Account (486130005) {MONEY} {MONEY} {TS} Income 845320006 (INT) - Interest Income {MONEY} {MONEY} {TS} Income 845320005 (DPT) - MMS Dividend {MONEY} {MONEY} {TS} Income 845320004 (INT) - Interest Income {MONEY} {MONEY} {TS} Income 845320003 (INT) - Interest Income {MONEY} {MONEY} {TS} Income 845320002 (INT) - Interest Income {MONEY} {MONEY} {TS} Income 845320001 (DPT) - Deposit {MONEY} {MONEY}"
     }
    },
-   "elapsed_ms": 136
+   "elapsed_ms": 130
   },
   {
    "id": "ui.seed.h2_console",
@@ -5242,7 +5242,7 @@
      "text": "H2 Console Welcome to H2 No Javascript If you are not automatically redirected to the login page, then Javascript is currently disabled or your browser does not support Javascript. For this application to work, Javascript is essential. Please enable Javascript now, or use another web browser that supports it."
     }
    },
-   "elapsed_ms": 40
+   "elapsed_ms": 77
   },
   {
    "id": "api.health",
@@ -5260,7 +5260,7 @@
     "content_type": "text/plain",
     "text": "Application Available"
    },
-   "elapsed_ms": 16
+   "elapsed_ms": 34
   },
   {
    "id": "api.auth.bad_password",
@@ -5291,7 +5291,7 @@
      "timestamp": "{TS}"
     }
    },
-   "elapsed_ms": 129
+   "elapsed_ms": 172
   },
   {
    "id": "api.auth.missing_params",
@@ -5318,7 +5318,7 @@
      "timestamp": "{TS}"
     }
    },
-   "elapsed_ms": 19
+   "elapsed_ms": 21
   },
   {
    "id": "api.auth.admin",
@@ -5342,7 +5342,7 @@
      "authToken": "{JWT}"
     }
    },
-   "elapsed_ms": 154
+   "elapsed_ms": 139
   },
   {
    "id": "api.auth.seed",
@@ -5366,7 +5366,7 @@
      "authToken": "{JWT}"
     }
    },
-   "elapsed_ms": 101
+   "elapsed_ms": 128
   },
   {
    "id": "api.auth.parity",
@@ -5390,7 +5390,7 @@
      "authToken": "{JWT}"
     }
    },
-   "elapsed_ms": 108
+   "elapsed_ms": 132
   },
   {
    "id": "api.no_token",
@@ -5417,7 +5417,7 @@
      "timestamp": "{TS}"
     }
    },
-   "elapsed_ms": 14
+   "elapsed_ms": 25
   },
   {
    "id": "api.bad_token",
@@ -5444,7 +5444,7 @@
      "timestamp": "{TS}"
     }
    },
-   "elapsed_ms": 25
+   "elapsed_ms": 27
   },
   {
    "id": "api.parity_user_no_api_role",
@@ -5471,7 +5471,7 @@
      "timestamp": "{TS}"
     }
    },
-   "elapsed_ms": 26
+   "elapsed_ms": 42
   },
   {
    "id": "api.users.forbidden_for_user",
@@ -5498,7 +5498,7 @@
      "timestamp": "{TS}"
     }
    },
-   "elapsed_ms": 27
+   "elapsed_ms": 36
   },
   {
    "id": "api.users",
@@ -5522,23 +5522,23 @@
       "enabled": true,
       "id": "{USER:admin@demo.io}",
       "userProfile": {
-       "address": "97371 Nikolaus Ville",
+       "address": "34401 Ahmed Forks",
        "country": "US",
-       "dob": "11/01/1972",
+       "dob": "06/26/1965",
        "dom": "{DATE}",
        "emailAddress": "admin@demo.io",
-       "firstName": "Maybelle",
-       "gender": "M",
-       "homePhone": "437-027-6757",
+       "firstName": "Ismael",
+       "gender": "F",
+       "homePhone": "165-081-2060",
        "id": "{ID}",
-       "lastName": "Jakubowski",
-       "locality": "South Jeffshire",
-       "mobilePhone": "346-782-8582",
-       "postalCode": "77481",
-       "region": "SC",
-       "ssn": "885-91-5403",
-       "title": "Mr.",
-       "workPhone": "832-771-1392"
+       "lastName": "Walsh",
+       "locality": "Herzogport",
+       "mobilePhone": "796-317-4870",
+       "postalCode": "48715",
+       "region": "CA",
+       "ssn": "795-96-8246",
+       "title": "Mrs.",
+       "workPhone": "410-232-7794"
       },
       "username": "admin@demo.io"
      },
@@ -5549,52 +5549,25 @@
       "enabled": true,
       "id": "{USER:jsmith@demo.io}",
       "userProfile": {
-       "address": "3750 Mitchell Turnpike",
+       "address": "501 Roob Lodge",
        "country": "US",
-       "dob": "09/24/2002",
+       "dob": "12/01/1979",
        "dom": "{DATE}",
        "emailAddress": "jsmith@demo.io",
        "firstName": "Josh",
        "gender": "M",
-       "homePhone": "193-339-5637",
+       "homePhone": "002-152-9986",
        "id": "{ID}",
        "lastName": "Smith",
-       "locality": "Reichelfurt",
-       "mobilePhone": "046-183-3534",
-       "postalCode": "64070",
-       "region": "CT",
-       "ssn": "108-61-6747",
+       "locality": "Russelton",
+       "mobilePhone": "087-215-3014",
+       "postalCode": "51240",
+       "region": "NH",
+       "ssn": "722-99-8142",
        "title": "Mr.",
-       "workPhone": "933-072-2614"
+       "workPhone": "230-087-1455"
       },
       "username": "jsmith@demo.io"
-     },
-     {
-      "accountNonExpired": true,
-      "accountNonLocked": true,
-      "credentialsNonExpired": true,
-      "enabled": true,
-      "id": "{USER:nsmith@demo.io}",
-      "userProfile": {
-       "address": "3750 Mitchell Turnpike",
-       "country": "US",
-       "dob": "12/27/1999",
-       "dom": "{DATE}",
-       "emailAddress": "nsmith@demo.io",
-       "firstName": "Nicole",
-       "gender": "F",
-       "homePhone": "193-339-5637",
-       "id": "{ID}",
-       "lastName": "Smith",
-       "locality": "Reichelfurt",
-       "mobilePhone": "371-332-5987",
-       "postalCode": "64070",
-       "region": "CT",
-       "ssn": "083-47-4778",
-       "title": "Mrs.",
-       "workPhone": "603-741-8436"
-      },
-      "username": "nsmith@demo.io"
      },
      {
       "accountNonExpired": true,
@@ -5622,10 +5595,37 @@
        "workPhone": "(512) 555-0102"
       },
       "username": "parity.tester@demo.io"
+     },
+     {
+      "accountNonExpired": true,
+      "accountNonLocked": true,
+      "credentialsNonExpired": true,
+      "enabled": true,
+      "id": "{USER:nsmith@demo.io}",
+      "userProfile": {
+       "address": "501 Roob Lodge",
+       "country": "US",
+       "dob": "11/17/1995",
+       "dom": "{DATE}",
+       "emailAddress": "nsmith@demo.io",
+       "firstName": "Nicole",
+       "gender": "F",
+       "homePhone": "002-152-9986",
+       "id": "{ID}",
+       "lastName": "Smith",
+       "locality": "Russelton",
+       "mobilePhone": "147-527-6294",
+       "postalCode": "51240",
+       "region": "NH",
+       "ssn": "012-45-4682",
+       "title": "Mrs.",
+       "workPhone": "986-666-8056"
+      },
+      "username": "nsmith@demo.io"
      }
     ]
    },
-   "elapsed_ms": 31
+   "elapsed_ms": 55
   },
   {
    "id": "api.user.current",
@@ -5648,28 +5648,28 @@
      "enabled": true,
      "id": "{USER:jsmith@demo.io}",
      "userProfile": {
-      "address": "3750 Mitchell Turnpike",
+      "address": "501 Roob Lodge",
       "country": "US",
-      "dob": "09/24/2002",
+      "dob": "12/01/1979",
       "dom": "{DATE}",
       "emailAddress": "jsmith@demo.io",
       "firstName": "Josh",
       "gender": "M",
-      "homePhone": "193-339-5637",
+      "homePhone": "002-152-9986",
       "id": "{ID}",
       "lastName": "Smith",
-      "locality": "Reichelfurt",
-      "mobilePhone": "046-183-3534",
-      "postalCode": "64070",
-      "region": "CT",
-      "ssn": "108-61-6747",
+      "locality": "Russelton",
+      "mobilePhone": "087-215-3014",
+      "postalCode": "51240",
+      "region": "NH",
+      "ssn": "722-99-8142",
       "title": "Mr.",
-      "workPhone": "933-072-2614"
+      "workPhone": "230-087-1455"
      },
      "username": "jsmith@demo.io"
     }
    },
-   "elapsed_ms": 17
+   "elapsed_ms": 25
   },
   {
    "id": "api.user.find",
@@ -5695,28 +5695,28 @@
      "enabled": true,
      "id": "{USER:jsmith@demo.io}",
      "userProfile": {
-      "address": "3750 Mitchell Turnpike",
+      "address": "501 Roob Lodge",
       "country": "US",
-      "dob": "09/24/2002",
+      "dob": "12/01/1979",
       "dom": "{DATE}",
       "emailAddress": "jsmith@demo.io",
       "firstName": "Josh",
       "gender": "M",
-      "homePhone": "193-339-5637",
+      "homePhone": "002-152-9986",
       "id": "{ID}",
       "lastName": "Smith",
-      "locality": "Reichelfurt",
-      "mobilePhone": "046-183-3534",
-      "postalCode": "64070",
-      "region": "CT",
-      "ssn": "108-61-6747",
+      "locality": "Russelton",
+      "mobilePhone": "087-215-3014",
+      "postalCode": "51240",
+      "region": "NH",
+      "ssn": "722-99-8142",
       "title": "Mr.",
-      "workPhone": "933-072-2614"
+      "workPhone": "230-087-1455"
      },
      "username": "jsmith@demo.io"
     }
    },
-   "elapsed_ms": 15
+   "elapsed_ms": 23
   },
   {
    "id": "api.user.profile.current",
@@ -5733,26 +5733,26 @@
     "location": null,
     "content_type": "application/json",
     "json": {
-     "address": "3750 Mitchell Turnpike",
+     "address": "501 Roob Lodge",
      "country": "US",
-     "dob": "09/24/2002",
+     "dob": "12/01/1979",
      "dom": "{DATE}",
      "emailAddress": "jsmith@demo.io",
      "firstName": "Josh",
      "gender": "M",
-     "homePhone": "193-339-5637",
+     "homePhone": "002-152-9986",
      "id": "{ID}",
      "lastName": "Smith",
-     "locality": "Reichelfurt",
-     "mobilePhone": "046-183-3534",
-     "postalCode": "64070",
-     "region": "CT",
-     "ssn": "108-61-6747",
+     "locality": "Russelton",
+     "mobilePhone": "087-215-3014",
+     "postalCode": "51240",
+     "region": "NH",
+     "ssn": "722-99-8142",
      "title": "Mr.",
-     "workPhone": "933-072-2614"
+     "workPhone": "230-087-1455"
     }
    },
-   "elapsed_ms": 20
+   "elapsed_ms": 21
   },
   {
    "id": "api.user.role.current",
@@ -5777,7 +5777,7 @@
      }
     ]
    },
-   "elapsed_ms": 17
+   "elapsed_ms": 22
   },
   {
    "id": "api.data.type",
@@ -5886,7 +5886,7 @@
      }
     ]
    },
-   "elapsed_ms": 17
+   "elapsed_ms": 26
   },
   {
    "id": "api.data.type.checking",
@@ -5925,7 +5925,7 @@
      }
     ]
    },
-   "elapsed_ms": 12
+   "elapsed_ms": 22
   },
   {
    "id": "api.data.type.savings",
@@ -5964,7 +5964,7 @@
      }
     ]
    },
-   "elapsed_ms": 17
+   "elapsed_ms": 20
   },
   {
    "id": "api.data.standing",
@@ -6038,7 +6038,7 @@
      }
     ]
    },
-   "elapsed_ms": 17
+   "elapsed_ms": 29
   },
   {
    "id": "api.data.ownership.type",
@@ -6067,7 +6067,7 @@
      }
     ]
    },
-   "elapsed_ms": 15
+   "elapsed_ms": 18
   },
   {
    "id": "api.data.transaction.state",
@@ -6106,7 +6106,7 @@
      }
     ]
    },
-   "elapsed_ms": 14
+   "elapsed_ms": 18
   },
   {
    "id": "api.data.transaction.type",
@@ -6245,7 +6245,7 @@
      }
     ]
    },
-   "elapsed_ms": 15
+   "elapsed_ms": 22
   },
   {
    "id": "api.data.transaction.category",
@@ -6349,7 +6349,7 @@
      }
     ]
    },
-   "elapsed_ms": 15
+   "elapsed_ms": 31
   },
   {
    "id": "api.data.type.as_user",
@@ -6376,7 +6376,7 @@
      "timestamp": "{TS}"
     }
    },
-   "elapsed_ms": 16
+   "elapsed_ms": 25
   },
   {
    "id": "api.accounts.all",
@@ -6626,7 +6626,7 @@
      }
     ]
    },
-   "elapsed_ms": 26
+   "elapsed_ms": 40
   },
   {
    "id": "api.accounts.checking",
@@ -6744,7 +6744,7 @@
      }
     ]
    },
-   "elapsed_ms": 15
+   "elapsed_ms": 23
   },
   {
    "id": "api.user.accounts.current",
@@ -6862,7 +6862,7 @@
      }
     ]
    },
-   "elapsed_ms": 14
+   "elapsed_ms": 33
   },
   {
    "id": "api.account.create",
@@ -6918,7 +6918,7 @@
      "paymentTerm": 0
     }
    },
-   "elapsed_ms": 38
+   "elapsed_ms": 48
   },
   {
    "id": "api.account.create.invalid",
@@ -6941,13 +6941,13 @@
     "location": null,
     "content_type": "application/json",
     "json": [
+     "size must be between 1 and 40",
      "Account Type Code must either be 'SCK' or 'ICK' for checking or 'SAV' or 'MMA' for savings.",
-     "Account Name is required.",
      "Ownership Type Code must either be 'IND' or 'JNT'.",
-     "size must be between 1 and 40"
+     "Account Name is required."
     ]
    },
-   "elapsed_ms": 28
+   "elapsed_ms": 51
   },
   {
    "id": "api.account.get",
@@ -6997,7 +6997,7 @@
      "paymentTerm": 0
     }
    },
-   "elapsed_ms": 14
+   "elapsed_ms": 21
   },
   {
    "id": "api.account.not_found",
@@ -7024,7 +7024,7 @@
      "timestamp": "{TS}"
     }
    },
-   "elapsed_ms": 12
+   "elapsed_ms": 27
   },
   {
    "id": "api.account.transaction.deposit",
@@ -7096,7 +7096,7 @@
      }
     ]
    },
-   "elapsed_ms": 37
+   "elapsed_ms": 39
   },
   {
    "id": "api.account.transaction.withdraw_insufficient",
@@ -7128,7 +7128,7 @@
      "timestamp": "{TS}"
     }
    },
-   "elapsed_ms": 15
+   "elapsed_ms": 25
   },
   {
    "id": "api.account.transfer",
@@ -7199,7 +7199,7 @@
      }
     ]
    },
-   "elapsed_ms": 20
+   "elapsed_ms": 26
   },
   {
    "id": "api.account.transfer.insufficient",
@@ -7270,7 +7270,7 @@
      }
     ]
    },
-   "elapsed_ms": 22
+   "elapsed_ms": 29
   },
   {
    "id": "api.account.transactions",
@@ -7409,7 +7409,7 @@
      }
     ]
    },
-   "elapsed_ms": 16
+   "elapsed_ms": 31
   },
   {
    "id": "api.account.parity_checking.transactions",
@@ -7572,7 +7572,7 @@
      }
     ]
    },
-   "elapsed_ms": 16
+   "elapsed_ms": 21
   },
   {
    "id": "api.account.rename",
@@ -7625,7 +7625,7 @@
      "paymentTerm": 0
     }
    },
-   "elapsed_ms": 12
+   "elapsed_ms": 26
   },
   {
    "id": "api.account.owner",
@@ -7648,34 +7648,115 @@
      "enabled": true,
      "id": "{USER:jsmith@demo.io}",
      "userProfile": {
-      "address": "3750 Mitchell Turnpike",
+      "address": "501 Roob Lodge",
       "country": "US",
-      "dob": "09/24/2002",
+      "dob": "12/01/1979",
       "dom": "{DATE}",
       "emailAddress": "jsmith@demo.io",
       "firstName": "Josh",
       "gender": "M",
-      "homePhone": "193-339-5637",
+      "homePhone": "002-152-9986",
       "id": "{ID}",
       "lastName": "Smith",
-      "locality": "Reichelfurt",
-      "mobilePhone": "046-183-3534",
-      "postalCode": "64070",
-      "region": "CT",
-      "ssn": "108-61-6747",
+      "locality": "Russelton",
+      "mobilePhone": "087-215-3014",
+      "postalCode": "51240",
+      "region": "NH",
+      "ssn": "722-99-8142",
       "title": "Mr.",
-      "workPhone": "933-072-2614"
+      "workPhone": "230-087-1455"
      },
      "username": "jsmith@demo.io"
     }
    },
-   "elapsed_ms": 11
+   "elapsed_ms": 17
   },
   {
    "id": "api.promotions.eligible",
    "flow": "api.promotions",
    "compare": "full",
    "note": null,
+   "request": {
+    "method": "POST",
+    "path": "/api/v1/promotions",
+    "base": "{BANK}",
+    "json": {
+     "accountType": "Platinum",
+     "age": 40,
+     "balance": 10000,
+     "rating": 800,
+     "years": 10
+    }
+   },
+   "response": {
+    "status": 200,
+    "location": null,
+    "content_type": "application/json",
+    "json": [
+     "Loyalty Bonus"
+    ]
+   },
+   "elapsed_ms": 29
+  },
+  {
+   "id": "api.promotions.millennial",
+   "flow": "api.promotions",
+   "compare": "full",
+   "note": null,
+   "request": {
+    "method": "POST",
+    "path": "/api/v1/promotions",
+    "base": "{BANK}",
+    "json": {
+     "accountType": "Gold",
+     "age": 25,
+     "balance": 5000,
+     "rating": 700,
+     "years": 2
+    }
+   },
+   "response": {
+    "status": 200,
+    "location": null,
+    "content_type": "application/json",
+    "json": [
+     "Millennial Madness"
+    ]
+   },
+   "elapsed_ms": 21
+  },
+  {
+   "id": "api.promotions.none",
+   "flow": "api.promotions",
+   "compare": "full",
+   "note": null,
+   "request": {
+    "method": "POST",
+    "path": "/api/v1/promotions",
+    "base": "{BANK}",
+    "json": {
+     "accountType": "Blue",
+     "age": 50,
+     "balance": 10,
+     "rating": 300,
+     "years": 1
+    }
+   },
+   "response": {
+    "status": 200,
+    "location": null,
+    "content_type": "application/json",
+    "json": [
+     "Valued Customer"
+    ]
+   },
+   "elapsed_ms": 25
+  },
+  {
+   "id": "api.promotions.user_role",
+   "flow": "api.promotions",
+   "compare": "full",
+   "note": "admin-only endpoint called with a USER token (legacy quirk: 400 'username' missing)",
    "request": {
     "method": "POST",
     "path": "/api/v1/promotions",
@@ -7703,41 +7784,7 @@
      "timestamp": "{TS}"
     }
    },
-   "elapsed_ms": 18
-  },
-  {
-   "id": "api.promotions.none",
-   "flow": "api.promotions",
-   "compare": "full",
-   "note": null,
-   "request": {
-    "method": "POST",
-    "path": "/api/v1/promotions",
-    "base": "{BANK}",
-    "json": {
-     "accountType": "Blue",
-     "age": 18,
-     "balance": 10,
-     "rating": 300,
-     "years": 1
-    }
-   },
-   "response": {
-    "status": 400,
-    "location": null,
-    "content_type": "application/json",
-    "set_cookie_names": [
-     "JSESSIONID"
-    ],
-    "json": {
-     "error": "Bad Request",
-     "message": "Required String parameter 'username' is not present",
-     "path": "/bank/api/v1/promotions",
-     "status": 400,
-     "timestamp": "{TS}"
-    }
-   },
-   "elapsed_ms": 13
+   "elapsed_ms": 19
   },
   {
    "id": "api.promotions.invalid",
@@ -7765,7 +7812,7 @@
      "Years must be a positive number"
     ]
    },
-   "elapsed_ms": 11
+   "elapsed_ms": 23
   },
   {
    "id": "api.atm.search",
@@ -8027,7 +8074,7 @@
      }
     ]
    },
-   "elapsed_ms": 29
+   "elapsed_ms": 31
   },
   {
    "id": "api.atm.search.zero",
@@ -8048,7 +8095,7 @@
     "content_type": "application/json",
     "json": []
    },
-   "elapsed_ms": 55
+   "elapsed_ms": 64
   },
   {
    "id": "api.atm.search.unavailable",
@@ -8078,7 +8125,7 @@
      "timestamp": "{TS}"
     }
    },
-   "elapsed_ms": 15
+   "elapsed_ms": 29
   },
   {
    "id": "api.atm.search.invalid_zip",
@@ -8108,7 +8155,7 @@
      "timestamp": "{TS}"
     }
    },
-   "elapsed_ms": 17
+   "elapsed_ms": 25
   },
   {
    "id": "api.visa.approved",
@@ -8136,7 +8183,7 @@
      "VISA Transaction Identifier = 875806056061895"
     ]
    },
-   "elapsed_ms": 22
+   "elapsed_ms": 34
   },
   {
    "id": "api.visa.invalid_account",
@@ -8164,7 +8211,7 @@
      "VISA Transaction Identifier = 875806056061895"
     ]
    },
-   "elapsed_ms": 55
+   "elapsed_ms": 60
   },
   {
    "id": "api.credit.references",
@@ -8192,14 +8239,14 @@
       "bankUserId": "{USER:parity.tester@demo.io}",
       "correlationId": "{UUID}",
       "creditCardId": "{ID}",
-      "creditScore": "555",
+      "creditScore": "362",
       "creditUserId": null,
       "id": "{ID}",
       "riskScore": "10"
      }
     ]
    },
-   "elapsed_ms": 20
+   "elapsed_ms": 25
   },
   {
    "id": "credit.api.health",
@@ -8217,7 +8264,7 @@
     "content_type": "text/plain",
     "text": "Application Available"
    },
-   "elapsed_ms": 29
+   "elapsed_ms": 25
   },
   {
    "id": "credit.api.auth",
@@ -8241,7 +8288,7 @@
      "authToken": "{JWT}"
     }
    },
-   "elapsed_ms": 131
+   "elapsed_ms": 128
   },
   {
    "id": "credit.api.users",
@@ -8314,7 +8361,7 @@
      }
     ]
    },
-   "elapsed_ms": 36
+   "elapsed_ms": 50
   },
   {
    "id": "docs.swagger_ui",
@@ -8340,7 +8387,7 @@
      "text": "Swagger UI"
     }
    },
-   "elapsed_ms": 16
+   "elapsed_ms": 19
   },
   {
    "id": "docs.api_docs.v2",
@@ -11491,7 +11538,7 @@
      ]
     }
    },
-   "elapsed_ms": 134
+   "elapsed_ms": 136
   },
   {
    "id": "docs.api_docs.v3",
@@ -11511,7 +11558,7 @@
      "JSESSIONID"
     ]
    },
-   "elapsed_ms": 10
+   "elapsed_ms": 13
   }
  ],
  "db_snapshot": {
@@ -11525,23 +11572,23 @@
      "enabled": true,
      "id": "{USER:admin@demo.io}",
      "userProfile": {
-      "address": "97371 Nikolaus Ville",
+      "address": "34401 Ahmed Forks",
       "country": "US",
-      "dob": "11/01/1972",
+      "dob": "06/26/1965",
       "dom": "{DATE}",
       "emailAddress": "admin@demo.io",
-      "firstName": "Maybelle",
-      "gender": "M",
-      "homePhone": "437-027-6757",
+      "firstName": "Ismael",
+      "gender": "F",
+      "homePhone": "165-081-2060",
       "id": "{ID}",
-      "lastName": "Jakubowski",
-      "locality": "South Jeffshire",
-      "mobilePhone": "346-782-8582",
-      "postalCode": "77481",
-      "region": "SC",
-      "ssn": "885-91-5403",
-      "title": "Mr.",
-      "workPhone": "832-771-1392"
+      "lastName": "Walsh",
+      "locality": "Herzogport",
+      "mobilePhone": "796-317-4870",
+      "postalCode": "48715",
+      "region": "CA",
+      "ssn": "795-96-8246",
+      "title": "Mrs.",
+      "workPhone": "410-232-7794"
      },
      "username": "admin@demo.io"
     },
@@ -11552,52 +11599,25 @@
      "enabled": true,
      "id": "{USER:jsmith@demo.io}",
      "userProfile": {
-      "address": "3750 Mitchell Turnpike",
+      "address": "501 Roob Lodge",
       "country": "US",
-      "dob": "09/24/2002",
+      "dob": "12/01/1979",
       "dom": "{DATE}",
       "emailAddress": "jsmith@demo.io",
       "firstName": "Josh",
       "gender": "M",
-      "homePhone": "193-339-5637",
+      "homePhone": "002-152-9986",
       "id": "{ID}",
       "lastName": "Smith",
-      "locality": "Reichelfurt",
-      "mobilePhone": "046-183-3534",
-      "postalCode": "64070",
-      "region": "CT",
-      "ssn": "108-61-6747",
+      "locality": "Russelton",
+      "mobilePhone": "087-215-3014",
+      "postalCode": "51240",
+      "region": "NH",
+      "ssn": "722-99-8142",
       "title": "Mr.",
-      "workPhone": "933-072-2614"
+      "workPhone": "230-087-1455"
      },
      "username": "jsmith@demo.io"
-    },
-    {
-     "accountNonExpired": true,
-     "accountNonLocked": true,
-     "credentialsNonExpired": true,
-     "enabled": true,
-     "id": "{USER:nsmith@demo.io}",
-     "userProfile": {
-      "address": "3750 Mitchell Turnpike",
-      "country": "US",
-      "dob": "12/27/1999",
-      "dom": "{DATE}",
-      "emailAddress": "nsmith@demo.io",
-      "firstName": "Nicole",
-      "gender": "F",
-      "homePhone": "193-339-5637",
-      "id": "{ID}",
-      "lastName": "Smith",
-      "locality": "Reichelfurt",
-      "mobilePhone": "371-332-5987",
-      "postalCode": "64070",
-      "region": "CT",
-      "ssn": "083-47-4778",
-      "title": "Mrs.",
-      "workPhone": "603-741-8436"
-     },
-     "username": "nsmith@demo.io"
     },
     {
      "accountNonExpired": true,
@@ -11625,6 +11645,33 @@
       "workPhone": "(512) 555-0102"
      },
      "username": "parity.tester@demo.io"
+    },
+    {
+     "accountNonExpired": true,
+     "accountNonLocked": true,
+     "credentialsNonExpired": true,
+     "enabled": true,
+     "id": "{USER:nsmith@demo.io}",
+     "userProfile": {
+      "address": "501 Roob Lodge",
+      "country": "US",
+      "dob": "11/17/1995",
+      "dom": "{DATE}",
+      "emailAddress": "nsmith@demo.io",
+      "firstName": "Nicole",
+      "gender": "F",
+      "homePhone": "002-152-9986",
+      "id": "{ID}",
+      "lastName": "Smith",
+      "locality": "Russelton",
+      "mobilePhone": "147-527-6294",
+      "postalCode": "51240",
+      "region": "NH",
+      "ssn": "012-45-4682",
+      "title": "Mrs.",
+      "workPhone": "986-666-8056"
+     },
+     "username": "nsmith@demo.io"
     }
    ]
   },
@@ -12185,7 +12232,7 @@
      "bankUserId": "{USER:parity.tester@demo.io}",
      "correlationId": "{UUID}",
      "creditCardId": "{ID}",
-     "creditScore": "555",
+     "creditScore": "362",
      "creditUserId": null,
      "id": "{ID}",
      "riskScore": "10"

@@ -188,7 +188,9 @@ def stabilize(o, mode):
     """Compare-time canonicalisation (applied by diff.py to BOTH runs):
     - seed users' profiles are Faker-random (SampleDataService/DefaultData) -> masked unless it is the parity user
     - role lists and 4xx validation-message lists come from Java Sets -> order-insensitive
-    - mode 'seed': Faker merchant descriptions in seeded transaction tables masked
+    - user lists (GET /api/v1/user) come back in no stable order -> sorted by username
+    - mode 'seed': Faker merchant descriptions in seeded transaction tables masked; seed account ids
+      (selectSwitch values) depend on how many random seed transactions consumed the shared sequence
     - mode 'credit-decision': credit terms sentence (random intro/standard APR) masked
     """
     if isinstance(o, dict):
@@ -197,11 +199,15 @@ def stabilize(o, mode):
             for f in SEED_PROFILE_FIELDS:
                 if f in out:
                     out[f] = "{SEED}"
+        if mode == "seed" and out.get("name") == "selectSwitch" and str(out.get("value") or "").isdigit():
+            out["value"] = "{SEED_ACCOUNT_ID}"
         return out
     if isinstance(o, list):
         items = [stabilize(v, mode) for v in o]
         if items and all(isinstance(i, dict) and set(i) == {"authority"} for i in items):
             items = sorted(items, key=lambda i: i["authority"])
+        elif items and all(isinstance(i, dict) and "username" in i and "userProfile" in i for i in items):
+            items = sorted(items, key=lambda i: str(i["username"]))
         elif items and all(isinstance(i, str) for i in items) and any(
                 w in " ".join(items) for w in ("must", "required", "size ")):
             items = sorted(items)

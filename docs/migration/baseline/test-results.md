@@ -13,7 +13,7 @@ All runs were made from an unmodified `origin/master` worktree; workarounds live
 
 ## Behavioural baseline used for parity
 Because the legacy automated suites are largely un-runnable, the authoritative functional baseline is the scripted
-replay: **121 steps, captured twice on fresh stacks, 121/121 identical after normalisation, 0 DB-snapshot diffs**
+replay: **123 steps, captured twice on fresh stacks, 123/123 identical after normalisation, 0 DB-snapshot diffs**
 (`legacy-run.json`, `legacy-self-diff.json`, `transcripts.md`, `db-snapshot.json`).
 
 JMS round trip evidence (Artemis `queue stat` after a run): `CREDIT.APP.REQUEST` consumers 1, added 1, acked 1;

@@ -1,9 +1,9 @@
 {
  "summary": {
-  "legacy": "legacy-run.json (fresh stack A)",
-  "migrated": "second fresh legacy stack B",
-  "steps": 121,
-  "pass": 121,
+  "legacy": "legacy-baseline-a (fresh stack)",
+  "migrated": "legacy-baseline-b (fresh stack)",
+  "steps": 123,
+  "pass": 123,
   "fail": 0,
   "info": 0,
   "missing_in_migrated": [],
@@ -756,7 +756,21 @@
    "diffs": []
   },
   {
+   "id": "api.promotions.millennial",
+   "flow": "api.promotions",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
    "id": "api.promotions.none",
+   "flow": "api.promotions",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.promotions.user_role",
    "flow": "api.promotions",
    "compare": "full",
    "result": "PASS",

@@ -86,3 +86,8 @@ Determinism check: two fresh legacy runs diff clean (see `docs/migration/baselin
 * A JWT without the required role gets **405** (not 403) from the API; no token -> 403; malformed token -> 400.
 * `/api/v1/search/atm?zipcode=abc` -> 500 (constraint violation); `/api/v1/external/visa` ignores the account pattern.
 * `/bank/promotions` and unknown pages -> Boot JSON 404 body; `/v2/api-docs` (springfox) is public.
+
+### Operational notes
+* Both apps are started with `--server.address=127.0.0.1`. The H2 console and the anonymous legacy endpoints are only reachable from the VM itself.
+* OBP fixtures cover a single account, RBOS "Gold Checking", and each account can be linked to only one Digital Bank user. The replay links it to `parity.tester@demo.io` on every fresh stack. To link it by hand in the browser on a stack the replay has already used, unlink it from that user first. The other OBP accounts in the picker (for example "Personal Checking") have no detail fixture, so selecting one shows "Unable to get the details for the account selected".
+* `api.promotions.*` uses the admin token, because `POST /api/v1/promotions` is `ROLE_ADMIN`. `api.promotions.user_role` records the legacy quirk where a USER token gets 400 `Required String parameter 'username' is not present`.

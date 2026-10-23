@@ -170,13 +170,13 @@ Not owned by any ticket (programme-owned, edited only by the integration stage):
 `test-automation/**` (unchanged).
 
 **Integration order:** T-01 -> (T-02 ... T-09 in any order; rebase on the integration branch before merge). After all
-wave 1 merges the integration stage runs `tools/parity/run_parity.sh` (full diff must be 121/121 PASS, 0 snapshot
+wave 1 merges the integration stage runs `tools/parity/run_parity.sh` (full diff must be 123/123 PASS, 0 snapshot
 diffs) and updates the umbrella PR.
 
 ## 5. Parity method
 * Both stacks start fresh (H2 in-memory => seed data recreated) with the same `io.digisic.*` properties and their own
   broker + mock (`start_stack.sh legacy|migrated`).
-* `replay.py` executes 121 steps: registration, good/bad login, logout, home, open checking/savings (incl. below
+* `replay.py` executes 123 steps: registration, good/bad login, logout, home, open checking/savings (incl. below
   minimum), view, deposit (incl. zero), withdraw (incl. insufficient funds), transfer (incl. insufficient funds),
   history, rename, profile, change password (incl. wrong/mismatch), ATM search (results / zero / unavailable) UI + API,
   VISA (approved / not approved / insufficient / invalid merchant) UI + API, OBP link + view, credit application ->
@@ -184,6 +184,6 @@ diffs) and updates the umbrella PR.
   H2 console, Digital Credit REST, and a DB snapshot through the admin REST API.
 * Captured per step: status, redirect chain, media type, normalised JSON body or HTML summary (title, every form with
   its fields/types/options, alerts, visible text).
-* `diff.py` compares field by field; two fresh legacy runs diff clean (121/121, `baseline/legacy-self-diff.json`), so
+* `diff.py` compares field by field; two fresh legacy runs diff clean (123/123, `baseline/legacy-self-diff.json`), so
   every reported difference is behavioural. Accepted non-functional differences must be listed in the ticket PR and
   approved by the integration stage; none are pre-approved except: JWT token bytes, `/v3/api-docs` existing on migrated.

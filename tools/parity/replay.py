@@ -331,11 +331,16 @@ class Replayer:
         self.call("api.account.rename", "PUT", "/api/v1/account/%s" % nid, token=usr, params={"newName": "API Checking 2"})
         self.call("api.account.owner", "GET", "/api/v1/account/%s/owner" % nid, token=adm)
         self.flow = "api.promotions"
-        self.call("api.promotions.eligible", "POST", "/api/v1/promotions", token=usr,
+        self.call("api.promotions.eligible", "POST", "/api/v1/promotions", token=adm,
                   json_body={"balance": 10000, "age": 40, "rating": 800, "years": 10, "accountType": "Platinum"})
-        self.call("api.promotions.none", "POST", "/api/v1/promotions", token=usr,
-                  json_body={"balance": 10, "age": 18, "rating": 300, "years": 1, "accountType": "Blue"})
-        self.call("api.promotions.invalid", "POST", "/api/v1/promotions", token=usr,
+        self.call("api.promotions.millennial", "POST", "/api/v1/promotions", token=adm,
+                  json_body={"balance": 5000, "age": 25, "rating": 700, "years": 2, "accountType": "Gold"})
+        self.call("api.promotions.none", "POST", "/api/v1/promotions", token=adm,
+                  json_body={"balance": 10, "age": 50, "rating": 300, "years": 1, "accountType": "Blue"})
+        self.call("api.promotions.user_role", "POST", "/api/v1/promotions", token=usr,
+                  json_body={"balance": 10000, "age": 40, "rating": 800, "years": 10, "accountType": "Platinum"},
+                  note="admin-only endpoint called with a USER token (legacy quirk: 400 'username' missing)")
+        self.call("api.promotions.invalid", "POST", "/api/v1/promotions", token=adm,
                   json_body={"balance": 10, "age": 18, "rating": 300, "years": 0, "accountType": "Checking"})
         self.flow = "api.external"
         self.call("api.atm.search", "GET", "/api/v1/search/atm", token=usr, params={"zipcode": "11749"})
