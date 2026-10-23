@@ -1,0 +1,4140 @@
+{
+ "summary": {
+  "legacy": "/tmp/parity-r1/legacy.json",
+  "migrated": "/tmp/parity-r1/migrated.json",
+  "steps": 123,
+  "pass": 122,
+  "fail": 0,
+  "info": 1,
+  "missing_in_migrated": [],
+  "extra_in_migrated": [],
+  "db_snapshot_diffs": 0,
+  "legacy_errors": null,
+  "migrated_errors": null
+ },
+ "steps": [
+  {
+   "id": "ui.root.anonymous",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.home.anonymous",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.login.page",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.login.bad",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.login.error.page",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.signup.page",
+   "flow": "ui.register",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.signup.submit",
+   "flow": "ui.register",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.register.submit",
+   "flow": "ui.register",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.signup.duplicate_email",
+   "flow": "ui.register",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.login.good",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.home.no_accounts",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.checking.add.page",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.checking.add.below_min",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.checking.add",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.savings.add.page",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.savings.add",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.checking.view",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.savings.view",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.deposit.page",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.deposit",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.deposit.zero",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.withdraw.page",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.withdraw",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.withdraw.insufficient_funds",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.xfer.page",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.xfer",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.xfer.insufficient_funds",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.checking.history",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.savings.history",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.account.rename",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.home.accounts",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.profile.page",
+   "flow": "ui.user",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.profile.update",
+   "flow": "ui.user",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.password.page",
+   "flow": "ui.user",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.password.wrong_current",
+   "flow": "ui.user",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.password.mismatch",
+   "flow": "ui.user",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.password.change",
+   "flow": "ui.user",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.atm.search.results",
+   "flow": "ui.atm",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.atm.search.zero_results",
+   "flow": "ui.atm",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.atm.search.service_unavailable",
+   "flow": "ui.atm",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.visa.page",
+   "flow": "ui.visa",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.visa.approved",
+   "flow": "ui.visa",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.visa.not_approved",
+   "flow": "ui.visa",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.visa.insufficient_funds",
+   "flow": "ui.visa",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.visa.invalid_merchant",
+   "flow": "ui.visa",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.obp.add.page",
+   "flow": "ui.obp",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.obp.add",
+   "flow": "ui.obp",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.obp.add_account",
+   "flow": "ui.obp",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.obp.view",
+   "flow": "ui.obp",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.home.with_obp",
+   "flow": "ui.obp",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.credit.app.page",
+   "flow": "ui.credit",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.credit.app.submit",
+   "flow": "ui.credit",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.credit.status.final",
+   "flow": "ui.credit",
+   "compare": "credit-decision",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.credit.view",
+   "flow": "ui.credit",
+   "compare": "credit-decision",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.logout",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.logout.page",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.home.after_logout",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.login.old_password",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.login.new_password",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.error.404",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.promotions",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.seed.login",
+   "flow": "ui.seed",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.seed.home",
+   "flow": "ui.seed",
+   "compare": "seed",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.seed.checking.view",
+   "flow": "ui.seed",
+   "compare": "seed",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.seed.savings.view",
+   "flow": "ui.seed",
+   "compare": "seed",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.seed.h2_console",
+   "flow": "ui.seed",
+   "compare": "status",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.health",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.auth.bad_password",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.auth.missing_params",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.auth.admin",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.auth.seed",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.auth.parity",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.no_token",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.bad_token",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.parity_user_no_api_role",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.users.forbidden_for_user",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.users",
+   "flow": "api.users",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.user.current",
+   "flow": "api.users",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.user.find",
+   "flow": "api.users",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.user.profile.current",
+   "flow": "api.users",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.user.role.current",
+   "flow": "api.users",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.type",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.type.checking",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.type.savings",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.standing",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.ownership.type",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.transaction.state",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.transaction.type",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.transaction.category",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.type.as_user",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.accounts.all",
+   "flow": "api.accounts",
+   "compare": "seed",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.accounts.checking",
+   "flow": "api.accounts",
+   "compare": "seed",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.user.accounts.current",
+   "flow": "api.accounts",
+   "compare": "seed",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.create",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.create.invalid",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.get",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.not_found",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.transaction.deposit",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.transaction.withdraw_insufficient",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.transfer",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.transfer.insufficient",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.transactions",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.parity_checking.transactions",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.rename",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.owner",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.promotions.eligible",
+   "flow": "api.promotions",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.promotions.millennial",
+   "flow": "api.promotions",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.promotions.none",
+   "flow": "api.promotions",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.promotions.user_role",
+   "flow": "api.promotions",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.promotions.invalid",
+   "flow": "api.promotions",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.atm.search",
+   "flow": "api.external",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.atm.search.zero",
+   "flow": "api.external",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.atm.search.unavailable",
+   "flow": "api.external",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.atm.search.invalid_zip",
+   "flow": "api.external",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.visa.approved",
+   "flow": "api.external",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.visa.invalid_account",
+   "flow": "api.external",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.credit.references",
+   "flow": "api.credit",
+   "compare": "credit-decision",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "credit.api.health",
+   "flow": "credit.api",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "credit.api.auth",
+   "flow": "credit.api",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "credit.api.users",
+   "flow": "credit.api",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "docs.swagger_ui",
+   "flow": "docs",
+   "compare": "status",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "docs.api_docs.v2",
+   "flow": "docs",
+   "compare": "status",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "docs.api_docs.v3",
+   "flow": "docs",
+   "compare": "info",
+   "result": "INFO",
+   "diffs": [
+    {
+     "field": "content_type",
+     "legacy": null,
+     "migrated": "application/json"
+    },
+    {
+     "field": "json.components.schemas.Application.properties.agreeTerms.type",
+     "legacy": "<missing>",
+     "migrated": "boolean"
+    },
+    {
+     "field": "json.components.schemas.Application.properties.annualIncome.type",
+     "legacy": "<missing>",
+     "migrated": "number"
+    },
+    {
+     "field": "json.components.schemas.Application.properties.balanceTransfer.type",
+     "legacy": "<missing>",
+     "migrated": "boolean"
+    },
+    {
+     "field": "json.components.schemas.Application.properties.bankStatus.pattern",
+     "legacy": "<missing>",
+     "migrated": "Checking and Savings|Checking Only|Savings Only|Neither"
+    },
+    {
+     "field": "json.components.schemas.Application.properties.bankStatus.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.Application.properties.cashAdvance.type",
+     "legacy": "<missing>",
+     "migrated": "boolean"
+    },
+    {
+     "field": "json.components.schemas.Application.properties.employmentStatus.pattern",
+     "legacy": "<missing>",
+     "migrated": "Employed|Self-Employed|Retired|Student|Unemployed"
+    },
+    {
+     "field": "json.components.schemas.Application.properties.employmentStatus.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.Application.properties.minimumCreditCard.type",
+     "legacy": "<missing>",
+     "migrated": "number"
+    },
+    {
+     "field": "json.components.schemas.Application.properties.monthlyAutoLoan.type",
+     "legacy": "<missing>",
+     "migrated": "number"
+    },
+    {
+     "field": "json.components.schemas.Application.properties.monthlyMortgage.type",
+     "legacy": "<missing>",
+     "migrated": "number"
+    },
+    {
+     "field": "json.components.schemas.Application.properties.monthlyOtherLoan.type",
+     "legacy": "<missing>",
+     "migrated": "number"
+    },
+    {
+     "field": "json.components.schemas.Application.properties.monthlySpend.type",
+     "legacy": "<missing>",
+     "migrated": "number"
+    },
+    {
+     "field": "json.components.schemas.Application.required[0]",
+     "legacy": "<missing>",
+     "migrated": "agreeTerms"
+    },
+    {
+     "field": "json.components.schemas.Application.required[1]",
+     "legacy": "<missing>",
+     "migrated": "annualIncome"
+    },
+    {
+     "field": "json.components.schemas.Application.required[2]",
+     "legacy": "<missing>",
+     "migrated": "bankStatus"
+    },
+    {
+     "field": "json.components.schemas.Application.required[3]",
+     "legacy": "<missing>",
+     "migrated": "employmentStatus"
+    },
+    {
+     "field": "json.components.schemas.Application.required[4]",
+     "legacy": "<missing>",
+     "migrated": "minimumCreditCard"
+    },
+    {
+     "field": "json.components.schemas.Application.required[5]",
+     "legacy": "<missing>",
+     "migrated": "monthlyAutoLoan"
+    },
+    {
+     "field": "json.components.schemas.Application.required[6]",
+     "legacy": "<missing>",
+     "migrated": "monthlyMortgage"
+    },
+    {
+     "field": "json.components.schemas.Application.required[7]",
+     "legacy": "<missing>",
+     "migrated": "monthlyOtherLoan"
+    },
+    {
+     "field": "json.components.schemas.Application.required[8]",
+     "legacy": "<missing>",
+     "migrated": "monthlySpend"
+    },
+    {
+     "field": "json.components.schemas.Application.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.components.schemas.ChangePassword.properties.currentPasword.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.ChangePassword.properties.newPassword.pattern",
+     "legacy": "<missing>",
+     "migrated": "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+    },
+    {
+     "field": "json.components.schemas.ChangePassword.properties.newPassword.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.ChangePassword.required[0]",
+     "legacy": "<missing>",
+     "migrated": "currentPasword"
+    },
+    {
+     "field": "json.components.schemas.ChangePassword.required[1]",
+     "legacy": "<missing>",
+     "migrated": "newPassword"
+    },
+    {
+     "field": "json.components.schemas.ChangePassword.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.components.schemas.NewAccount.properties.accountName.maxLength",
+     "legacy": "<missing>",
+     "migrated": 40
+    },
+    {
+     "field": "json.components.schemas.NewAccount.properties.accountName.minLength",
+     "legacy": "<missing>",
+     "migrated": 1
+    },
+    {
+     "field": "json.components.schemas.NewAccount.properties.accountName.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.NewAccount.properties.accountTypeCode.pattern",
+     "legacy": "<missing>",
+     "migrated": "SCK|ICK|SAV|MMA"
+    },
+    {
+     "field": "json.components.schemas.NewAccount.properties.accountTypeCode.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.NewAccount.properties.openingDeposit.type",
+     "legacy": "<missing>",
+     "migrated": "number"
+    },
+    {
+     "field": "json.components.schemas.NewAccount.properties.ownerTypeCode.pattern",
+     "legacy": "<missing>",
+     "migrated": "IND|JNT"
+    },
+    {
+     "field": "json.components.schemas.NewAccount.properties.ownerTypeCode.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.NewAccount.required[0]",
+     "legacy": "<missing>",
+     "migrated": "accountName"
+    },
+    {
+     "field": "json.components.schemas.NewAccount.required[1]",
+     "legacy": "<missing>",
+     "migrated": "accountTypeCode"
+    },
+    {
+     "field": "json.components.schemas.NewAccount.required[2]",
+     "legacy": "<missing>",
+     "migrated": "openingDeposit"
+    },
+    {
+     "field": "json.components.schemas.NewAccount.required[3]",
+     "legacy": "<missing>",
+     "migrated": "ownerTypeCode"
+    },
+    {
+     "field": "json.components.schemas.NewAccount.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.components.schemas.NewTransaction.properties.amount.type",
+     "legacy": "<missing>",
+     "migrated": "number"
+    },
+    {
+     "field": "json.components.schemas.NewTransaction.properties.description.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.NewTransaction.properties.transactionTypeCode.pattern",
+     "legacy": "<missing>",
+     "migrated": "ATM|CRG|CHK|COF|DBT|DPT|DDP|DIV|EFT|FEE|INT|LTF|OVD|OVF|PMT|POS|RFD|WTH|TRN|TNF"
+    },
+    {
+     "field": "json.components.schemas.NewTransaction.properties.transactionTypeCode.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.NewTransaction.required[0]",
+     "legacy": "<missing>",
+     "migrated": "description"
+    },
+    {
+     "field": "json.components.schemas.NewTransaction.required[1]",
+     "legacy": "<missing>",
+     "migrated": "transactionTypeCode"
+    },
+    {
+     "field": "json.components.schemas.NewTransaction.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.address",
+     "legacy": "<missing>",
+     "migrated": "{SEED}"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.country",
+     "legacy": "<missing>",
+     "migrated": "{SEED}"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.dob",
+     "legacy": "<missing>",
+     "migrated": "{SEED}"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.emailAddress.pattern",
+     "legacy": "<missing>",
+     "migrated": "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.emailAddress.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.firstName",
+     "legacy": "<missing>",
+     "migrated": "{SEED}"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.gender",
+     "legacy": "<missing>",
+     "migrated": "{SEED}"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.homePhone",
+     "legacy": "<missing>",
+     "migrated": "{SEED}"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.lastName",
+     "legacy": "<missing>",
+     "migrated": "{SEED}"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.locality",
+     "legacy": "<missing>",
+     "migrated": "{SEED}"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.mobilePhone",
+     "legacy": "<missing>",
+     "migrated": "{SEED}"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.password.pattern",
+     "legacy": "<missing>",
+     "migrated": "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.password.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.postalCode",
+     "legacy": "<missing>",
+     "migrated": "{SEED}"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.region",
+     "legacy": "<missing>",
+     "migrated": "{SEED}"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.ssn",
+     "legacy": "<missing>",
+     "migrated": "{SEED}"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.title",
+     "legacy": "<missing>",
+     "migrated": "{SEED}"
+    },
+    {
+     "field": "json.components.schemas.NewUser.properties.workPhone",
+     "legacy": "<missing>",
+     "migrated": "{SEED}"
+    },
+    {
+     "field": "json.components.schemas.NewUser.required[0]",
+     "legacy": "<missing>",
+     "migrated": "address"
+    },
+    {
+     "field": "json.components.schemas.NewUser.required[10]",
+     "legacy": "<missing>",
+     "migrated": "postalCode"
+    },
+    {
+     "field": "json.components.schemas.NewUser.required[11]",
+     "legacy": "<missing>",
+     "migrated": "region"
+    },
+    {
+     "field": "json.components.schemas.NewUser.required[12]",
+     "legacy": "<missing>",
+     "migrated": "ssn"
+    },
+    {
+     "field": "json.components.schemas.NewUser.required[13]",
+     "legacy": "<missing>",
+     "migrated": "title"
+    },
+    {
+     "field": "json.components.schemas.NewUser.required[1]",
+     "legacy": "<missing>",
+     "migrated": "country"
+    },
+    {
+     "field": "json.components.schemas.NewUser.required[2]",
+     "legacy": "<missing>",
+     "migrated": "dob"
+    },
+    {
+     "field": "json.components.schemas.NewUser.required[3]",
+     "legacy": "<missing>",
+     "migrated": "emailAddress"
+    },
+    {
+     "field": "json.components.schemas.NewUser.required[4]",
+     "legacy": "<missing>",
+     "migrated": "firstName"
+    },
+    {
+     "field": "json.components.schemas.NewUser.required[5]",
+     "legacy": "<missing>",
+     "migrated": "gender"
+    },
+    {
+     "field": "json.components.schemas.NewUser.required[6]",
+     "legacy": "<missing>",
+     "migrated": "homePhone"
+    },
+    {
+     "field": "json.components.schemas.NewUser.required[7]",
+     "legacy": "<missing>",
+     "migrated": "lastName"
+    },
+    {
+     "field": "json.components.schemas.NewUser.required[8]",
+     "legacy": "<missing>",
+     "migrated": "locality"
+    },
+    {
+     "field": "json.components.schemas.NewUser.required[9]",
+     "legacy": "<missing>",
+     "migrated": "password"
+    },
+    {
+     "field": "json.components.schemas.NewUser.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.components.schemas.PromotionCandidate.properties.accountType.pattern",
+     "legacy": "<missing>",
+     "migrated": "Blue|Gold|Platinum"
+    },
+    {
+     "field": "json.components.schemas.PromotionCandidate.properties.accountType.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.PromotionCandidate.properties.age.format",
+     "legacy": "<missing>",
+     "migrated": "int32"
+    },
+    {
+     "field": "json.components.schemas.PromotionCandidate.properties.age.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.components.schemas.PromotionCandidate.properties.balance.type",
+     "legacy": "<missing>",
+     "migrated": "number"
+    },
+    {
+     "field": "json.components.schemas.PromotionCandidate.properties.rating.format",
+     "legacy": "<missing>",
+     "migrated": "int32"
+    },
+    {
+     "field": "json.components.schemas.PromotionCandidate.properties.rating.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.components.schemas.PromotionCandidate.properties.years.format",
+     "legacy": "<missing>",
+     "migrated": "int32"
+    },
+    {
+     "field": "json.components.schemas.PromotionCandidate.properties.years.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.components.schemas.PromotionCandidate.required[0]",
+     "legacy": "<missing>",
+     "migrated": "accountType"
+    },
+    {
+     "field": "json.components.schemas.PromotionCandidate.required[1]",
+     "legacy": "<missing>",
+     "migrated": "balance"
+    },
+    {
+     "field": "json.components.schemas.PromotionCandidate.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.components.schemas.TransferFunds.properties.amount.type",
+     "legacy": "<missing>",
+     "migrated": "number"
+    },
+    {
+     "field": "json.components.schemas.TransferFunds.properties.toAccountId.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.components.schemas.TransferFunds.properties.toAccountId.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.components.schemas.TransferFunds.required[0]",
+     "legacy": "<missing>",
+     "migrated": "toAccountId"
+    },
+    {
+     "field": "json.components.schemas.TransferFunds.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.address.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.country.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.firstName.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.gender.pattern",
+     "legacy": "<missing>",
+     "migrated": "M|F"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.gender.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.homePhone.pattern",
+     "legacy": "<missing>",
+     "migrated": "^[+]?([0-9]*[\\.\\s\\-\\(\\)]|[0-9]+){3,24}$"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.homePhone.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.lastName.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.locality.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.mobilePhone.pattern",
+     "legacy": "<missing>",
+     "migrated": "^$|^[+]?([0-9]*[\\.\\s\\-\\(\\)]|[0-9]+){3,24}$"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.mobilePhone.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.postalCode.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.region.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.title.pattern",
+     "legacy": "<missing>",
+     "migrated": "Mr.|Mrs.|Ms."
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.title.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.workPhone.pattern",
+     "legacy": "<missing>",
+     "migrated": "^$|^[+]?([0-9]*[\\.\\s\\-\\(\\)]|[0-9]+){3,24}$"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.properties.workPhone.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.required[0]",
+     "legacy": "<missing>",
+     "migrated": "address"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.required[1]",
+     "legacy": "<missing>",
+     "migrated": "country"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.required[2]",
+     "legacy": "<missing>",
+     "migrated": "firstName"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.required[3]",
+     "legacy": "<missing>",
+     "migrated": "gender"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.required[4]",
+     "legacy": "<missing>",
+     "migrated": "homePhone"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.required[5]",
+     "legacy": "<missing>",
+     "migrated": "lastName"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.required[6]",
+     "legacy": "<missing>",
+     "migrated": "locality"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.required[7]",
+     "legacy": "<missing>",
+     "migrated": "postalCode"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.required[8]",
+     "legacy": "<missing>",
+     "migrated": "region"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.required[9]",
+     "legacy": "<missing>",
+     "migrated": "title"
+    },
+    {
+     "field": "json.components.schemas.UpdateUser.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.components.securitySchemes.Bearer %token.in",
+     "legacy": "<missing>",
+     "migrated": "header"
+    },
+    {
+     "field": "json.components.securitySchemes.Bearer %token.name",
+     "legacy": "<missing>",
+     "migrated": "Authorization"
+    },
+    {
+     "field": "json.components.securitySchemes.Bearer %token.type",
+     "legacy": "<missing>",
+     "migrated": "apiKey"
+    },
+    {
+     "field": "json.info.contact.email",
+     "legacy": "<missing>",
+     "migrated": "digitalbank@demo.io"
+    },
+    {
+     "field": "json.info.contact.name",
+     "legacy": "<missing>",
+     "migrated": "Digital Bank"
+    },
+    {
+     "field": "json.info.contact.url",
+     "legacy": "<missing>",
+     "migrated": "www.demo.io"
+    },
+    {
+     "field": "json.info.description",
+     "legacy": "<missing>",
+     "migrated": "Digial Bank API provides Administration and User functionality through API Endpoints."
+    },
+    {
+     "field": "json.info.license.name",
+     "legacy": "<missing>",
+     "migrated": "License of API"
+    },
+    {
+     "field": "json.info.license.url",
+     "legacy": "<missing>",
+     "migrated": "API License URL"
+    },
+    {
+     "field": "json.info.termsOfService",
+     "legacy": "<missing>",
+     "migrated": "Terms of Service"
+    },
+    {
+     "field": "json.info.title",
+     "legacy": "<missing>",
+     "migrated": "Digital Bank API"
+    },
+    {
+     "field": "json.info.version",
+     "legacy": "<missing>",
+     "migrated": "API TOS"
+    },
+    {
+     "field": "json.openapi",
+     "legacy": "<missing>",
+     "migrated": "3.0.1"
+    },
+    {
+     "field": "json.paths./api/v1/account.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAllAccounts"
+    },
+    {
+     "field": "json.paths./api/v1/account.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/account.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/account.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/account/checking.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAllCheckingAccounts"
+    },
+    {
+     "field": "json.paths./api/v1/account/checking.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/account/checking.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/account/checking.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/account/savings.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAllSavingsAccounts"
+    },
+    {
+     "field": "json.paths./api/v1/account/savings.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/account/savings.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/account/savings.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.delete.operationId",
+     "legacy": "<missing>",
+     "migrated": "deleteAccount"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.delete.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.delete.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.delete.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.delete.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.delete.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.delete.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.delete.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.delete.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAccount"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.get.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.put.operationId",
+     "legacy": "<missing>",
+     "migrated": "updateAccount"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.put.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.put.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.put.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.put.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.put.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.put.parameters[1].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.put.parameters[1].name",
+     "legacy": "<missing>",
+     "migrated": "newName"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.put.parameters[1].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.put.parameters[1].schema.maxLength",
+     "legacy": "<missing>",
+     "migrated": 40
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.put.parameters[1].schema.minLength",
+     "legacy": "<missing>",
+     "migrated": 1
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.put.parameters[1].schema.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.put.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.put.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}.put.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getCoOwner"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.get.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.put.operationId",
+     "legacy": "<missing>",
+     "migrated": "setCoOwner"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.put.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.put.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.put.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.put.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.put.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.put.parameters[1].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.put.parameters[1].name",
+     "legacy": "<missing>",
+     "migrated": "userId"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.put.parameters[1].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.put.parameters[1].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.put.parameters[1].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.put.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.put.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/coowner.put.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/owner.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getOwner"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/owner.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/owner.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/owner.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/owner.get.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/owner.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/owner.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/owner.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/owner.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAccountTransactions"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.get.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.operationId",
+     "legacy": "<missing>",
+     "migrated": "newTransaction"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.parameters[1].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.parameters[1].name",
+     "legacy": "<missing>",
+     "migrated": "action"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.parameters[1].required",
+     "legacy": "<missing>",
+     "migrated": false
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.parameters[1].schema.pattern",
+     "legacy": "<missing>",
+     "migrated": "CREDIT|DEBIT"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.parameters[1].schema.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.requestBody.content.application/json.schema.$ref",
+     "legacy": "<missing>",
+     "migrated": "#/components/schemas/NewTransaction"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.requestBody.required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transaction.post.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transfer.post.operationId",
+     "legacy": "<missing>",
+     "migrated": "transferFunds"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transfer.post.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transfer.post.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transfer.post.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transfer.post.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transfer.post.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transfer.post.requestBody.content.application/json.schema.$ref",
+     "legacy": "<missing>",
+     "migrated": "#/components/schemas/TransferFunds"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transfer.post.requestBody.required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transfer.post.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transfer.post.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/account/{id}/transfer.post.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/auth.post.operationId",
+     "legacy": "<missing>",
+     "migrated": "authenticateUser"
+    },
+    {
+     "field": "json.paths./api/v1/auth.post.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/auth.post.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "username"
+    },
+    {
+     "field": "json.paths./api/v1/auth.post.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/auth.post.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.paths./api/v1/auth.post.parameters[1].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/auth.post.parameters[1].name",
+     "legacy": "<missing>",
+     "migrated": "password"
+    },
+    {
+     "field": "json.paths./api/v1/auth.post.parameters[1].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/auth.post.parameters[1].schema.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.paths./api/v1/auth.post.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/auth.post.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/auth.post.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "authentication-controller"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getCreditCardDetails"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}.get.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "credit-controller"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/billing.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getCreditCardBillingDetails"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/billing.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/billing.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/billing.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/billing.get.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/billing.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/billing.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/billing.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/billing.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "credit-controller"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/transactions.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getCreditCardTransactionDetails"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/transactions.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/transactions.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/transactions.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/transactions.get.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/transactions.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/transactions.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/transactions.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/credit/account/{id}/transactions.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "credit-controller"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference.delete.operationId",
+     "legacy": "<missing>",
+     "migrated": "deleteCreditApplicationReference"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference.delete.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference.delete.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference.delete.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "credit-controller"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getCreditApplicationReference"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "credit-controller"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference.post.operationId",
+     "legacy": "<missing>",
+     "migrated": "submitCreditApplication"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference.post.requestBody.content.application/json.schema.$ref",
+     "legacy": "<missing>",
+     "migrated": "#/components/schemas/Application"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference.post.requestBody.required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference.post.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference.post.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference.post.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "credit-controller"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference/{id}.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getCreditApplicationReference_1"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference/{id}.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference/{id}.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference/{id}.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference/{id}.get.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference/{id}.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference/{id}.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference/{id}.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/credit/reference/{id}.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "credit-controller"
+    },
+    {
+     "field": "json.paths./api/v1/credit/references.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "creditApplications"
+    },
+    {
+     "field": "json.paths./api/v1/credit/references.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/credit/references.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/credit/references.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "credit-controller"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/ownership/type.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAccountOwndershipTypes"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/ownership/type.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/ownership/type.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/ownership/type.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "static-data-controller"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/standing.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAccountStandings"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/standing.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/standing.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/standing.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "static-data-controller"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/transaction/category.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAccountTransactionCategories"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/transaction/category.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/transaction/category.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/transaction/category.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "static-data-controller"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/transaction/state.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAccountTransactionStates"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/transaction/state.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/transaction/state.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/transaction/state.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "static-data-controller"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/transaction/type.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAccountTransactionTypes"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/transaction/type.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/transaction/type.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/transaction/type.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "static-data-controller"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/type.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAccountTypes"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/type.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/type.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/type.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "static-data-controller"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/type/checking.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getCheckingAccountTypes"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/type/checking.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/type/checking.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/type/checking.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "static-data-controller"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/type/savings.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getSavingsAccountTypes"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/type/savings.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/type/savings.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/data/account/type/savings.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "static-data-controller"
+    },
+    {
+     "field": "json.paths./api/v1/external/visa.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "directVisaPayment"
+    },
+    {
+     "field": "json.paths./api/v1/external/visa.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/external/visa.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "account"
+    },
+    {
+     "field": "json.paths./api/v1/external/visa.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/external/visa.get.parameters[0].schema.pattern",
+     "legacy": "<missing>",
+     "migrated": "^([a-zA-Z0-9_\\\\-\\\\.]+)"
+    },
+    {
+     "field": "json.paths./api/v1/external/visa.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.paths./api/v1/external/visa.get.parameters[1].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/external/visa.get.parameters[1].name",
+     "legacy": "<missing>",
+     "migrated": "amount"
+    },
+    {
+     "field": "json.paths./api/v1/external/visa.get.parameters[1].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/external/visa.get.parameters[1].schema.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.paths./api/v1/external/visa.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/external/visa.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/external/visa.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "visa-controller"
+    },
+    {
+     "field": "json.paths./api/v1/health.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getApplicationHealth"
+    },
+    {
+     "field": "json.paths./api/v1/health.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/health.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/health.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "health-check-controller"
+    },
+    {
+     "field": "json.paths./api/v1/promotions.post.operationId",
+     "legacy": "<missing>",
+     "migrated": "determinePromotions"
+    },
+    {
+     "field": "json.paths./api/v1/promotions.post.requestBody.content.application/json.schema.$ref",
+     "legacy": "<missing>",
+     "migrated": "#/components/schemas/PromotionCandidate"
+    },
+    {
+     "field": "json.paths./api/v1/promotions.post.requestBody.required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/promotions.post.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/promotions.post.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/promotions.post.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "promotion-controller"
+    },
+    {
+     "field": "json.paths./api/v1/search/atm.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "searchAtmLocations"
+    },
+    {
+     "field": "json.paths./api/v1/search/atm.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/search/atm.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "zipcode"
+    },
+    {
+     "field": "json.paths./api/v1/search/atm.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/search/atm.get.parameters[0].schema.pattern",
+     "legacy": "<missing>",
+     "migrated": "^[0-9]{5}(?:-[0-9]{4})?$"
+    },
+    {
+     "field": "json.paths./api/v1/search/atm.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.paths./api/v1/search/atm.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/search/atm.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/search/atm.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "search-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getUser"
+    },
+    {
+     "field": "json.paths./api/v1/user.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user.post.operationId",
+     "legacy": "<missing>",
+     "migrated": "createNewUser"
+    },
+    {
+     "field": "json.paths./api/v1/user.post.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/user.post.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "role"
+    },
+    {
+     "field": "json.paths./api/v1/user.post.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": false
+    },
+    {
+     "field": "json.paths./api/v1/user.post.parameters[0].schema.default",
+     "legacy": "<missing>",
+     "migrated": "USER"
+    },
+    {
+     "field": "json.paths./api/v1/user.post.parameters[0].schema.pattern",
+     "legacy": "<missing>",
+     "migrated": "USER|ADMIN|API"
+    },
+    {
+     "field": "json.paths./api/v1/user.post.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.paths./api/v1/user.post.requestBody.content.application/json.schema.$ref",
+     "legacy": "<missing>",
+     "migrated": "#/components/schemas/NewUser"
+    },
+    {
+     "field": "json.paths./api/v1/user.post.requestBody.required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user.post.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user.post.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user.post.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/account.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAccounts_1"
+    },
+    {
+     "field": "json.paths./api/v1/user/account.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/account.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/account.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/account.post.operationId",
+     "legacy": "<missing>",
+     "migrated": "createAccount_1"
+    },
+    {
+     "field": "json.paths./api/v1/user/account.post.requestBody.content.application/json.schema.$ref",
+     "legacy": "<missing>",
+     "migrated": "#/components/schemas/NewAccount"
+    },
+    {
+     "field": "json.paths./api/v1/user/account.post.requestBody.required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/account.post.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/account.post.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/account.post.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/account/checking.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getCheckingAccounts_1"
+    },
+    {
+     "field": "json.paths./api/v1/user/account/checking.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/account/checking.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/account/checking.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/account/savings.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getSavingsAccounts_1"
+    },
+    {
+     "field": "json.paths./api/v1/user/account/savings.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/account/savings.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/account/savings.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/find.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getUserByUsername"
+    },
+    {
+     "field": "json.paths./api/v1/user/find.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/user/find.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "username"
+    },
+    {
+     "field": "json.paths./api/v1/user/find.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/find.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.paths./api/v1/user/find.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/find.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/find.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/password.put.operationId",
+     "legacy": "<missing>",
+     "migrated": "changePassword"
+    },
+    {
+     "field": "json.paths./api/v1/user/password.put.requestBody.content.application/json.schema.$ref",
+     "legacy": "<missing>",
+     "migrated": "#/components/schemas/ChangePassword"
+    },
+    {
+     "field": "json.paths./api/v1/user/password.put.requestBody.required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/password.put.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/password.put.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/password.put.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/profile.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getUserProfile_1"
+    },
+    {
+     "field": "json.paths./api/v1/user/profile.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/profile.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/profile.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/profile.put.operationId",
+     "legacy": "<missing>",
+     "migrated": "updateUserProfile_1"
+    },
+    {
+     "field": "json.paths./api/v1/user/profile.put.requestBody.content.application/json.schema.$ref",
+     "legacy": "<missing>",
+     "migrated": "#/components/schemas/UpdateUser"
+    },
+    {
+     "field": "json.paths./api/v1/user/profile.put.requestBody.required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/profile.put.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/profile.put.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/profile.put.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/role.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAuthority_1"
+    },
+    {
+     "field": "json.paths./api/v1/user/role.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/role.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/role.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.delete.operationId",
+     "legacy": "<missing>",
+     "migrated": "deleteUser"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.delete.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.delete.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.delete.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.delete.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.delete.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.delete.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.delete.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.delete.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getUser_1"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.get.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAccounts"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.get.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.post.operationId",
+     "legacy": "<missing>",
+     "migrated": "createAccount"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.post.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.post.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.post.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.post.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.post.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.post.requestBody.content.application/json.schema.$ref",
+     "legacy": "<missing>",
+     "migrated": "#/components/schemas/NewAccount"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.post.requestBody.required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.post.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.post.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account.post.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/checking.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getCheckingAccounts"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/checking.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/checking.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/checking.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/checking.get.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/checking.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/checking.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/checking.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/checking.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/savings.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getSavingsAccounts"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/savings.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/savings.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/savings.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/savings.get.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/savings.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/savings.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/savings.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/account/savings.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "account-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/create.post.operationId",
+     "legacy": "<missing>",
+     "migrated": "createSampleData"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/create.post.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/create.post.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/create.post.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/create.post.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/create.post.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/create.post.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/create.post.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/create.post.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/delete.post.operationId",
+     "legacy": "<missing>",
+     "migrated": "deleteCurrentData"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/delete.post.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/delete.post.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/delete.post.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/delete.post.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/delete.post.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/delete.post.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/delete.post.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/data/delete.post.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password.put.operationId",
+     "legacy": "<missing>",
+     "migrated": "setPassword"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password.put.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password.put.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password.put.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password.put.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password.put.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password.put.parameters[1].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password.put.parameters[1].name",
+     "legacy": "<missing>",
+     "migrated": "newPassword"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password.put.parameters[1].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password.put.parameters[1].schema.pattern",
+     "legacy": "<missing>",
+     "migrated": "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password.put.parameters[1].schema.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password.put.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password.put.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password.put.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password/unexpire.put.operationId",
+     "legacy": "<missing>",
+     "migrated": "setPasswordUnexpired"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password/unexpire.put.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password/unexpire.put.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password/unexpire.put.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password/unexpire.put.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password/unexpire.put.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password/unexpire.put.parameters[1].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password/unexpire.put.parameters[1].name",
+     "legacy": "<missing>",
+     "migrated": "unexpire"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password/unexpire.put.parameters[1].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password/unexpire.put.parameters[1].schema.type",
+     "legacy": "<missing>",
+     "migrated": "boolean"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password/unexpire.put.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password/unexpire.put.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/password/unexpire.put.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getUserProfile"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.get.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.put.operationId",
+     "legacy": "<missing>",
+     "migrated": "updateUserProfile"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.put.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.put.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.put.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.put.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.put.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.put.requestBody.content.application/json.schema.$ref",
+     "legacy": "<missing>",
+     "migrated": "#/components/schemas/UpdateUser"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.put.requestBody.required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.put.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.put.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/profile.put.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.delete.operationId",
+     "legacy": "<missing>",
+     "migrated": "removeAuthority"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.delete.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.delete.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.delete.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.delete.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.delete.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.delete.parameters[1].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.delete.parameters[1].name",
+     "legacy": "<missing>",
+     "migrated": "role"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.delete.parameters[1].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.delete.parameters[1].schema.pattern",
+     "legacy": "<missing>",
+     "migrated": "USER|ADMIN|API"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.delete.parameters[1].schema.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.delete.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.delete.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.delete.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAuthority"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.get.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.get.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.get.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.get.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.get.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.put.operationId",
+     "legacy": "<missing>",
+     "migrated": "addAuthority"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.put.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.put.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.put.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.put.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.put.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.put.parameters[1].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.put.parameters[1].name",
+     "legacy": "<missing>",
+     "migrated": "role"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.put.parameters[1].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.put.parameters[1].schema.pattern",
+     "legacy": "<missing>",
+     "migrated": "USER|ADMIN|API"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.put.parameters[1].schema.type",
+     "legacy": "<missing>",
+     "migrated": "string"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.put.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.put.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/role.put.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/enable.put.operationId",
+     "legacy": "<missing>",
+     "migrated": "setUserEnabled"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/enable.put.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/enable.put.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/enable.put.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/enable.put.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/enable.put.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/enable.put.parameters[1].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/enable.put.parameters[1].name",
+     "legacy": "<missing>",
+     "migrated": "enabled"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/enable.put.parameters[1].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/enable.put.parameters[1].schema.type",
+     "legacy": "<missing>",
+     "migrated": "boolean"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/enable.put.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/enable.put.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/enable.put.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unexpire.put.operationId",
+     "legacy": "<missing>",
+     "migrated": "setUserUnexpired"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unexpire.put.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unexpire.put.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unexpire.put.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unexpire.put.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unexpire.put.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unexpire.put.parameters[1].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unexpire.put.parameters[1].name",
+     "legacy": "<missing>",
+     "migrated": "unexpire"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unexpire.put.parameters[1].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unexpire.put.parameters[1].schema.type",
+     "legacy": "<missing>",
+     "migrated": "boolean"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unexpire.put.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unexpire.put.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unexpire.put.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unlock.put.operationId",
+     "legacy": "<missing>",
+     "migrated": "setUserUnlocked"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unlock.put.parameters[0].in",
+     "legacy": "<missing>",
+     "migrated": "path"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unlock.put.parameters[0].name",
+     "legacy": "<missing>",
+     "migrated": "id"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unlock.put.parameters[0].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unlock.put.parameters[0].schema.format",
+     "legacy": "<missing>",
+     "migrated": "int64"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unlock.put.parameters[0].schema.type",
+     "legacy": "<missing>",
+     "migrated": "integer"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unlock.put.parameters[1].in",
+     "legacy": "<missing>",
+     "migrated": "query"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unlock.put.parameters[1].name",
+     "legacy": "<missing>",
+     "migrated": "unlock"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unlock.put.parameters[1].required",
+     "legacy": "<missing>",
+     "migrated": true
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unlock.put.parameters[1].schema.type",
+     "legacy": "<missing>",
+     "migrated": "boolean"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unlock.put.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unlock.put.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/user/{id}/state/unlock.put.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.paths./api/v1/users.get.operationId",
+     "legacy": "<missing>",
+     "migrated": "getAllUsers"
+    },
+    {
+     "field": "json.paths./api/v1/users.get.responses.200.content.*/*.schema.type",
+     "legacy": "<missing>",
+     "migrated": "object"
+    },
+    {
+     "field": "json.paths./api/v1/users.get.responses.200.description",
+     "legacy": "<missing>",
+     "migrated": "OK"
+    },
+    {
+     "field": "json.paths./api/v1/users.get.tags[0]",
+     "legacy": "<missing>",
+     "migrated": "user-controller"
+    },
+    {
+     "field": "json.security[0].Bearer %token",
+     "legacy": "<missing>",
+     "migrated": "{EMPTY_LIST}"
+    },
+    {
+     "field": "json.servers[0].description",
+     "legacy": "<missing>",
+     "migrated": "Generated server url"
+    },
+    {
+     "field": "json.servers[0].url",
+     "legacy": "<missing>",
+     "migrated": "{BANK}"
+    },
+    {
+     "field": "location",
+     "legacy": "{BANK}/login",
+     "migrated": null
+    },
+    {
+     "field": "status",
+     "legacy": 302,
+     "migrated": 200
+    }
+   ]
+  }
+ ],
+ "db_snapshot": []
+}
