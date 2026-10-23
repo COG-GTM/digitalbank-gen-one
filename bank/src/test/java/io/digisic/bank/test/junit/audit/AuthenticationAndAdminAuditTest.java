@@ -138,6 +138,12 @@ public class AuthenticationAndAdminAuditTest {
 		assertTrue(coOwner.contains("actor=" + ADMIN), coOwner);
 		assertTrue(coOwner.contains("targetUser=nsmith@demo.io"), coOwner);
 		assertTrue(coOwner.contains("detail=\"accountId=101\""), coOwner);
+
+		appender.list.clear();
+		accountService.setCoOwner(account, new Users(ADMIN, "secret"));
+		String selfAssigned = single("event=ACCOUNT_COOWNER_SET");
+		assertTrue(selfAssigned.contains("category=ADMIN"), selfAssigned);
+		assertTrue(selfAssigned.contains("targetUser=" + ADMIN), selfAssigned);
 	}
 
 	@Test

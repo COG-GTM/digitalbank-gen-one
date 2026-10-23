@@ -80,6 +80,18 @@ public final class AuditLog {
 	}
 
 	public static void adminAction(String event, Users targetUser, String detail, String outcome) {
+		userAction(event, targetUser, detail, outcome, false);
+	}
+
+	/*
+	 * For operations only administrators can perform: always category=ADMIN, even when acting on themselves.
+	 */
+	public static void privilegedAdminAction(String event, Users targetUser, String detail, String outcome) {
+		userAction(event, targetUser, detail, outcome, true);
+	}
+
+	private static void userAction(String event, Users targetUser, String detail, String outcome,
+			boolean adminOnly) {
 
 		Map<String, Object> fields = new LinkedHashMap<>();
 		fields.put("targetUser", targetUser == null ? null : targetUser.getUsername());
@@ -87,8 +99,8 @@ public final class AuditLog {
 		fields.put("detail", detail);
 
 		String actor = currentActor();
-		boolean selfService = ANONYMOUS_ACTOR.equals(actor)
-				|| (targetUser != null && actor.equals(targetUser.getUsername()));
+		boolean selfService = !adminOnly && (ANONYMOUS_ACTOR.equals(actor)
+				|| (targetUser != null && actor.equals(targetUser.getUsername())));
 
 		emit(selfService ? CAT_SELF_SERVICE : CAT_ADMIN, event, actor, outcome, fields);
 	}

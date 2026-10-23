@@ -598,7 +598,7 @@ public class AccountService {
 	public Account setCoOwner (Account account, Users coOwner) {
 		account.setCoowner(coOwner);
 		Account saved = accountRepository.save(account);
-		AuditLog.adminAction("ACCOUNT_COOWNER_SET", coOwner, "accountId=" + account.getId(), AuditLog.OUTCOME_SUCCESS);
+		AuditLog.privilegedAdminAction("ACCOUNT_COOWNER_SET", coOwner, "accountId=" + account.getId(), AuditLog.OUTCOME_SUCCESS);
 		return saved;
 	}
 	
