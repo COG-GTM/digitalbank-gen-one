@@ -10,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -33,7 +31,6 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import io.digisic.bank.security.EagerSessionCreationFilter;
 import io.digisic.bank.security.JwtTokenFilterConfigurer;
 import io.digisic.bank.security.JwtTokenProvider;
-import io.digisic.bank.security.LegacyErrorAttributes;
 import io.digisic.bank.service.UserSecurityService;
 import io.digisic.bank.util.Constants;
 import io.digisic.bank.util.Patterns;
@@ -84,12 +81,6 @@ public class MultiHttpSecurityConfig {
 	@Bean
 	public static BCryptPasswordEncoder encoder() {
 		return new BCryptPasswordEncoder();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean(ErrorAttributes.class)
-	public static LegacyErrorAttributes errorAttributes() {
-		return new LegacyErrorAttributes();
 	}
 	
 	@Bean
