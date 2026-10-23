@@ -1,5 +1,11 @@
 package io.digisic.bank.config;
 
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+
+import java.util.Arrays;
+
+import jakarta.servlet.DispatcherType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +16,16 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+
 import io.digisic.bank.security.JwtTokenFilterConfigurer;
 import io.digisic.bank.security.JwtTokenProvider;
 import io.digisic.bank.service.UserSecurityService;
@@ -26,12 +34,11 @@ import io.digisic.bank.util.Patterns;
 
 @Configuration
 @EnableWebSecurity(debug=false)
-@EnableGlobalMethodSecurity(prePostEnabled=true)
+@EnableMethodSecurity
 public class MultiHttpSecurityConfig {
 
-	@Autowired
-	private UserSecurityService userSecurityService;
-	
+	private static final Logger LOG = LoggerFactory.getLogger(MultiHttpSecurityConfig.class);
+
 	private static final String[] PUBLIC = {
 		
 			Constants.URI_WEBJARS_RES, 
@@ -52,103 +59,92 @@ public class MultiHttpSecurityConfig {
 	    	Constants.URI_SWAGGER_RES,
 	    	Constants.URI_SWAGGER_CONF,
 	    	Constants.URI_MANAGER_RES,
-	    	Constants.URI_FAVICON_RES
+	    	Constants.URI_FAVICON_RES,
+	    	// springdoc: /swagger-ui.html redirects to these
+	    	"/swagger-ui/**",
+	    	"/v3/api-docs/**"
 	    	
 	};
 	
+	@Value("${io.digisic.max.sessions}")
+	private String propMaxSessions;
+	
 	@Bean
-	public HttpSessionEventPublisher httpSessionEventPublisher() {
+	public static HttpSessionEventPublisher httpSessionEventPublisher() {
 	    return new HttpSessionEventPublisher();
 	}
   
+	// static: UserService injects this encoder while this config injects services
 	@Bean
-	public BCryptPasswordEncoder encoder() {
+	public static BCryptPasswordEncoder encoder() {
 		return new BCryptPasswordEncoder();
 	}
-		
-	@Configuration
-    @Order(1)                                                        
-    public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
-		
-		@Autowired
-		private JwtTokenProvider jwtTokenProvider;
-		
-		@Bean
-		@Override
-		public AuthenticationManager authenticationManagerBean() throws Exception {
-	       return super.authenticationManagerBean();
-		}
-		
-		
-        protected void configure(HttpSecurity http) throws Exception {
-        	
-        	http.csrf().disable()
-        		.exceptionHandling().accessDeniedPage(Constants.URI_API_AUTH)
-        		.and()
-        		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        		.and()
-        		.antMatcher(Constants.URI_API_ALL)
-        		.authorizeRequests()
-        			.antMatchers(HttpMethod.POST, Constants.URI_API_AUTH).permitAll()
-        			.antMatchers(HttpMethod.GET, Constants.URI_API_HEALTHCHECK).permitAll()
-        			.anyRequest()
-        			.hasRole(Patterns.ROLE_API)
-        			.and()
-        			.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
-   
-        }
-    }
 	
-	@Configuration                                                   
-    public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+		return configuration.getAuthenticationManager();
+	}
 		
-		private static final Logger LOG = LoggerFactory.getLogger(FormLoginWebSecurityConfigurerAdapter.class);
+	@Bean
+	@Order(1)
+	public SecurityFilterChain apiFilterChain(HttpSecurity http, JwtTokenProvider jwtTokenProvider) throws Exception {
 		
-		@Value("${io.digisic.max.sessions}")
-		private String propMaxSessions;
+		http.securityMatcher(antMatcher(Constants.URI_API_ALL))
+			.csrf(csrf -> csrf.disable())
+			.exceptionHandling(e -> e.accessDeniedPage(Constants.URI_API_AUTH))
+			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.authorizeHttpRequests(a -> a
+				// legacy FilterSecurityInterceptor authorised each request once (no FORWARD/ERROR re-checks)
+				.dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
+				.requestMatchers(antMatcher(HttpMethod.POST, Constants.URI_API_AUTH)).permitAll()
+				.requestMatchers(antMatcher(HttpMethod.GET, Constants.URI_API_HEALTHCHECK)).permitAll()
+				.anyRequest().hasRole(Patterns.ROLE_API))
+			.with(new JwtTokenFilterConfigurer(jwtTokenProvider), c -> {});
 		
-		@Override
-        protected void configure(HttpSecurity http) throws Exception {
-			
-			Integer iMaxSessions = 1;
-			
-			try{iMaxSessions = Integer.parseInt(propMaxSessions);}
-			catch (NumberFormatException nfe) {}
-        	
-        	LOG.info("Max Sessions: " + iMaxSessions);
-        	
-        	http.csrf().disable()
-				.cors().disable()
-				.authorizeRequests()
-					.antMatchers(PUBLIC).permitAll()
-					.anyRequest().hasRole(Patterns.ROLE_USER)
-					.and()
-				.formLogin()
-					.failureUrl(Constants.URI_LOGIN_ERR)
-					.defaultSuccessUrl(Constants.URI_HOME)
-					.loginPage(Constants.URI_LOGIN).permitAll()
-					.and()
-				.logout()
-					.logoutRequestMatcher(new AntPathRequestMatcher(Constants.URI_LOGOUT))
-					.logoutSuccessUrl(Constants.URI_LOGOUT_SUCC)
-					.deleteCookies(Constants.COO_JSESSION_ID).permitAll()
-					.and()
-				.rememberMe()
-					.key(Constants.COO_REMEBER_ME)
-					.tokenValiditySeconds(86400)
-					.and()
-				.sessionManagement()
-					.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-					.maximumSessions(iMaxSessions).maxSessionsPreventsLogin(true);
+		return http.build();
+	}
+	
+	@Bean
+	public SecurityFilterChain formLoginFilterChain(HttpSecurity http) throws Exception {
 		
+		Integer iMaxSessions = 1;
 		
+		try{iMaxSessions = Integer.parseInt(propMaxSessions);}
+		catch (NumberFormatException nfe) {}
+    	
+    	LOG.info("Max Sessions: " + iMaxSessions);
+    	
+    	final int maxSessions = iMaxSessions;
+    	RequestMatcher[] publicMatchers = Arrays.stream(PUBLIC).map(p -> antMatcher(p)).toArray(RequestMatcher[]::new);
+    	
+    	http.csrf(csrf -> csrf.disable())
+			.cors(cors -> cors.disable())
+			.authorizeHttpRequests(a -> a
+				.dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
+				.requestMatchers(publicMatchers).permitAll()
+				.anyRequest().hasRole(Patterns.ROLE_USER))
+			.formLogin(f -> f
+				.failureUrl(Constants.URI_LOGIN_ERR)
+				.defaultSuccessUrl(Constants.URI_HOME)
+				.loginPage(Constants.URI_LOGIN).permitAll())
+			.logout(l -> l
+				.logoutRequestMatcher(antMatcher(Constants.URI_LOGOUT))
+				.logoutSuccessUrl(Constants.URI_LOGOUT_SUCC)
+				.deleteCookies(Constants.COO_JSESSION_ID).permitAll())
+			.rememberMe(r -> r
+				.key(Constants.COO_REMEBER_ME)
+				.tokenValiditySeconds(86400))
+			.sessionManagement(s -> s
+				.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+				.maximumSessions(maxSessions).maxSessionsPreventsLogin(true))
 			// Needed to support the h2-console interface
-			http.headers().frameOptions().disable();
-        }
-    }
+			.headers(h -> h.frameOptions(f -> f.disable()));
+    	
+    	return http.build();
+	}
 	
 	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	public void configureGlobal(AuthenticationManagerBuilder auth, UserSecurityService userSecurityService) throws Exception {
 		auth.userDetailsService(userSecurityService).passwordEncoder(encoder());
 	}
 }

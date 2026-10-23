@@ -4,17 +4,18 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.validation.constraints.Digits;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OrderBy;
+import jakarta.validation.constraints.Digits;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -37,16 +38,18 @@ public class CreditCard {
 	@Column(nullable=false, unique=true)
 	private String cardNumber;
 	
-	@OneToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER)
 	private Account account;
 	
 	@JsonIgnore
-	@OneToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER)
 	private Users cardHolder;
 	
 	@JsonIgnore
 	@OnDelete(action = OnDeleteAction.CASCADE)
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    // Hibernate 5 resolved the legacy mappedBy="user" to AuthorizedUsers.userId; Hibernate 6 rejects that mapping, so keep the same join column read-only
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "userId", insertable = false, updatable = false)
     private Set<AuthorizedUsers> authorizedUsers = new HashSet<>();
 	
 	@Digits(integer=4, fraction=0)

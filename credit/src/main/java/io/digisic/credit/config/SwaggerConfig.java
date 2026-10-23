@@ -1,71 +1,49 @@
 package io.digisic.credit.config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import io.digisic.credit.util.Constants;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.SecurityReference;
-import springfox.documentation.service.SecurityScheme;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.contexts.SecurityContext;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @Configuration
-@EnableSwagger2
 public class SwaggerConfig {
 	
 	private static String JWT_TOKEN_REF	= "Bearer %token";
-	private static String API_REGEX_PATH = "/api.*";
 	
+	// Paths/packages are scoped via springdoc.paths-to-match and springdoc.packages-to-scan
 	@Bean
-    public Docket api() { 
+	public OpenAPI api() {
 		
-		List<SecurityScheme> schemeList = new ArrayList<>();
-		schemeList.add(new ApiKey(JWT_TOKEN_REF, Constants.API_AUTH_HEADER, "Header"));
-		
-        return new Docket(DocumentationType.SWAGGER_2)  
-          .select()                                  
-          .apis(RequestHandlerSelectors.basePackage("io.digisic.credit.controller"))              
-          .paths(PathSelectors.regex(API_REGEX_PATH))
-          .build()
-          .apiInfo(apiInfo())
-          .securitySchemes(schemeList)
-          .securityContexts(Arrays.asList(securityContext()));
-    }
-		 
-	private ApiInfo apiInfo() {
-		ApiInfo apiInfo = new ApiInfo ("Digital Credit API",
-									   "Digital Credit API provides Administration and User functionality through API Endpoints.",
-									   "API TOS",
-									   "Terms of Service",
-									   new Contact("Digital Credit",
-											       "www.demo.io", 
-											       "digitalcredit@demo.io"),
-									   "License of API",
-									   "API License URL",
-									   Collections.emptyList());
-		return apiInfo;
+		return new OpenAPI()
+			.info(apiInfo())
+			.components(new Components().addSecuritySchemes(JWT_TOKEN_REF,
+				new SecurityScheme()
+					.type(SecurityScheme.Type.APIKEY)
+					.in(SecurityScheme.In.HEADER)
+					.name(Constants.API_AUTH_HEADER)))
+			.addSecurityItem(new SecurityRequirement().addList(JWT_TOKEN_REF));
 	}
 	
-	private SecurityContext securityContext() {		
-	    return SecurityContext.builder()
-	      .securityReferences(
-	        Arrays.asList(new SecurityReference(JWT_TOKEN_REF, new AuthorizationScope[0])))
-	      .forPaths(PathSelectors.regex(API_REGEX_PATH))
-	      .build();
+	private Info apiInfo() {
+		
+		return new Info()
+			.title("Digital Credit API")
+			.description("Digital Credit API provides Administration and User functionality through API Endpoints.")
+			.version("API TOS")
+			.termsOfService("Terms of Service")
+			.contact(new Contact()
+				.name("Digital Bank")
+				.url("www.demo.io")
+				.email("digitalbank@demo.io"))
+			.license(new License()
+				.name("License of API")
+				.url("API License URL"));
 	}
-	
-
 }
-
