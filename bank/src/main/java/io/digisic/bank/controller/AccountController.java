@@ -1,6 +1,8 @@
 package io.digisic.bank.controller;
 
 import java.math.BigDecimal;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -11,6 +13,7 @@ import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -34,6 +37,7 @@ import io.digisic.bank.model.OwnershipType;
 import io.digisic.bank.model.TransactionType;
 import io.digisic.bank.model.security.Role;
 import io.digisic.bank.model.security.Users;
+import io.digisic.bank.security.sca.PaymentOtpService;
 import io.digisic.bank.service.AccountService;
 import io.digisic.bank.util.Constants;
 import io.digisic.bank.util.Messages;
@@ -43,6 +47,9 @@ import io.digisic.bank.util.Patterns;
 @Validated
 @RestController
 public class AccountController extends CommonController {
+	
+	@Autowired
+	private PaymentOtpService paymentOtpService;
 
 
 	private static final Logger LOG = LoggerFactory.getLogger(AccountController.class);
@@ -392,6 +399,14 @@ public class AccountController extends CommonController {
 						 							  + account.getAccountType().getOverdraftLimit() + ").");
 			}
 			
+			// Strong customer authentication: OTP bound to account, payee (cash) and amount
+			ResponseEntity<?> otpChallenge = requirePaymentOtp(authUser, PaymentOtpService.OP_WITHDRAW, account,
+					PaymentOtpService.PAYEE_CASH, transaction.getAmount(),
+					newTransaction.getOtpChallengeId(), newTransaction.getOtp());
+			if (otpChallenge != null) {
+				return otpChallenge;
+			}
+			
 			// Add new Debit Transaction
 			accountService.debitTransaction(account, transaction);
 			
@@ -431,6 +446,14 @@ public class AccountController extends CommonController {
 			}
 		}
 		
+		// Strong customer authentication: OTP bound to source account, payee account and amount
+		ResponseEntity<?> otpChallenge = requirePaymentOtp(authUser, PaymentOtpService.OP_TRANSFER, fromAccount,
+				PaymentOtpService.payeeAccount(toAccount.getId()), transfer.getAmount(),
+				transfer.getOtpChallengeId(), transfer.getOtp());
+		if (otpChallenge != null) {
+			return otpChallenge;
+		}
+		
 		accountService.transfer(fromAccount, toAccount, transaction);
 		
 		return ResponseEntity.ok(accountService.getLastTwoAccountTransactions(fromAccount));
@@ -458,6 +481,32 @@ public class AccountController extends CommonController {
 	/*
 	 * New Account
 	 */
+	/*
+	 * Returns null when a valid OTP for exactly this payment was supplied; otherwise issues a challenge
+	 * and returns 428 Precondition Required with its id. Resubmit the same payment with otpChallengeId + otp.
+	 */
+	private ResponseEntity<?> requirePaymentOtp(Users authUser, String operation, Account fromAccount, String payee,
+												BigDecimal amount, String otpChallengeId, String otp) {
+		
+		if (otpChallengeId != null && otp != null
+				&& paymentOtpService.verify(otpChallengeId, otp, authUser.getUsername(), operation,
+											fromAccount.getId(), payee, amount)) {
+			return null;
+		}
+		
+		String description = operation + " of $" + amount.toPlainString() + " from account " + fromAccount.getId() + " to " + payee;
+		PaymentOtpService.Challenge challenge =
+				paymentOtpService.issue(authUser, operation, fromAccount.getId(), payee, amount, description);
+		
+		Map<String, Object> body = new LinkedHashMap<>();
+		body.put("status", HttpStatus.PRECONDITION_REQUIRED.value());
+		body.put("error", otp == null ? "One-time passcode required" : "One-time passcode not valid for this payment");
+		body.put("otpChallengeId", challenge.getId());
+		body.put("expiresAt", challenge.getExpiresAt().toString());
+		
+		return ResponseEntity.status(HttpStatus.PRECONDITION_REQUIRED).body(body);
+	}
+	
 	private static class NewAccount {
 		
 		@Size(min = 1, max = 40)
@@ -498,6 +547,18 @@ public class AccountController extends CommonController {
 	 */
 	private static class NewTransaction {
 		
+		private String otpChallengeId;
+		
+		private String otp;
+		
+		public String getOtpChallengeId() {
+			return otpChallengeId;
+		}
+		
+		public String getOtp() {
+			return otp;
+		}
+		
 		@Positive (message=Messages.ACCT_TRAN_AMT_POSITIVE)
 		private BigDecimal amount;
 		
@@ -534,6 +595,18 @@ public class AccountController extends CommonController {
 	 * Transfer Funds
 	 */
 	private static class TransferFunds {
+		
+		private String otpChallengeId;
+		
+		private String otp;
+		
+		public String getOtpChallengeId() {
+			return otpChallengeId;
+		}
+		
+		public String getOtp() {
+			return otp;
+		}
 		
 		@NotNull (message="To Account is required")
 		private Long toAccountId;

@@ -39,6 +39,8 @@ public class UserService {
   
 	private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
   
+	private static final Logger AUDIT = LoggerFactory.getLogger("io.digisic.bank.audit");
+  
 	@Autowired
 	private UserRepository userRepository;
   
@@ -440,7 +442,11 @@ public class UserService {
 	 */
 	public void unlockUser (Users user, boolean unlock) {
 		user.setAccountNonLocked(unlock);
+		if (unlock) {
+			user.setFailedLoginAttempts(0);
+		}
 		userRepository.save(user);
+		AUDIT.warn("event={} user={} by=admin", unlock ? "ACCOUNT_UNLOCKED" : "ACCOUNT_LOCKED", user.getUsername());
 	}
 	
 	/*

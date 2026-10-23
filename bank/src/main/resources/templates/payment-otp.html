@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html class="no-js" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"> 
+
+<head th:replace="common/sections :: header-css"/>
+
+<body>
+
+	<!-- Left Panel -->
+	<aside th:replace="common/menus :: left-panel"></aside>
+
+    <!-- Right Panel -->
+	<div id="right-panel" class="right-panel">
+	
+		<header th:replace="common/menus :: rp-header"/>
+		
+		<div th:replace="common/menus :: rp-breadcrumbs (pageTitle='Confirm Payment')"/>
+    
+    	<!-- Page Content Begin -->
+	    	<div class="content mt-3">
+	            <div class="animated fadeIn">
+	                <div class="row">				
+		    			<div class="col-lg-12">
+	                    	<div class="card">
+                      			<div class="card-header bg-flat-color-1">
+                        			<strong class="card-title text-white">Confirm with One-Time Passcode</strong>
+                      			</div>
+	                      		<form id="otp-form" th:action="@{${otpAction}}" method="post">
+		                     		<div class="card-body card-block">
+	                   					<div class="form-group text-left">
+	                   						<div id="otp-error" class="sufee-alert alert with-close alert-danger alert-dismissible fade show" th:if="${errorMsg}">
+						                       <span class="badge badge-pill badge-danger">Error</span>
+						                         <span th:text="${errorMsg}"></span>
+						                   </div>
+						                   <div id="otp-info" class="sufee-alert alert alert-info fade show">
+						                       A one-time passcode has been sent to your registered device. It is valid only for the payment below.
+						                   </div>
+	                   					</div>
+	                   					<table id="otp-summary" class="table table-sm">
+	                   						<tr><th>Payment</th><td th:text="${otpOperation}"></td></tr>
+	                   						<tr><th>From</th><td th:text="${otpFrom}"></td></tr>
+	                   						<tr><th>Payee</th><td th:text="${otpPayee}"></td></tr>
+	                   						<tr><th>Amount</th><td th:text="|$${otpAmount}|"></td></tr>
+	                   					</table>
+	                   					<input type="hidden" th:each="f : ${otpFields}" th:name="${f.key}" th:value="${f.value}"/>
+	                   					<input type="hidden" name="otpChallengeId" th:value="${otpChallengeId}"/>
+		                        		<div class="row form-group">
+		                        			<div class="col col-sm-3">
+					                            <label class="form-control-label" for="otp"><strong>One-Time Passcode</strong></label>
+					                            <input type="text" class="form-control" id="otp" name="otp" required pattern="[0-9]{6}" autocomplete="one-time-code" inputmode="numeric" maxlength="6">
+					                        	<small class="form-text text-muted">6 digits</small>
+					                        </div>
+		                        		</div>		
+                      				</div>
+		                   			<div class="card-footer">
+		                     			<button id="otp-submit" type="submit" class="btn btn-primary btn-sm"><i class="fa fa-dot-circle-o"></i> Confirm</button>
+		                  			</div>
+                     			</form>
+                    		</div>
+                 		</div>
+                	</div>
+	            </div>
+	        </div>
+	    <!-- Page Content End -->
+	</div>
+    
+	<div th:replace="common/sections :: footer-scripts"></div>
+
+</body>
+</html>
