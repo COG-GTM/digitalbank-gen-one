@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import io.digisic.bank.exception.TransactionLimitException;
 import io.digisic.bank.model.Account;
 import io.digisic.bank.model.AccountTransaction;
 import io.digisic.bank.model.security.Users;
@@ -476,6 +477,16 @@ public class WebAccountController extends WebCommonController {
 			}
 		}
 		
+		// Per-transaction and daily payment limits
+		if (!bError) {
+			try {
+				accountService.validateDebit(account, accountTransaction.getAmount(), null);
+			} catch (TransactionLimitException e) {
+				model.addAttribute(MODEL_ATT_ERROR_MSG, e.getMessage());
+				bError = true;
+			}
+		}
+		
 		if (bError) {
 			
 			// Get all accounts
@@ -574,8 +585,13 @@ public class WebAccountController extends WebCommonController {
 						 									 + ") must be greater than $0.00");
 				}else {
 				
-					// Execute Transfer
-					accountService.transfer(fromAcct, toAcct, accountTransaction);
+					// Execute Transfer (payment limits are enforced by AccountService)
+					try {
+						accountService.transfer(fromAcct, toAcct, accountTransaction);
+					} catch (TransactionLimitException e) {
+						bError = true;
+						model.addAttribute(MODEL_ATT_ERROR_MSG, e.getMessage());
+					}
 				}
 			} else {
 				
