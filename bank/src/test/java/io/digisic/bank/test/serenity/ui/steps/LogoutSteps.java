@@ -1,9 +1,9 @@
 package io.digisic.bank.test.serenity.ui.steps;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.digisic.bank.test.serenity.ui.pom.LoginPage;
-import net.thucydides.core.annotations.Step;
+import net.serenitybdd.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 
 public class LogoutSteps extends ScenarioSteps{

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import com.github.javafaker.Faker;
 import net.serenitybdd.rest.SerenityRest;
-import net.thucydides.core.annotations.Step;
+import net.serenitybdd.annotations.Step;
 
 public class TestDataService {
 	

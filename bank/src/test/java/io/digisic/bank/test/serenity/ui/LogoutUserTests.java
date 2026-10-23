@@ -1,8 +1,8 @@
 package io.digisic.bank.test.serenity.ui;
 
-import cucumber.api.java.en.And;
+import io.cucumber.java.en.And;
 import io.digisic.bank.test.serenity.ui.steps.LogoutSteps;
-import net.thucydides.core.annotations.Steps;
+import net.serenitybdd.annotations.Steps;
 
 
 public class LogoutUserTests {
