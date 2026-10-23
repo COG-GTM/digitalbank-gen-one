@@ -1,0 +1,55 @@
+# =====================================================================
+# Parity overlay: points the bank at the recorded external-service
+# fixtures (tools/parity/mock_external.py) and mirrors the settings the
+# parity harness uses (tools/parity/start_stack.sh), so
+# tools/parity/replay.py can run against the compose ports.
+#   docker compose -f docker-compose.yml -f deploy/docker-compose/docker-compose-parity.yml up -d --build
+#   python3 tools/parity/replay.py --label compose --bank https://localhost:8443/bank \
+#       --credit https://localhost:3500/credit --mock http://127.0.0.1:8099 --out /tmp/parity/compose.json
+# Paths are relative to the repository root (the first compose file).
+# =====================================================================
+services:
+
+  mock:
+    image: python:3.12-slim
+    container_name: mock
+    hostname: mock
+    command: ["python3", "/parity/mock_external.py", "--bind", "0.0.0.0", "--port", "8099", "--spec-dir", "/spec"]
+    volumes:
+      - ./tools/parity:/parity:ro
+      - ./bank/src/test/resources/spec:/spec:ro
+    ports:
+      - "127.0.0.1:8099:8099"
+    networks:
+      - digitalnet
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8099/__mock/health')"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  credit:
+    environment:
+      IO_DIGISIC_CREDIT_APP_PROCESS_TIME: ${CREDIT_PROCESS_TIME:-5}
+
+  bank:
+    environment:
+      IO_DIGISIC_BANK_ATM_PROTOCOL: http
+      IO_DIGISIC_BANK_ATM_HOST: mock
+      IO_DIGISIC_BANK_ATM_PORT: 8099
+      IO_DIGISIC_BANK_VISA_PROTOCOL: http
+      IO_DIGISIC_BANK_VISA_HOST: mock
+      IO_DIGISIC_BANK_VISA_PORT: 8099
+      IO_DIGISIC_BANK_OBP_ENABLED: 'true'
+      IO_DIGISIC_BANK_OBP_PROTOCOL: http
+      IO_DIGISIC_BANK_OBP_HOST: mock
+      IO_DIGISIC_BANK_OBP_PORT: 8099
+      IO_DIGISIC_BANK_OBP_VERSION: v4.0.0
+      IO_DIGISIC_BANK_OBP_CONSUMER_KEY: parity-consumer-key
+      SPRING_H2_CONSOLE_ENABLED: 'true'
+      SPRING_H2_CONSOLE_PATH: /h2-console
+      SPRING_H2_CONSOLE_SETTINGS_WEB_ALLOW_OTHERS: 'false'
+    depends_on:
+      mock:
+        condition: service_healthy

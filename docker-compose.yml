@@ -1,13 +1,30 @@
-version: "3.5"
+# =====================================================================
+# Digital Bank estate (Java 21 / Spring Boot 3): broker + credit + bank
+# =====================================================================
+#   docker compose up -d --build        # H2 in-memory (default)
+#   ./digitalbank.sh up [h2|mysql|postgres|mssql] [--parity]
+# Bank   https://localhost:8443/bank    (jsmith@demo.io / Demo123!)
+# Credit https://localhost:3500/credit  (admin@demo.io / Demo123!)
+# Broker tcp://localhost:61616, console http://localhost:8161 (admin / admin)
+# Set MAVEN_MIRROR_URL to build behind a Maven Central mirror.
+name: digitalbank
+
 services:
 
 # =====================================================================
-# Digital Broker Service Configuration
+# Digital Broker Service Configuration (Apache Artemis 2.31)
 # =====================================================================
   broker:
-    image: digisic/digitalbroker:latest
+    image: digisic/digitalbroker:2.31.2
+    build:
+      context: ./broker
+      args:
+        MAVEN_MIRROR_URL: ${MAVEN_MIRROR_URL:-}
     container_name: broker
     hostname: broker
+    environment:
+      ARTEMIS_USER: admin
+      ARTEMIS_PASSWORD: admin
     ports:
       - "8161:8161"
       - "61616:61616"
@@ -17,9 +34,14 @@ services:
 
 # =====================================================================
 # Digital Credit Service Configuration
-# =====================================================================    
+# =====================================================================
   credit:
-    image: digisic/digitalcredit:latest
+    image: digisic/digitalcredit:java21
+    build:
+      context: .
+      dockerfile: credit/Dockerfile
+      args:
+        MAVEN_MIRROR_URL: ${MAVEN_MIRROR_URL:-}
     container_name: credit
     hostname: credit
     environment:
@@ -29,8 +51,7 @@ services:
 
       # Digital Broker Connection
       SPRING_ARTEMIS_MODE: native
-      SPRING_ARTEMIS_HOST: broker
-      SPRING_ARTEMIS_PORT: 61616
+      SPRING_ARTEMIS_BROKER_URL: tcp://broker:61616
       SPRING_ARTEMIS_USER: admin
       SPRING_ARTEMIS_PASSWORD: admin
 
@@ -43,45 +64,47 @@ services:
       IO_DIGISIC_PARTNER_CREDIT_APP_RESPONSE: CREDIT.APP.RESPONSE
 
     ports:
-      - "3500:8080"
-      - "3535:8443"
+      - "3500:3500" # HTTPS
     networks:
       - digitalnet
-    volumes:
-      - digitalcredit:/usr/local/tomcat/conf
     depends_on:
-      - broker
+      broker:
+        condition: service_healthy
     restart: unless-stopped
 
 # =====================================================================
 # Digital Bank Service Configuration
 # =====================================================================
   bank:
-    image: digisic/digitalbank:latest
+    image: digisic/digitalbank:java21
+    build:
+      context: .
+      dockerfile: bank/Dockerfile
+      args:
+        MAVEN_MIRROR_URL: ${MAVEN_MIRROR_URL:-}
     container_name: bank
     hostname: bank
     environment:
-    
+
       # Session Management
       SERVER_SERVLET_SESSION_TIMEOUT: 5m
       IO_DIGISIC_MAX_SESSIONS: 10000 # Set to 1 for single concurrent user session
 
       # Logging Options
       LOGGING_LEVEL_IO_DIGISIC_BANK: INFO
-      
+
       # Digital Broker connection
       SPRING_ARTEMIS_MODE: native
-      SPRING_ARTEMIS_HOST: broker
-      SPRING_ARTEMIS_PORT: 61616
+      SPRING_ARTEMIS_BROKER_URL: tcp://broker:61616
       SPRING_ARTEMIS_USER: admin
       SPRING_ARTEMIS_PASSWORD: admin
 
-      # Digital Credit Connection
+      # Digital Credit Connection (mutual TLS with the shared digisic keystore)
       IO_DIGISIC_CREDIT_ENABLED: 'true'
-      IO_DIGISIC_CREDIT_PROTOCOL: http
+      IO_DIGISIC_CREDIT_PROTOCOL: https
       IO_DIGISIC_CREDIT_HOST: credit
-      IO_DIGISIC_CREDIT_PORT: 8080 
-      IO_DIGISIC_CREDIT_CONTEXT-PATH: /credit
+      IO_DIGISIC_CREDIT_PORT: 3500
+      IO_DIGISIC_CREDIT_CONTEXT_PATH: /credit
       IO_DIGISIC_CREDIT_USERNAME: admin@demo.io
       IO_DIGISIC_CREDIT_PASSWORD: Demo123!
 
@@ -89,43 +112,37 @@ services:
       IO_DIGISIC_PARTNER_CREDIT_APP_REQUEST: CREDIT.APP.REQUEST
       IO_DIGISIC_PARTNER_CREDIT_APP_RESPONSE: CREDIT.APP.RESPONSE
 
-      # ATM Location Service Connection 
+      # ATM Location Service Connection
       IO_DIGISIC_BANK_ATM_PROTOCOL: https
-      IO_DIGISIC_BANK_ATM_HOST: bankingservices.io # uat-api.synapsefi.com #
-      IO_DIGISIC_BANK_ATM_PORT: 
+      IO_DIGISIC_BANK_ATM_HOST: bankingservices.io
+      IO_DIGISIC_BANK_ATM_PORT: ''
 
       # VISA Direct Payment Service
       IO_DIGISIC_BANK_VISA_PROTOCOL: https
       IO_DIGISIC_BANK_VISA_HOST: creditservices.io
-      IO_DIGISIC_BANK_VISA_PORT:
-      
+      IO_DIGISIC_BANK_VISA_PORT: ''
+
       # Open Banking API Service
       IO_DIGISIC_BANK_OBP_ENABLED: 'true'
       IO_DIGISIC_BANK_OBP_CONSUMER_KEY: vwfpvwfr1kngt0up2jelebzmvxrhst4vhxvw1jm3
       IO_DIGISIC_BANK_OBP_VERSION: v4.0.0
       IO_DIGISIC_BANK_OBP_PROTOCOL: https
       IO_DIGISIC_BANK_OBP_HOST: openbankingservices.io
-      IO_DIGISIC_BANK_OBP_PORT:
-      
+      IO_DIGISIC_BANK_OBP_PORT: ''
 
     ports:
-      - "8080:8080"
-      - "8443:8443"
+      - "8443:8443" # HTTPS
     networks:
       - digitalnet
-    volumes:
-      - digitalbank:/usr/local/tomcat/conf
     depends_on:
-      - broker
-      - credit
+      broker:
+        condition: service_healthy
+      credit:
+        condition: service_healthy
     restart: unless-stopped
-      
+
 # =====================================================================
 # Docker Network Configuration
 # =====================================================================
 networks:
   digitalnet:
-volumes:
-  digitalcredit:
-  digitalbank:
-

@@ -24,17 +24,17 @@
 
 set -e
 
-BROKER_HOME=/var/lib/
+BROKER_HOME=/var/lib/artemis-instance
 CONFIG_PATH=$BROKER_HOME/etc
-export BROKER_HOME OVERRIDE_PATH CONFIG_PATH
+export BROKER_HOME CONFIG_PATH
 
 echo CREATE_ARGUMENTS=${CREATE_ARGUMENTS}
 
 if ! [ -f ./etc/broker.xml ]; then
-    /opt/activemq-artemis/bin/artemis create ${CREATE_ARGUMENTS} .
+    # shellcheck disable=SC2086
+    /opt/activemq-artemis/bin/artemis create --user "${ARTEMIS_USER}" --password "${ARTEMIS_PASSWORD}" ${CREATE_ARGUMENTS} .
 else
     echo "broker already created, ignoring creation"
 fi
 
 exec ./bin/artemis "$@"
-

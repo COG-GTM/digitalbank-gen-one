@@ -17,21 +17,20 @@ spec:
     spec:
       containers:
       - name: digital-bank
-        image: digisic/digitalbank:latest
+        # Java 21 executable jar on eclipse-temurin:21-jre (bank/Dockerfile)
+        image: digisic/digitalbank:java21
         ports:
           - name: db-bank-port
-            containerPort: 8443  
+            containerPort: 8443
         env:
             # Debug Options
-            - name: LOGGING_LEVEL_IO_DEMO_BANK
+            - name: LOGGING_LEVEL_IO_DIGISIC_BANK
               value: "INFO"
             # Digital Broker connection
             - name: SPRING_ARTEMIS_MODE
               value: "native"
-            - name: SPRING_ARTEMIS_HOST
-              value: "digital-bank-broker-svc"
-            - name: SPRING_ARTEMIS_PORT
-              value: "61616"
+            - name: SPRING_ARTEMIS_BROKER_URL
+              value: "tcp://digital-bank-broker-svc:61616"
             - name: SPRING_ARTEMIS_USER
               value: "admin"
             - name: SPRING_ARTEMIS_PASSWORD
@@ -40,12 +39,12 @@ spec:
             - name: IO_DIGISIC_CREDIT_ENABLED
               value: "true"
             - name: IO_DIGISIC_CREDIT_PROTOCOL
-              value: "http"
+              value: "https"
             - name: IO_DIGISIC_CREDIT_HOST
               value: "digital-bank-credit-svc"
             - name: IO_DIGISIC_CREDIT_PORT
-              value: "8085"
-            - name: IO_DIGISIC_CREDIT_CONTEXT-PATH-PATH
+              value: "3500"
+            - name: IO_DIGISIC_CREDIT_CONTEXT_PATH
               value: "/credit"
             - name: IO_DIGISIC_CREDIT_USERNAME
               value: "admin@demo.io"
@@ -56,33 +55,47 @@ spec:
               value: "CREDIT.APP.REQUEST"
             - name: IO_DIGISIC_PARTNER_CREDIT_APP_RESPONSE
               value: "CREDIT.APP.RESPONSE"
-            # ATM Location Service Connection 
+            # ATM Location Service Connection
             - name: IO_DIGISIC_BANK_ATM_PROTOCOL
               value: "https"
             - name: IO_DIGISIC_BANK_ATM_HOST
-              value: "bankingservices.io"           
+              value: "bankingservices.io"
             - name: IO_DIGISIC_BANK_ATM_PORT
               value: ""
             # VISA Direct Payment Service
             - name: IO_DIGISIC_BANK_VISA_PROTOCOL
-              value: "https"     
-            - name: IO_DIGISIC_BANK_VISA_HOST  
-              value: "creditservices.io"   
+              value: "https"
+            - name: IO_DIGISIC_BANK_VISA_HOST
+              value: "creditservices.io"
             - name: IO_DIGISIC_BANK_VISA_PORT
-              value: "" 
+              value: ""
             # Open Banking API Service
             - name: IO_DIGISIC_BANK_OBP_ENABLED
-              value: "true"  
+              value: "true"
             - name: IO_DIGISIC_BANK_OBP_CONSUMER_KEY
-              value: "vwfpvwfr1kngt0up2jelebzmvxrhst4vhxvw1jm3"  
+              value: "vwfpvwfr1kngt0up2jelebzmvxrhst4vhxvw1jm3"
             - name: IO_DIGISIC_BANK_OBP_VERSION
-              value: "v4.0.0"  
+              value: "v4.0.0"
             - name: IO_DIGISIC_BANK_OBP_PROTOCOL
-              value: "https"         
+              value: "https"
             - name: IO_DIGISIC_BANK_OBP_HOST
-              value: ""     
+              value: "openbankingservices.io"
             - name: IO_DIGISIC_BANK_OBP_PORT
-              value: ""             
+              value: ""
+        readinessProbe:
+          httpGet:
+            scheme: HTTPS
+            path: /bank/api/v1/health
+            port: db-bank-port
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            scheme: HTTPS
+            path: /bank/api/v1/health
+            port: db-bank-port
+          initialDelaySeconds: 180
+          periodSeconds: 20
 
 ---
 
@@ -94,9 +107,9 @@ metadata:
 spec:
   selector:
     app: digital-bank
-    type: NodePort
   ports:
     - name: https
-      port: 8443  
-      targetPort:  db-bank-port
+      port: 8443
+      targetPort: db-bank-port
+
 
