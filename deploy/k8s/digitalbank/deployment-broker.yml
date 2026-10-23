@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: digital-bank-broker
-        image: digisic/digitalbroker:latest        
+        image: digisic/digitalbroker:2.1.0.3@sha256:85a262b77de2ab7a1cbaf2af52593ad40b7316ffc4b3fd1abe04767d4844085b        
         ports:
           - name: broker-port-1
             containerPort: 8161

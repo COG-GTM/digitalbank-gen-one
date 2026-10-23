@@ -16,13 +16,6 @@
     	<version>2.1.0</version>
 	</parent>
 
-	<repositories>
-		<repository>
-			<id>bintray-ca-sv</id>
-			<name>bintray-ca</name>
-			<url>https://dl.bintray.com/ca/sv/</url>
-		</repository>
-	</repositories>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -41,6 +34,10 @@
         <buildNumber>local</buildNumber>
         <revision>2.1.0.${buildNumber}</revision>
         <contextPathName>bank</contextPathName>
+        <!-- CodeSV tests only compile with -Pcodesv (artifact is no longer published) -->
+        <codesv.test.exclude>**/test/junit/search/**</codesv.test.exclude>
+        <jacoco.version>0.8.15</jacoco.version>
+        <accountservice.min.line.coverage>0.80</accountservice.min.line.coverage>
 	</properties>
 	
 	<dependencyManagement>
@@ -274,13 +271,6 @@
     		<scope>test</scope>
 		</dependency>
 
-		<!-- CodeSV public build -->
-		<dependency>
-			<groupId>com.broadcom.codesv</groupId>
-			<artifactId>codesv-dist-jar</artifactId>
-			<version>2.0.8</version>
-			<scope>test</scope>
-		</dependency>
 
 	</dependencies>
 	
@@ -339,7 +329,6 @@
                     <skip>${skipUnitTests}</skip>
                     <forkCount>2</forkCount>
                     <threadCount>1</threadCount>
-                    <argLine></argLine>
                 </configuration>
             </plugin>
             <plugin>
@@ -349,7 +338,55 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <testExcludes>
+                        <testExclude>${codesv.test.exclude}</testExclude>
+                    </testExcludes>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>check-accountservice-coverage</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <haltOnFailure>true</haltOnFailure>
+                            <rules>
+                                <rule>
+                                    <element>CLASS</element>
+                                    <includes>
+                                        <include>io.digisic.bank.service.AccountService</include>
+                                    </includes>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>${accountservice.min.line.coverage}</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -393,4 +430,29 @@
             </plugin> 
 		</plugins>
 	</build>
+	<profiles>
+		<!-- CodeSV-virtualised ATM search tests. com.broadcom.codesv:codesv-dist-jar was only
+		     published to Bintray (shut down), so these tests need a locally installed artifact. -->
+		<profile>
+			<id>codesv</id>
+			<properties>
+				<codesv.test.exclude>none</codesv.test.exclude>
+			</properties>
+			<repositories>
+				<repository>
+					<id>bintray-ca-sv</id>
+					<name>bintray-ca</name>
+					<url>https://dl.bintray.com/ca/sv/</url>
+				</repository>
+			</repositories>
+			<dependencies>
+				<dependency>
+					<groupId>com.broadcom.codesv</groupId>
+					<artifactId>codesv-dist-jar</artifactId>
+					<version>2.0.8</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 </project>

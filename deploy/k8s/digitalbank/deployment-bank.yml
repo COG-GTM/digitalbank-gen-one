@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: digital-bank
-        image: digisic/digitalbank:latest
+        image: digisic/digitalbank:2.1.0.12@sha256:e828a7c859025f5dec03a6a311a1386c1808f70d4eeb267734a29b8a85e4d8f5
         ports:
           - name: db-bank-port
             containerPort: 8443  

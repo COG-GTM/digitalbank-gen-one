@@ -25,7 +25,7 @@ Digital Bank is a sample application that was developed for exploratory purposes
 ## Packaging
 
 * To create a deployment package, execute "mvn clean package -DbuildNumber={###}"
-* To create a new Docker image, update the [Dockerfile](Dockerfile) with the latest build number and then execute "docker build -t {imageName}:{imageTag} ."
+* Docker images are built from source by CI (.github/workflows/ci.yml) and tagged with the git commit SHA. To build locally from the repository root: "docker build -f bank/Dockerfile --build-arg GIT_SHA=$(git rev-parse HEAD) -t {imageName}:$(git rev-parse --short HEAD) ."
 
 ## Deployment
 
