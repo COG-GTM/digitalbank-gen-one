@@ -382,14 +382,14 @@ public class AccountController extends CommonController {
 		if (bDebit) {
 			
 			// check that amount is not greater than available
-			BigDecimal maxAvailable = account.getCurrentBalance().add(account.getAccountType().getOverdraftLimit());
+			BigDecimal maxAvailable = account.getCurrentBalance().add(accountService.getOverdraftLimit(account));
 			
 			if (transaction.getAmount().compareTo(maxAvailable) == 1) {
 				throw new RestNotAcceptableException ("The withdraw amount ($" 
 						 							  + transaction.getAmount()
 						 							  + ") is greater than the available balance ($"
 						 							  + account.getCurrentBalance() + ") and overdraft limit ($"
-						 							  + account.getAccountType().getOverdraftLimit() + ").");
+						 							  + accountService.getOverdraftLimit(account) + ").");
 			}
 			
 			// Add new Debit Transaction

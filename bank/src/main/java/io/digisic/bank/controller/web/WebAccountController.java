@@ -461,7 +461,7 @@ public class WebAccountController extends WebCommonController {
 		} else {
 			
 			// check that amount is not greater than available
-			BigDecimal maxAvailable = account.getCurrentBalance().add(account.getAccountType().getOverdraftLimit());
+			BigDecimal maxAvailable = account.getCurrentBalance().add(accountService.getOverdraftLimit(account));
 			
 			if (accountTransaction.getAmount().compareTo(maxAvailable) == 1) {
 				
@@ -470,7 +470,7 @@ public class WebAccountController extends WebCommonController {
 														 + accountTransaction.getAmount()
 														 + ") is greater than the available balance ($"
 														 + account.getCurrentBalance() + ") and overdraft limit ($"
-														 + account.getAccountType().getOverdraftLimit() + ").");
+														 + accountService.getOverdraftLimit(account) + ").");
 				
 				bError = true;
 			}

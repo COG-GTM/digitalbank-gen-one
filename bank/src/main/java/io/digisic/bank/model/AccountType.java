@@ -24,6 +24,9 @@ public class AccountType {
 	private BigDecimal overdraftLimit;
 	private BigDecimal overdraftFee;
 	
+	// Annual overdraft interest rate (percent), accrued daily on the overdrawn balance
+	private BigDecimal overdraftInterestRate;
+	
 	// default constructor
 	public AccountType () {}
 	
@@ -37,6 +40,14 @@ public class AccountType {
 		this.minDeposit = minDeposit;
 		this.overdraftLimit = overdraftLimit;
 		this.overdraftFee = overdraftFee;
+	}
+	
+	public AccountType (String code, String category, String name, double interestRate, 
+						BigDecimal minDeposit, BigDecimal overdraftLimit, BigDecimal overdraftFee,
+						BigDecimal overdraftInterestRate) {
+		
+		this(code, category, name, interestRate, minDeposit, overdraftLimit, overdraftFee);
+		this.overdraftInterestRate = overdraftInterestRate;
 	}
 	
 	/**
@@ -147,6 +158,20 @@ public class AccountType {
 		this.overdraftFee = overdraftFee;
 	}
 
+	/**
+	 * @return the annual overdraft interest rate (percent)
+	 */
+	public BigDecimal getOverdraftInterestRate() {
+		return overdraftInterestRate;
+	}
+
+	/**
+	 * @param overdraftInterestRate the annual overdraft interest rate (percent) to set
+	 */
+	public void setOverdraftInterestRate(BigDecimal overdraftInterestRate) {
+		this.overdraftInterestRate = overdraftInterestRate;
+	}
+
 	public String toString() {
 	    
 		String accountType = "\n\nAccount Type ***********************";
@@ -159,6 +184,7 @@ public class AccountType {
 		accountType += "\nMinimum Deposit:\t" 	+ this.getMinDeposit();
 		accountType += "\nOverdraft Limit:\t" 	+ this.getOverdraftLimit();
 		accountType += "\nOverdraft Fee:\t" 	+ this.getOverdraftFee();
+		accountType += "\nOverdraft Rate:\t" 	+ this.getOverdraftInterestRate();
 	    
 	    return accountType;
 	    

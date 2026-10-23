@@ -140,10 +140,11 @@ public class DefaultData implements CommandLineRunner, Ordered {
 			
 			List<AccountType> accountTypes = new ArrayList<AccountType>();
 			
-			accountTypes.add(new AccountType("SCK", "CHK", "Standard Checking", 0.00, new BigDecimal(25.00), new BigDecimal(25.00), new BigDecimal(10.00)));
-			accountTypes.add(new AccountType("ICK", "CHK", "Interest Checking", 0.50, new BigDecimal(25.00), new BigDecimal(25.00), new BigDecimal(10.00)));
-			accountTypes.add(new AccountType("SAV", "SAV", "Savings", 1.85, new BigDecimal(25.00), new BigDecimal(25.00), new BigDecimal(10.00)));
-			accountTypes.add(new AccountType("MMA", "SAV", "Money Market", 2.02, new BigDecimal(2500.00), new BigDecimal(25.00), new BigDecimal(10.00)));
+			// Overdraft cost is a single annual interest rate (no fixed fees); savings products cannot go overdrawn
+			accountTypes.add(new AccountType("SCK", "CHK", "Standard Checking", 0.00, new BigDecimal(25.00), new BigDecimal(25.00), BigDecimal.ZERO, new BigDecimal("39.90")));
+			accountTypes.add(new AccountType("ICK", "CHK", "Interest Checking", 0.50, new BigDecimal(25.00), new BigDecimal(25.00), BigDecimal.ZERO, new BigDecimal("39.90")));
+			accountTypes.add(new AccountType("SAV", "SAV", "Savings", 1.85, new BigDecimal(25.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO));
+			accountTypes.add(new AccountType("MMA", "SAV", "Money Market", 2.02, new BigDecimal(2500.00), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO));
 			accountTypes.add(new AccountType("CDA", "INV", "Certificate of Deposit", 3.25, new BigDecimal(2000.00), new BigDecimal(0.00), new BigDecimal(0.00)));
 			accountTypes.add(new AccountType("IRA", "INV", "Individual Retirement", 2.68, new BigDecimal(1000.00), new BigDecimal(0.00), new BigDecimal(0.00)));
 			accountTypes.add(new AccountType("AUT", "LON", "Auto Loan", 4.21, new BigDecimal(0.00), new BigDecimal(0.00), new BigDecimal(0.00)));

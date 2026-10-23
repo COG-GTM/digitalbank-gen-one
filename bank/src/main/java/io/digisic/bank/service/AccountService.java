@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.digisic.bank.exception.OverdraftNotPermittedException;
 import io.digisic.bank.model.Account;
 import io.digisic.bank.model.AccountStanding;
 import io.digisic.bank.model.AccountTransaction;
@@ -38,6 +39,8 @@ import io.digisic.bank.util.Constants;
 public class AccountService {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
+	
+	private static final int DAYS_PER_YEAR = 365;
 	
 	@Autowired
 	private AccountRepository accountRepository;
@@ -442,11 +445,12 @@ public class AccountService {
 		
 		BigDecimal balance = account.getCurrentBalance();
 		BigDecimal amount = accountTransaction.getAmount();
-		boolean overdraft = false;
 		
-		// if the withdraw is greater than the balance, charge a fee
-		if (amount.compareTo(balance) == 1) {
-			overdraft = true;
+		// Savings products may not go overdrawn
+		if (!isOverdraftPermitted(account) && amount.compareTo(balance) == 1) {
+			throw new OverdraftNotPermittedException("The withdraw amount (" + amount
+													 + ") is greater than the available balance (" + balance
+													 + "). Overdrafts are not permitted on savings accounts.");
 		}
 		
 		// Convert amount to a negative number since it is a withdraw
@@ -475,15 +479,6 @@ public class AccountService {
 		
 		// Update Account
 		accountRepository.save(account);
-		
-		
-		
-		// if there is a fee, then add that transaction
-		if (overdraft) {
-			
-			this.overdraftCharge(account, accountTransaction);
-		}
-	
 		
 		LOG.debug("Debit Transaction from Account: Account Updated.");
 		
@@ -696,45 +691,104 @@ public class AccountService {
 	}
 	
 	/*
-	 * Creates an Overdraft transaction to apply an overdraft fee
+	 * Overdrafts are only permitted on non-savings products (e.g. checking)
 	 */
-	private void overdraftCharge (Account account, AccountTransaction offender) {
+	public boolean isOverdraftPermitted (Account account) {
+		return !isSavingsAccount(account);
+	}
+	
+	/*
+	 * Arranged overdraft limit for the account. Savings products have no overdraft.
+	 */
+	public BigDecimal getOverdraftLimit (Account account) {
 		
-		LOG.debug("Overdraft Charge: Charge fee for overdraft.");
+		BigDecimal limit = account.getAccountType().getOverdraftLimit();
 		
-		// Add seconds to current date/time to differentiate transactions on sort
-		int seconds = 15;
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(offender.getTransactionDate());
-		calendar.add(Calendar.SECOND, seconds);
-		List<AccountTransaction> transList = account.getAcountTransactionList();
+		if (!isOverdraftPermitted(account) || limit == null) {
+			return BigDecimal.ZERO;
+		}
 		
-		AccountTransaction overTrans = new AccountTransaction();
-		BigDecimal overFee = account.getAccountType().getOverdraftFee();
+		return limit;
+	}
+	
+	/*
+	 * Daily overdraft interest: overdrawn balance x annual rate / 365.
+	 * Overdraft cost is a single annual rate of interest (FCA CONC 5C); no fixed fees.
+	 */
+	public BigDecimal calculateDailyOverdraftInterest (Account account) {
 		
-		// Convert amount to a negative number since it is a debit
-		BigDecimal negOne = new BigDecimal(-1);
-		overFee = overFee.multiply(negOne);
+		BigDecimal balance = account.getCurrentBalance();
+		BigDecimal annualRate = account.getAccountType().getOverdraftInterestRate();
 		
-		BigDecimal currentBalance = account.getCurrentBalance();
-		BigDecimal updatedBalance = currentBalance.add(overFee);
+		if (balance == null || balance.signum() >= 0 || annualRate == null || annualRate.signum() <= 0
+				|| !isOverdraftPermitted(account)) {
+			return BigDecimal.ZERO.setScale(2);
+		}
+		
+		return balance.negate()
+					  .multiply(annualRate)
+					  .divide(new BigDecimal(100 * DAYS_PER_YEAR), 2, RoundingMode.HALF_UP);
+	}
+	
+	/*
+	 * Post one day of overdraft interest to the account, if it is overdrawn.
+	 * Returns the interest charged (zero if nothing was posted).
+	 */
+	public BigDecimal accrueOverdraftInterest (Account account, Date accrualDate) {
+		
+		account = this.getAccountById(account.getId());
+		
+		if (hasOverdraftInterestFor(account, accrualDate)) {
+			return BigDecimal.ZERO.setScale(2);
+		}
+		
+		BigDecimal interest = calculateDailyOverdraftInterest(account);
+		
+		if (interest.signum() <= 0) {
+			return interest;
+		}
+		
+		LOG.debug("Overdraft Interest: Account ID: -> " + account.getId() + " Interest: -> " + interest);
+		
+		BigDecimal updatedBalance = account.getCurrentBalance().subtract(interest);
 		account.setCurrentBalance(updatedBalance);
 		
-		overTrans.setRunningBalance(updatedBalance);
-		overTrans.setAmount(overFee);
-		overTrans.setDescription("Overdraft Fee for transaction " + offender.getTransactionNumber());
-		overTrans.setTransactionCategory(transactionCategoryRepository.findByCode(Constants.ACCT_TRAN_CAT_FEE_CODE));
-		overTrans.setTransactionDate(calendar.getTime());
-		overTrans.setTransactionState(transactionStateRepository.findByCode(Constants.ACCT_TRAN_ST_COMP_CODE));
-		overTrans.setTransactionType(transactionTypeRepository.findByCode(Constants.ACCT_TRAN_TYPE_OVERDRAFT_FEE_CODE));
-		overTrans.setAccount(account);
-		transList.add(overTrans);
+		AccountTransaction interestTrans = new AccountTransaction();
+		interestTrans.setRunningBalance(updatedBalance);
+		interestTrans.setAmount(interest.negate());
+		interestTrans.setDescription("Overdraft Interest (" + account.getAccountType().getOverdraftInterestRate() + "% p.a.)");
+		interestTrans.setTransactionCategory(transactionCategoryRepository.findByCode(Constants.ACCT_TRAN_CAT_FEE_CODE));
+		interestTrans.setTransactionDate(accrualDate);
+		interestTrans.setTransactionState(transactionStateRepository.findByCode(Constants.ACCT_TRAN_ST_COMP_CODE));
+		interestTrans.setTransactionType(transactionTypeRepository.findByCode(Constants.ACCT_TRAN_TYPE_OVERDRAFT_CODE));
+		interestTrans.setAccount(account);
 		
+		List<AccountTransaction> transList = account.getAcountTransactionList();
+		transList.add(interestTrans);
 		account.setAcountTransactionList(transList);
 		
-		// Update Account
 		accountRepository.save(account);
-
+		
+		return interest;
+	}
+	
+	/*
+	 * At most one overdraft interest charge per account per calendar day.
+	 */
+	private boolean hasOverdraftInterestFor (Account account, Date accrualDate) {
+		
+		Calendar day = Calendar.getInstance();
+		day.setTime(accrualDate);
+		day.set(Calendar.HOUR_OF_DAY, 0);
+		day.set(Calendar.MINUTE, 0);
+		day.set(Calendar.SECOND, 0);
+		day.set(Calendar.MILLISECOND, 0);
+		Date dayStart = day.getTime();
+		day.add(Calendar.DAY_OF_MONTH, 1);
+		Date dayEnd = new Date(day.getTimeInMillis() - 1);
+		
+		return accountTransactionRepository.existsByAccountAndTransactionTypeCodeAndTransactionDateBetween(
+				account, Constants.ACCT_TRAN_TYPE_OVERDRAFT_CODE, dayStart, dayEnd);
 	}
 
 }
