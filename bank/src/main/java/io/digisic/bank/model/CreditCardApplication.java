@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.digisic.bank.util.Patterns;
+import io.digisic.bank.util.PiiMasker;
 
 public class CreditCardApplication {
 	
@@ -403,8 +404,8 @@ public class CreditCardApplication {
 	    app += "\nFrist Name:\t\t" 		+ this.getFirstName();
 	    app += "\nLast Name:\t\t" 		+ this.getLastName();
 	    app += "\nEmail Address:\t\t" 	+ this.getEmailAddress();
-	    app += "\nSSN:\t\t\t" 			+ this.getSsn();
-	    app += "\nDOB:\t\t\t" 			+ this.getDob();
+	    app += "\nSSN:\t\t\t" 			+ PiiMasker.maskSsn(this.getSsn());
+	    app += "\nDOB:\t\t\t" 			+ PiiMasker.maskDate(this.getDob());
 	    app += "\nGender:\t\t\t" 		+ this.getGender();
 	    
 	    app += "\n*** Contact Information ***********************";
