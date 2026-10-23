@@ -9,6 +9,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +49,9 @@ import io.digisic.bank.util.Constants;
 public class AccountService {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
+	
+	@PersistenceContext
+	private EntityManager entityManager;
 	
 	@Autowired
 	private AccountRepository accountRepository;
@@ -374,7 +380,8 @@ public class AccountService {
 	 * Delete an Account
 	 */
 	public void deleteAccount (Account account) {
-		pendingTransactionRepository.deleteByAccountOrToAccount(account, account);
+		pendingTransactionRepository.deleteByAccountAndStatusOrToAccountAndStatus(account, PendingTransaction.STATUS_PENDING,
+																					  account, PendingTransaction.STATUS_PENDING);
 		accountRepository.delete(account);
 	}
 	
@@ -383,7 +390,8 @@ public class AccountService {
 	 */
 	public void deleteAllAccounts(Users user) {
 		for (Account account : accountRepository.findByOwner(user)) {
-			pendingTransactionRepository.deleteByAccountOrToAccount(account, account);
+			pendingTransactionRepository.deleteByAccountAndStatusOrToAccountAndStatus(account, PendingTransaction.STATUS_PENDING,
+																					  account, PendingTransaction.STATUS_PENDING);
 		}
 		accountRepository.deleteByOwner(user);
 	}
@@ -709,6 +717,12 @@ public class AccountService {
 			debitTransaction(pending.getAccount(), transaction);
 		} else {
 			creditTransaction(pending.getAccount(), transaction);
+			
+			if (PendingTransaction.OPENING_DEPOSIT.equals(pending.getDescription())) {
+				Account opened = this.getAccountById(pending.getAccount().getId());
+				opened.setOpeningBalance(pending.getAmount());
+				accountRepository.save(opened);
+			}
 		}
 		
 		return decide(pending, checker, PendingTransaction.STATUS_APPROVED);
@@ -756,7 +770,13 @@ public class AccountService {
 	
 	private Account getAccountByIdForUpdate(Long id) {
 		Optional<Account> act = accountRepository.findByIdForUpdate(id);
-		return act.isPresent() ? act.get() : getAccountById(id);
+		Account account = act.isPresent() ? act.get() : getAccountById(id);
+		
+		// The row is locked, but an instance already in the persistence context keeps its old state; reload it
+		if (entityManager != null && entityManager.contains(account)) {
+			entityManager.refresh(account);
+		}
+		return account;
 	}
 	
 	/*

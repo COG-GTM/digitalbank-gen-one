@@ -30,6 +30,7 @@ import io.digisic.bank.exception.RestNotAcceptableException;
 import io.digisic.bank.exception.RestObjectNotFoundException;
 import io.digisic.bank.model.Account;
 import io.digisic.bank.model.AccountTransaction;
+import io.digisic.bank.model.PendingTransaction;
 import io.digisic.bank.model.AccountType;
 import io.digisic.bank.model.OwnershipType;
 import io.digisic.bank.model.TransactionType;
@@ -267,7 +268,7 @@ public class AccountController extends CommonController {
 			// Admin-initiated opening deposit is held for a second approver (maker-checker)
 			AccountTransaction openingDeposit = new AccountTransaction();
 			openingDeposit.setAmount(account.getOpeningDeposit());
-			openingDeposit.setDescription("Opening Deposit");
+			openingDeposit.setDescription(PendingTransaction.OPENING_DEPOSIT);
 			openingDeposit.setTransactionType(accountService.getTransactionTypeByCode(Constants.ACCT_TRAN_TYPE_DEPOSIT_CODE));
 			accountService.submitForApproval(newAccount, null, openingDeposit, false, getAuthenticatedUser());
 			

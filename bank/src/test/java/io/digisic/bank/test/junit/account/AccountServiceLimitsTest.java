@@ -294,7 +294,7 @@ public class AccountServiceLimitsTest {
 		accountService.deleteAccount(account);
 
 		org.mockito.InOrder order = org.mockito.Mockito.inOrder(pendingTransactionRepository, accountRepository);
-		order.verify(pendingTransactionRepository).deleteByAccountOrToAccount(account, account);
+		order.verify(pendingTransactionRepository).deleteByAccountAndStatusOrToAccountAndStatus(account, "PENDING", account, "PENDING");
 		order.verify(accountRepository).delete(account);
 	}
 
