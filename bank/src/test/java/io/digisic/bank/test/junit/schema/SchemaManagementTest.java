@@ -47,6 +47,7 @@ public class SchemaManagementTest {
 	public void prodProfileDisablesHibernateSchemaManagement() throws IOException {
 		Properties prod = PropertiesLoaderUtils.loadProperties(new ClassPathResource("application-prod.properties"));
 		assertThat(prod.getProperty("spring.jpa.hibernate.ddl-auto")).isEqualTo("none");
+		assertThat(prod.getProperty("spring.flyway.baseline-on-migrate")).isEqualTo("false");
 	}
 
 	@Test
