@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import io.digisic.bank.model.Account;
@@ -669,11 +673,19 @@ public class WebAccountController extends WebCommonController {
 									 String otpChallengeId, String otp, String action,
 									 Map<String, String> otpFields) {
 		
+		if (paymentOtpService.isLocked(user.getUsername())) {
+			return lockedOut();
+		}
+		
 		if (otpChallengeId != null && otp != null && !otp.trim().isEmpty()) {
 			
 			if (paymentOtpService.verify(otpChallengeId, otp, user.getUsername(), operation,
 										 fromAcct.getId(), payee, amount)) {
 				return null;
+			}
+			
+			if (paymentOtpService.isLocked(user.getUsername())) {
+				return lockedOut();
 			}
 			
 			model.addAttribute(MODEL_ATT_ERROR_MSG, "The one-time passcode is not valid for this payment.");
@@ -696,6 +708,18 @@ public class WebAccountController extends WebCommonController {
 		model.addAttribute("otpAmount", amount.toPlainString());
 		
 		return Constants.VIEW_PAYMENT_OTP;
+	}
+	
+	private String lockedOut() {
+		
+		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest().getSession(false);
+		if (session != null) {
+			session.invalidate();
+		}
+		SecurityContextHolder.clearContext();
+		
+		return "redirect:" + Constants.URI_LOGIN_LOCKED;
 	}
 	
 	private static String describe(Account account) {

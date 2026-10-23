@@ -11,6 +11,7 @@ public class Messages {
 	
 	// API Authentication
 	public static final String API_INVALID_TOKEN		= "Expired or Invalid Json Web Token";
+	public static final String API_ACCOUNT_LOCKED		= "User account is locked";
 	public static final String API_INVALID_CRED			= "Invalid Credentials, Authentication Failed";
 	
 	

@@ -2,6 +2,7 @@ package io.digisic.bank.test.junit.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
@@ -128,6 +129,24 @@ public class StrongCustomerAuthenticationTest {
 		}
 
 		assertTrue(userService.findByUsername(username).isAccountNonLocked(), "failures are not consecutive across a success");
+	}
+
+	@Test
+	public void lockedUserJwtIsRejected() throws Exception {
+
+		String username = createUser();
+		String token = userService.authenticateUser(username, PASSWORD);
+
+		int before = mvc.perform(get("/api/v1/user/account").header("Authorization", "Bearer " + token))
+				.andReturn().getResponse().getStatus();
+		assertNotEquals(400, before, "token works while the user is unlocked");
+
+		for (int i = 1; i <= 5; i++) {
+			mvc.perform(formLogin("/login").user(username).password("wrong-" + i));
+		}
+
+		mvc.perform(get("/api/v1/user/account").header("Authorization", "Bearer " + token))
+			.andExpect(status().isBadRequest());
 	}
 
 	// ---------------------------------------------------------------- payment OTP (web)

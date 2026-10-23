@@ -494,11 +494,18 @@ public class AccountController extends CommonController {
 			return null;
 		}
 		
+		Map<String, Object> body = new LinkedHashMap<>();
+		
+		if (paymentOtpService.isLocked(authUser.getUsername())) {
+			body.put("status", HttpStatus.LOCKED.value());
+			body.put("error", Messages.API_ACCOUNT_LOCKED);
+			return ResponseEntity.status(HttpStatus.LOCKED).body(body);
+		}
+		
 		String description = operation + " of $" + amount.toPlainString() + " from account " + fromAccount.getId() + " to " + payee;
 		PaymentOtpService.Challenge challenge =
 				paymentOtpService.issue(authUser, operation, fromAccount.getId(), payee, amount, description);
 		
-		Map<String, Object> body = new LinkedHashMap<>();
 		body.put("status", HttpStatus.PRECONDITION_REQUIRED.value());
 		body.put("error", otp == null ? "One-time passcode required" : "One-time passcode not valid for this payment");
 		body.put("otpChallengeId", challenge.getId());

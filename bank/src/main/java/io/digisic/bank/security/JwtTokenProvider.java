@@ -65,6 +65,10 @@ public class JwtTokenProvider {
 	public Authentication getAuthentication(String token) {
 		
 		UserDetails userDetails = userSecurityService.loadUserByUsername(getUsername(token));
+
+		if (!userDetails.isAccountNonLocked()) {
+			throw new RestInvalidArguementException(Messages.API_ACCOUNT_LOCKED);
+		}
 	    
 		return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 	}

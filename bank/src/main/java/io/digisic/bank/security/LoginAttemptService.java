@@ -10,7 +10,6 @@ import org.springframework.security.authentication.event.AuthenticationFailureBa
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.stereotype.Component;
 
-import io.digisic.bank.model.security.Users;
 import io.digisic.bank.repository.UserRepository;
 
 /*
@@ -32,24 +31,19 @@ public class LoginAttemptService {
 	public void onFailure(AuthenticationFailureBadCredentialsEvent event) {
 
 		String username = String.valueOf(event.getAuthentication().getPrincipal());
-		Users user = userRepository.findByUsername(username);
 
-		if (user == null) {
+		if (userRepository.incrementFailedLoginAttempts(username) == 0) {
 			AUDIT.warn("event=LOGIN_FAILURE user={} reason=unknown_user", username);
 			return;
 		}
 
-		int failures = user.getFailedLoginAttempts() + 1;
-		user.setFailedLoginAttempts(failures);
+		Integer failures = userRepository.findFailedLoginAttempts(username);
 
 		AUDIT.warn("event=LOGIN_FAILURE user={} consecutiveFailures={}", username, failures);
 
-		if (failures >= maxFailedLogins && user.isAccountNonLocked()) {
-			user.setAccountNonLocked(false);
+		if (failures != null && failures >= maxFailedLogins && userRepository.lock(username) == 1) {
 			AUDIT.warn("event=ACCOUNT_LOCKED user={} reason=max_failed_logins consecutiveFailures={}", username, failures);
 		}
-
-		userRepository.save(user);
 	}
 
 	@EventListener
@@ -59,11 +53,6 @@ public class LoginAttemptService {
 			return;
 		}
 
-		Users user = userRepository.findByUsername(event.getAuthentication().getName());
-
-		if (user != null && user.getFailedLoginAttempts() != 0) {
-			user.setFailedLoginAttempts(0);
-			userRepository.save(user);
-		}
+		userRepository.resetFailedLoginAttempts(event.getAuthentication().getName());
 	}
 }
