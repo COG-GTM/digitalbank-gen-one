@@ -43,8 +43,12 @@ public class ArtemisLegacyPropertiesConfig {
 		if (StringUtils.hasText(brokerUrl) || (!StringUtils.hasText(host) && !StringUtils.hasText(port))) {
 			return null;
 		}
-		return "tcp://" + (StringUtils.hasText(host) ? host.trim() : DEFAULT_HOST) + ":"
+		return "tcp://" + uriHost(StringUtils.hasText(host) ? host.trim() : DEFAULT_HOST) + ":"
 				+ (StringUtils.hasText(port) ? port.trim() : DEFAULT_PORT);
+	}
+
+	static String uriHost(String host) {
+		return host.indexOf(':') >= 0 && !host.startsWith("[") ? "[" + host + "]" : host;
 	}
 
 }
