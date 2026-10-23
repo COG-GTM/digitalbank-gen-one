@@ -19,13 +19,14 @@ Controls are split between what lives in the repository and what only a GitHub a
 | Change-risk statement and reviewer attestation on every PR | `.github/pull_request_template.md` | Reviewers; un-completed templates must not be approved |
 | CODEOWNERS / template / this document cannot silently regress | `bank/src/test/java/io/digisic/bank/test/junit/governance/GovernanceControlsTest.java`, run by `scripts/governance/check-codeowners.sh` and the `governance-checks` workflow | Required status check (section 2) |
 
-Owner teams used in CODEOWNERS:
+Owner teams used in CODEOWNERS. GitHub accepts approval from *any one* owner listed on the
+matching line, so security-sensitive paths list only the security team.
 
 | Team | Owns |
 | --- | --- |
 | `@COG-GTM/digitalbank-maintainers` | Everything (default rule) |
 | `@COG-GTM/digitalbank-payments-owners` | `**/service/` and `**/controller/` under `bank/` and `credit/` `src/main/java` |
-| `@COG-GTM/digitalbank-security-owners` | `**/security/`, `**/config/`, `src/main/resources/*.properties`, `.github/`, `docs/governance/`, `scripts/governance/` |
+| `@COG-GTM/digitalbank-security-owners` | `**/security/`, `**/config/`, `src/main/resources/*.properties`; authentication classes (`*Authentication*.java`, `*Security*.java`) even inside `service/`/`controller/`; TLS (`server.xml`, `keystore/`, `*.jks`, `*.p12`, `*.pfx`, `*.pem`, `*.key`, `*.crt`); `.github/`, `docs/governance/`, `scripts/governance/` |
 
 Run the check locally before changing CODEOWNERS:
 

@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -38,6 +39,8 @@ public class GovernanceControlsTest {
 	private static final Pattern OWNER_FORMAT =
 			Pattern.compile("@[A-Za-z0-9-]+(/[A-Za-z0-9._-]+)?|[^@\\s]+@[^@\\s]+\\.[^@\\s]+");
 
+	private static final Pattern TLS_MATERIAL = Pattern.compile(".*\\.(jks|p12|pfx|pem|key|crt)");
+
 	private final Path root = repoRoot();
 
 	@Test
@@ -46,10 +49,38 @@ public class GovernanceControlsTest {
 		assertDedicatedOwner("controller", PAYMENTS_OWNERS);
 	}
 
+	private static boolean isAuthenticationClass(String path) {
+		String name = path.substring(path.lastIndexOf('/') + 1);
+		return name.contains("Authentication") || name.contains("Security");
+	}
+
 	@Test
 	public void codeownersAssignsSecurityOwnersToEverySecurityAndConfigFile() throws IOException {
 		assertDedicatedOwner("security", SECURITY_OWNERS);
 		assertDedicatedOwner("config", SECURITY_OWNERS);
+	}
+
+	@Test
+	public void codeownersGivesSecurityOwnersSoleOwnershipOfAuthenticationAndTlsFiles() throws IOException {
+		Codeowners codeowners = loadCodeowners();
+		List<String> files = new ArrayList<>();
+		for (String module : MODULES) {
+			files.addAll(filesUnder(module + "/src/main/java", GovernanceControlsTest::isAuthenticationClass));
+			files.addAll(filesUnder(module + "/src/main/resources", p -> p.endsWith("/server.xml")
+					|| p.contains("/keystore/") || TLS_MATERIAL.matcher(p).matches()));
+		}
+		assertTrue(files.stream().anyMatch(f -> f.endsWith("/UserSecurityService.java")), "expected UserSecurityService");
+		assertTrue(files.stream().anyMatch(f -> f.endsWith("/AuthenticationController.java")), "expected AuthenticationController");
+		assertTrue(files.stream().anyMatch(f -> f.endsWith(".jks")), "expected a keystore");
+		List<String> uncovered = new ArrayList<>();
+		for (String file : files) {
+			if (!codeowners.ownersOf(file).equals(Collections.singletonList(SECURITY_OWNERS))) {
+				uncovered.add(file + " -> " + codeowners.ownersOf(file));
+			}
+		}
+		assertTrue(uncovered.isEmpty(), "authentication/TLS files must be owned by " + SECURITY_OWNERS
+				+ " alone (any listed owner can approve):\n  " + String.join("\n  ", uncovered));
+		assertTrue(codeowners.ownersOf("deploy/certs/new.pem").contains(SECURITY_OWNERS), "*.pem must be security-owned");
 	}
 
 	@Test
@@ -123,6 +154,9 @@ public class GovernanceControlsTest {
 		assertFalse(files.isEmpty(), "no source files found under **/" + packageDir + "/");
 		List<String> uncovered = new ArrayList<>();
 		for (String file : files) {
+			if (PAYMENTS_OWNERS.equals(requiredOwner) && isAuthenticationClass(file)) {
+				continue;
+			}
 			if (!codeowners.ownersOf(file).contains(requiredOwner)) {
 				uncovered.add(file + " -> " + codeowners.ownersOf(file));
 			}
@@ -134,19 +168,24 @@ public class GovernanceControlsTest {
 	private List<String> sourceFilesUnder(String packageDir) throws IOException {
 		List<String> files = new ArrayList<>();
 		for (String module : MODULES) {
-			Path javaRoot = root.resolve(module).resolve("src/main/java");
-			if (!Files.isDirectory(javaRoot)) {
-				continue;
-			}
-			try (Stream<Path> walk = Files.walk(javaRoot)) {
-				walk.filter(Files::isRegularFile)
-						.map(p -> root.relativize(p).toString().replace('\\', '/'))
-						.filter(p -> p.contains("/" + packageDir + "/"))
-						.forEach(files::add);
-			}
+			files.addAll(filesUnder(module + "/src/main/java", p -> p.contains("/" + packageDir + "/")));
 		}
 		Collections.sort(files);
 		return files;
+	}
+
+	private List<String> filesUnder(String relativeDir, Predicate<String> filter) throws IOException {
+		Path dir = root.resolve(relativeDir);
+		if (!Files.isDirectory(dir)) {
+			return Collections.emptyList();
+		}
+		try (Stream<Path> walk = Files.walk(dir)) {
+			return walk.filter(Files::isRegularFile)
+					.map(p -> root.relativize(p).toString().replace('\\', '/'))
+					.filter(filter)
+					.sorted()
+					.collect(Collectors.toList());
+		}
 	}
 
 	private Codeowners loadCodeowners() throws IOException {

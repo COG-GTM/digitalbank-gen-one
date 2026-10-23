@@ -24,6 +24,25 @@
 /credit/src/main/java/**/config/            @COG-GTM/digitalbank-security-owners
 /credit/src/main/resources/*.properties     @COG-GTM/digitalbank-security-owners
 
+# Authentication code inside money-movement packages. GitHub accepts approval
+# from ANY listed owner, so these are security-only (not payments + security).
+/bank/src/main/java/**/*Authentication*.java    @COG-GTM/digitalbank-security-owners
+/bank/src/main/java/**/*Security*.java          @COG-GTM/digitalbank-security-owners
+/credit/src/main/java/**/*Authentication*.java  @COG-GTM/digitalbank-security-owners
+/credit/src/main/java/**/*Security*.java        @COG-GTM/digitalbank-security-owners
+
+# TLS: Tomcat connector config, keystores and key material anywhere in the repo.
+/bank/src/main/resources/server.xml         @COG-GTM/digitalbank-security-owners
+/credit/src/main/resources/server.xml       @COG-GTM/digitalbank-security-owners
+/bank/src/main/resources/keystore/          @COG-GTM/digitalbank-security-owners
+/credit/src/main/resources/keystore/        @COG-GTM/digitalbank-security-owners
+*.jks                                       @COG-GTM/digitalbank-security-owners
+*.p12                                       @COG-GTM/digitalbank-security-owners
+*.pfx                                       @COG-GTM/digitalbank-security-owners
+*.pem                                       @COG-GTM/digitalbank-security-owners
+*.key                                       @COG-GTM/digitalbank-security-owners
+*.crt                                       @COG-GTM/digitalbank-security-owners
+
 # Governance controls protect themselves: changing review rules needs security sign-off.
 /.github/                                   @COG-GTM/digitalbank-security-owners
 /docs/governance/                           @COG-GTM/digitalbank-security-owners
