@@ -184,6 +184,7 @@ public class UserService {
 	    newUser = userRepository.save(newUser);
 	    
 	    LOG.debug("Create User: New User Created.");
+	    AuditLog.adminAction("USER_CREATE", newUser, "role=" + role, AuditLog.OUTCOME_SUCCESS);
 	    
 	}
 	

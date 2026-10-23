@@ -20,11 +20,14 @@ import org.springframework.security.authentication.event.AuthenticationFailureBa
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+import io.digisic.bank.audit.AuditLog;
 import io.digisic.bank.audit.LoginAuditListener;
 import io.digisic.bank.model.security.Users;
 import io.digisic.bank.repository.AccountRepository;
@@ -70,6 +73,9 @@ public class AuthenticationAndAdminAuditTest {
 	public void tearDown() {
 		auditLogger.detachAppender(appender);
 		SecurityContextHolder.clearContext();
+		if (TransactionSynchronizationManager.isSynchronizationActive()) {
+			TransactionSynchronizationManager.clearSynchronization();
+		}
 	}
 
 	@Test
@@ -113,6 +119,59 @@ public class AuthenticationAndAdminAuditTest {
 		assertTrue(delete.contains("actor=" + ADMIN), delete);
 		assertTrue(delete.contains("targetUser=jsmith@demo.io"), delete);
 		assertTrue(delete.contains("outcome=SUCCESS"), delete);
+	}
+
+	@Test
+	public void customerActingOnOwnUserIsAuditedAsSelfServiceNotAdmin() {
+
+		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("jsmith@demo.io",
+				null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))));
+
+		accountService.deleteAllAccounts(new Users("jsmith@demo.io", "secret"));
+
+		String delete = single("event=DELETE_ALL_ACCOUNTS");
+		assertTrue(delete.contains("category=SELF_SERVICE"), delete);
+		assertTrue(delete.contains("actor=jsmith@demo.io"), delete);
+	}
+
+	@Test
+	public void trailingBackslashCannotSwallowFollowingFields() {
+
+		listener.onFailure(new AuthenticationFailureBadCredentialsEvent(
+				new UsernamePasswordAuthenticationToken("evil \\", "wrong"),
+				new BadCredentialsException("Bad credentials")));
+
+		String failure = single("event=LOGIN_FAILURE");
+		assertTrue(failure.contains("actor=\"evil \\\\\" outcome=FAILURE"), failure);
+	}
+
+	@Test
+	public void successEventsInsideTransactionAreWrittenOnlyOnCommit() {
+
+		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(ADMIN, null,
+				Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))));
+		Users customer = new Users("jsmith@demo.io", "secret");
+
+		TransactionSynchronizationManager.initSynchronization();
+		userService.unlockUser(customer, true);
+		assertTrue(appender.list.isEmpty(), "SUCCESS must wait for commit: " + appender.list);
+		complete(TransactionSynchronization.STATUS_ROLLED_BACK);
+
+		String rolledBack = single("event=USER_UNLOCK");
+		assertTrue(rolledBack.contains("outcome=FAILURE"), rolledBack);
+		assertTrue(rolledBack.contains("reason=" + AuditLog.REASON_ROLLED_BACK), rolledBack);
+
+		appender.list.clear();
+		TransactionSynchronizationManager.initSynchronization();
+		userService.unlockUser(customer, true);
+		complete(TransactionSynchronization.STATUS_COMMITTED);
+		assertTrue(single("event=USER_UNLOCK").contains("outcome=SUCCESS"));
+	}
+
+	private void complete(int status) {
+		List<TransactionSynchronization> syncs = TransactionSynchronizationManager.getSynchronizations();
+		TransactionSynchronizationManager.clearSynchronization();
+		syncs.forEach(sync -> sync.afterCompletion(status));
 	}
 
 	private String single(String filter) {

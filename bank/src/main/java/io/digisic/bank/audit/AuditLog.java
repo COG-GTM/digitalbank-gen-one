@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import io.digisic.bank.model.Account;
 import io.digisic.bank.model.security.Users;
@@ -19,6 +22,8 @@ import io.digisic.bank.model.security.Users;
  *
  * Events are written at INFO to the dedicated "AUDIT" logger as key=value pairs so they can be
  * routed to a separate appender and are never suppressed by application debug settings.
+ * SUCCESS events raised inside a transaction are written only once it commits; a rollback is
+ * recorded as FAILURE with reason=TRANSACTION_ROLLED_BACK.
  */
 public final class AuditLog {
 
@@ -27,6 +32,7 @@ public final class AuditLog {
 	public static final String CAT_MONEY_MOVEMENT = "MONEY_MOVEMENT";
 	public static final String CAT_AUTHENTICATION = "AUTHENTICATION";
 	public static final String CAT_ADMIN = "ADMIN";
+	public static final String CAT_SELF_SERVICE = "SELF_SERVICE";
 
 	public static final String EVT_DEPOSIT = "DEPOSIT";
 	public static final String EVT_WITHDRAWAL = "WITHDRAWAL";
@@ -39,6 +45,8 @@ public final class AuditLog {
 	public static final String OUTCOME_FAILURE = "FAILURE";
 
 	public static final String SYSTEM_ACTOR = "system";
+	public static final String ANONYMOUS_ACTOR = "anonymous";
+	public static final String REASON_ROLLED_BACK = "TRANSACTION_ROLLED_BACK";
 
 	private static final Logger AUDIT = LoggerFactory.getLogger(LOGGER_NAME);
 
@@ -58,7 +66,7 @@ public final class AuditLog {
 		fields.put("txnType", transactionType);
 		fields.put("reason", reason);
 
-		write(CAT_MONEY_MOVEMENT, event, currentActor(), outcome, fields);
+		emit(CAT_MONEY_MOVEMENT, event, currentActor(), outcome, fields);
 	}
 
 	public static void login(String username, boolean success, String channel, String reason) {
@@ -78,19 +86,47 @@ public final class AuditLog {
 		fields.put("targetUserId", targetUser == null ? null : targetUser.getId());
 		fields.put("detail", detail);
 
-		write(CAT_ADMIN, event, currentActor(), outcome, fields);
+		String actor = currentActor();
+		boolean selfService = ANONYMOUS_ACTOR.equals(actor)
+				|| (targetUser != null && actor.equals(targetUser.getUsername()));
+
+		emit(selfService ? CAT_SELF_SERVICE : CAT_ADMIN, event, actor, outcome, fields);
 	}
 
 	public static String currentActor() {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-		if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken
-				|| auth.getName() == null) {
+		if (auth instanceof AnonymousAuthenticationToken) {
+			return ANONYMOUS_ACTOR;
+		}
+
+		if (auth == null || !auth.isAuthenticated() || auth.getName() == null) {
 			return SYSTEM_ACTOR;
 		}
 
 		return auth.getName();
+	}
+
+	private static void emit(final String category, final String event, final String actor, String outcome,
+			final Map<String, Object> fields) {
+
+		if (!OUTCOME_SUCCESS.equals(outcome) || !TransactionSynchronizationManager.isSynchronizationActive()) {
+			write(category, event, actor, outcome, fields);
+			return;
+		}
+
+		TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronizationAdapter() {
+			@Override
+			public void afterCompletion(int status) {
+				if (status == TransactionSynchronization.STATUS_COMMITTED) {
+					write(category, event, actor, OUTCOME_SUCCESS, fields);
+				} else {
+					fields.put("reason", REASON_ROLLED_BACK);
+					write(category, event, actor, OUTCOME_FAILURE, fields);
+				}
+			}
+		});
 	}
 
 	private static void write(String category, String event, String actor, String outcome,
@@ -122,14 +158,14 @@ public final class AuditLog {
 	}
 
 	/*
-	 * Neutralise CR/LF (log forging) and quote values containing separators.
+	 * Neutralise CR/LF (log forging) and quote values containing separators, quotes or backslashes.
 	 */
 	private static String sanitize(String value) {
 
 		String clean = value.replaceAll("[\\r\\n\\t]", "_");
 
-		if (clean.isEmpty() || clean.matches(".*[\\s=\"].*")) {
-			return "\"" + clean.replace("\"", "\\\"") + "\"";
+		if (clean.isEmpty() || clean.matches(".*[\\s=\"\\\\].*")) {
+			return "\"" + clean.replace("\\", "\\\\").replace("\"", "\\\"") + "\"";
 		}
 
 		return clean;
