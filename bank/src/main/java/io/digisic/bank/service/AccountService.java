@@ -593,6 +593,16 @@ public class AccountService {
 	}
 	
 	/*
+	 * Assign a Co-owner to an Account
+	 */
+	public Account setCoOwner (Account account, Users coOwner) {
+		account.setCoowner(coOwner);
+		Account saved = accountRepository.save(account);
+		AuditLog.adminAction("ACCOUNT_COOWNER_SET", coOwner, "accountId=" + account.getId(), AuditLog.OUTCOME_SUCCESS);
+		return saved;
+	}
+	
+	/*
 	 * Get Account Type by Account Type Code
 	 */
 	public AccountType getAccoutTypeByCode (String code) {

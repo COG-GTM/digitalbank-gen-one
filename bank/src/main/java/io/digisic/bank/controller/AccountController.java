@@ -112,9 +112,7 @@ public class AccountController extends CommonController {
 		
 		Account account = getAccountById(id);
 		
-		account.setCoowner(getUserById(userId));
-		
-		return ResponseEntity.ok(accountService.save(account));
+		return ResponseEntity.ok(accountService.setCoOwner(account, getUserById(userId)));
 	}
 	
 	/*

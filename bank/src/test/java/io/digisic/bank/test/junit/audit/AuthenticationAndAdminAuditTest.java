@@ -29,6 +29,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import io.digisic.bank.audit.AuditLog;
 import io.digisic.bank.audit.LoginAuditListener;
+import io.digisic.bank.model.Account;
 import io.digisic.bank.model.security.Users;
 import io.digisic.bank.repository.AccountRepository;
 import io.digisic.bank.repository.UserRepository;
@@ -119,6 +120,24 @@ public class AuthenticationAndAdminAuditTest {
 		assertTrue(delete.contains("actor=" + ADMIN), delete);
 		assertTrue(delete.contains("targetUser=jsmith@demo.io"), delete);
 		assertTrue(delete.contains("outcome=SUCCESS"), delete);
+	}
+
+	@Test
+	public void coOwnerAssignmentIsAuditedAsAdminAction() {
+
+		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(ADMIN, null,
+				Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))));
+
+		Account account = new Account();
+		account.setId(101L);
+
+		accountService.setCoOwner(account, new Users("nsmith@demo.io", "secret"));
+
+		String coOwner = single("event=ACCOUNT_COOWNER_SET");
+		assertTrue(coOwner.contains("category=ADMIN"), coOwner);
+		assertTrue(coOwner.contains("actor=" + ADMIN), coOwner);
+		assertTrue(coOwner.contains("targetUser=nsmith@demo.io"), coOwner);
+		assertTrue(coOwner.contains("detail=\"accountId=101\""), coOwner);
 	}
 
 	@Test
