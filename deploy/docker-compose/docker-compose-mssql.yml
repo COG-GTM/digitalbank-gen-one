@@ -39,6 +39,8 @@ services:
       SPRING_DATASOURCE_USERNAME: digitaluser
       SPRING_DATASOURCE_PASSWORD: Demo123!
       SPRING_DATASOURCE_URL: jdbc:sqlserver://mssql:1433;databaseName=digitalcredit;encrypt=false
+      # mapped by JpaSchemaParityConfig to LegacySQLServerDialect (legacy hibernate_sequence tables, numeric(19,0) ids)
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.SQLServerDialect
     depends_on:
       mssql:
         condition: service_healthy
@@ -48,6 +50,8 @@ services:
       SPRING_DATASOURCE_USERNAME: digitaluser
       SPRING_DATASOURCE_PASSWORD: Demo123!
       SPRING_DATASOURCE_URL: jdbc:sqlserver://mssql:1433;databaseName=digitalbank;encrypt=false
+      # mapped by JpaSchemaParityConfig to LegacySQLServerDialect (legacy hibernate_sequence tables, numeric(19,0) ids)
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.SQLServerDialect
     depends_on:
       mssql:
         condition: service_healthy
