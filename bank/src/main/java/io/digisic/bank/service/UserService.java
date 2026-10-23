@@ -28,6 +28,7 @@ import io.digisic.bank.model.security.Users;
 import io.digisic.bank.repository.RoleRepository;
 import io.digisic.bank.repository.UserProfileRepository;
 import io.digisic.bank.repository.UserRepository;
+import io.digisic.bank.security.sca.PaymentOtpService;
 import io.digisic.bank.repository.UserRoleRepository;
 import io.digisic.bank.security.JwtTokenProvider;
 import io.digisic.bank.util.Messages;
@@ -61,6 +62,9 @@ public class UserService {
 	  
 	@Autowired
 	private BCryptPasswordEncoder encoder;
+
+	@Autowired
+	private PaymentOtpService paymentOtpService;
 	
 	
 	/*
@@ -444,6 +448,7 @@ public class UserService {
 		user.setAccountNonLocked(unlock);
 		if (unlock) {
 			user.setFailedLoginAttempts(0);
+			paymentOtpService.resetFailures(user.getUsername());
 		}
 		userRepository.save(user);
 		AUDIT.warn("event={} user={} by=admin", unlock ? "ACCOUNT_UNLOCKED" : "ACCOUNT_LOCKED", user.getUsername());

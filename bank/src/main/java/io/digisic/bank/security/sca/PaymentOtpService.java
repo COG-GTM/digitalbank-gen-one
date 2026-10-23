@@ -148,6 +148,10 @@ public class PaymentOtpService {
 		return Boolean.FALSE.equals(userRepository.findAccountNonLocked(username));
 	}
 
+	public void resetFailures(String username) {
+		consecutiveFailures.remove(username);
+	}
+
 	private void recordFailure(String username) {
 
 		int failures = consecutiveFailures.computeIfAbsent(username, u -> new AtomicInteger()).incrementAndGet();

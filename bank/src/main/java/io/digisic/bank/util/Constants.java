@@ -4,6 +4,7 @@ public class Constants {
 	
 	// Session Management
 	public static final String COO_JSESSION_ID		= "JSESSIONID";
+	public static final String COO_REMEMBER_ME_NAME	= "remember-me";
 	public static final String SESSION_MAX			= "io.digisic.max.sessions";
 	
 	// API

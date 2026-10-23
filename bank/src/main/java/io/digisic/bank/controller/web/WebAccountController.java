@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.List;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -712,12 +713,20 @@ public class WebAccountController extends WebCommonController {
 	
 	private String lockedOut() {
 		
-		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-				.getRequest().getSession(false);
+		ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		HttpSession session = attrs.getRequest().getSession(false);
 		if (session != null) {
 			session.invalidate();
 		}
 		SecurityContextHolder.clearContext();
+		
+		if (attrs.getResponse() != null) {
+			String path = attrs.getRequest().getContextPath();
+			Cookie rememberMe = new Cookie(Constants.COO_REMEMBER_ME_NAME, null);
+			rememberMe.setPath(path.isEmpty() ? "/" : path);
+			rememberMe.setMaxAge(0);
+			attrs.getResponse().addCookie(rememberMe);
+		}
 		
 		return "redirect:" + Constants.URI_LOGIN_LOCKED;
 	}

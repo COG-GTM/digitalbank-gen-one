@@ -79,6 +79,30 @@ public class PaymentOtpGuessLimitTest {
 				PaymentOtpService.PAYEE_CASH, amount, "test"));
 	}
 
+	@Test
+	public void adminUnlockClearsPendingPaymentOtpFailures() {
+
+		String username = createUser();
+		Users user = userService.findByUsername(username);
+
+		for (int i = 0; i < 4; i++) {
+			failOnce(user);
+		}
+		userService.unlockUser(userService.findByUsername(username), true);
+		failOnce(user);
+
+		assertTrue(userService.findByUsername(username).isAccountNonLocked(), "unlock must reset the payment OTP failure budget");
+	}
+
+	private void failOnce(Users user) {
+		BigDecimal amount = new BigDecimal("1.00");
+		PaymentOtpService.Challenge c = paymentOtpService.issue(user, PaymentOtpService.OP_WITHDRAW, 1L,
+				PaymentOtpService.PAYEE_CASH, amount, "test");
+		String wrong = String.format("%06d", (Integer.parseInt(lastOtp()) + 1) % 1000000);
+		assertFalse(paymentOtpService.verify(c.getId(), wrong, user.getUsername(), PaymentOtpService.OP_WITHDRAW, 1L,
+				PaymentOtpService.PAYEE_CASH, amount));
+	}
+
 	private String createUser() {
 
 		String email = "sca-" + UUID.randomUUID().toString().substring(0, 8) + "@demo.io";
