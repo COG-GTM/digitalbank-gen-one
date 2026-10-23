@@ -777,22 +777,18 @@ public class AccountService {
 	 */
 	private boolean hasOverdraftInterestFor (Account account, Date accrualDate) {
 		
-		Calendar target = Calendar.getInstance();
-		target.setTime(accrualDate);
-		Calendar posted = Calendar.getInstance();
+		Calendar day = Calendar.getInstance();
+		day.setTime(accrualDate);
+		day.set(Calendar.HOUR_OF_DAY, 0);
+		day.set(Calendar.MINUTE, 0);
+		day.set(Calendar.SECOND, 0);
+		day.set(Calendar.MILLISECOND, 0);
+		Date dayStart = day.getTime();
+		day.add(Calendar.DAY_OF_MONTH, 1);
+		Date dayEnd = new Date(day.getTimeInMillis() - 1);
 		
-		for (AccountTransaction trans : account.getAcountTransactionList()) {
-			if (trans.getTransactionType() == null || trans.getTransactionDate() == null
-					|| !Constants.ACCT_TRAN_TYPE_OVERDRAFT_CODE.equals(trans.getTransactionType().getCode())) {
-				continue;
-			}
-			posted.setTime(trans.getTransactionDate());
-			if (posted.get(Calendar.YEAR) == target.get(Calendar.YEAR)
-					&& posted.get(Calendar.DAY_OF_YEAR) == target.get(Calendar.DAY_OF_YEAR)) {
-				return true;
-			}
-		}
-		return false;
+		return accountTransactionRepository.existsByAccountAndTransactionTypeCodeAndTransactionDateBetween(
+				account, Constants.ACCT_TRAN_TYPE_OVERDRAFT_CODE, dayStart, dayEnd);
 	}
 
 }

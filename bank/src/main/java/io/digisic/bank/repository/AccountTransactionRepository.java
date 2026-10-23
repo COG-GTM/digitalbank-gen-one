@@ -24,5 +24,7 @@ public interface AccountTransactionRepository extends CrudRepository<AccountTran
 	
 	public List<AccountTransaction> findAllByAccountAndTransactionCategory (Account account, TransactionCategory category);
 	public List<AccountTransaction> findAllByAccountAndTransactionCategoryAndTransactionDateAfter (Account account, TransactionCategory category, Date date);
+	
+	public boolean existsByAccountAndTransactionTypeCodeAndTransactionDateBetween (Account account, String typeCode, Date start, Date end);
 
 }

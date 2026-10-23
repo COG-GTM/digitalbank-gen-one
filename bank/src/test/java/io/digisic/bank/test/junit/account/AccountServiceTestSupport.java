@@ -24,6 +24,7 @@ import io.digisic.bank.model.TransactionCategory;
 import io.digisic.bank.model.TransactionState;
 import io.digisic.bank.model.TransactionType;
 import io.digisic.bank.repository.AccountRepository;
+import io.digisic.bank.repository.AccountTransactionRepository;
 import io.digisic.bank.repository.TransactionCategoryRepository;
 import io.digisic.bank.repository.TransactionStateRepository;
 import io.digisic.bank.repository.TransactionTypeRepository;
@@ -37,6 +38,9 @@ abstract class AccountServiceTestSupport {
 
 	@Mock
 	protected AccountRepository accountRepository;
+
+	@Mock
+	protected AccountTransactionRepository accountTransactionRepository;
 
 	@Mock
 	protected TransactionCategoryRepository transactionCategoryRepository;
@@ -63,6 +67,16 @@ abstract class AccountServiceTestSupport {
 			.thenAnswer(inv -> new TransactionState(inv.getArgument(0), inv.getArgument(0)));
 		when(transactionTypeRepository.findByCode(anyString()))
 			.thenAnswer(inv -> new TransactionType(inv.getArgument(0), inv.getArgument(0), TransactionType.CAT_EITHER));
+		when(accountTransactionRepository.existsByAccountAndTransactionTypeCodeAndTransactionDateBetween(
+				any(Account.class), anyString(), any(Date.class), any(Date.class)))
+			.thenAnswer(inv -> {
+				String code = inv.getArgument(1);
+				Date start = inv.getArgument(2);
+				Date end = inv.getArgument(3);
+				return account.getAcountTransactionList().stream().anyMatch(t ->
+					code.equals(t.getTransactionType().getCode())
+						&& !t.getTransactionDate().before(start) && !t.getTransactionDate().after(end));
+			});
 	}
 
 	protected Account newAccount(AccountType type, String balance) {
