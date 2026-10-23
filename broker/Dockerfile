@@ -34,8 +34,10 @@ ENV ARTEMIS_USER=admin
 ENV ARTEMIS_PASSWORD=admin
 ENV CREATE_ARGUMENTS="--silent --require-login --http-host 0.0.0.0 --relax-jolokia"
 
-# add user and group for artemis
-RUN groupadd -g 1001 -r artemis && useradd -r -u 1001 -g artemis -d /var/lib/artemis-instance artemis
+# add user and group for artemis - keep UID/GID 1000 of the legacy image so existing instance volumes stay writable
+# (the temurin base ships an 'ubuntu' user on 1000)
+RUN (userdel -r ubuntu 2>/dev/null || true) && (groupdel ubuntu 2>/dev/null || true) \
+ && groupadd -g 1000 -r artemis && useradd -r -u 1000 -g artemis -d /var/lib/artemis-instance artemis
 
 # Download Apache Artemis (checksum verified)
 WORKDIR /opt
