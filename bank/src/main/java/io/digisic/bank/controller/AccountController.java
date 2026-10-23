@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.digisic.bank.exception.RestBadRequestException;
-import io.digisic.bank.exception.RestForbiddenException;
 import io.digisic.bank.exception.RestNotAcceptableException;
 import io.digisic.bank.exception.RestObjectNotFoundException;
 import io.digisic.bank.model.Account;
@@ -73,9 +72,7 @@ public class AccountController extends CommonController {
 		
 		// If this is not an ADMIN user, then make sure the account belongs to the user
 		if (!hasRole(authUser, Role.ROLE_ADMIN)) {
-			if (!(account.getOwner().getId() == authUser.getId() || account.getCoowner().getId() == authUser.getId())) {
-				throw new RestForbiddenException(Messages.ACCESS_FORBIDDEN);
-			}
+			accountService.checkOwnerOrCoowner(account, authUser);
 		}
 		
 		return ResponseEntity.ok(account);
@@ -287,9 +284,7 @@ public class AccountController extends CommonController {
 		
 		// If this is not an ADMIN user, then make sure the account belongs to the user
 		if (!hasRole(authUser, Role.ROLE_ADMIN)) {
-			if (!(account.getOwner().getId() == authUser.getId() || account.getCoowner().getId() == authUser.getId())) {
-				throw new RestForbiddenException(Messages.ACCESS_FORBIDDEN);
-			}
+			accountService.checkOwnerOrCoowner(account, authUser);
 		}
 		
 		account.setName(newName);
@@ -311,9 +306,7 @@ public class AccountController extends CommonController {
 		
 		// If this is not an ADMIN user, then make sure the account belongs to the user
 		if (!hasRole(authUser, Role.ROLE_ADMIN)) {
-			if (!(account.getOwner().getId() == authUser.getId() || account.getCoowner().getId() == authUser.getId())) {
-				throw new RestForbiddenException(Messages.ACCESS_FORBIDDEN);
-			}
+			accountService.checkOwnerOrCoowner(account, authUser);
 		}
 		
 		return ResponseEntity.ok(account.getAcountTransactionList());
@@ -335,9 +328,7 @@ public class AccountController extends CommonController {
 		
 		// If this is not an ADMIN user, then make sure the account belongs to the user
 		if (!hasRole(authUser, Role.ROLE_ADMIN)) {
-			if (!(account.getOwner().getId() == authUser.getId() || account.getCoowner().getId() == authUser.getId())) {
-				throw new RestForbiddenException(Messages.ACCESS_FORBIDDEN);
-			}
+			accountService.checkOwnerOrCoowner(account, authUser);
 		}
 		
 		AccountTransaction transaction = new AccountTransaction();
@@ -426,9 +417,7 @@ public class AccountController extends CommonController {
 		
 		// If this is not an ADMIN user, then make sure the account belongs to the user
 		if (!hasRole(authUser, Role.ROLE_ADMIN)) {
-			if (!(fromAccount.getOwner().getId() == authUser.getId() || fromAccount.getCoowner().getId() == authUser.getId())) {
-				throw new RestForbiddenException(Messages.ACCESS_FORBIDDEN);
-			}
+			accountService.checkOwnerOrCoowner(fromAccount, authUser);
 		}
 		
 		accountService.transfer(fromAccount, toAccount, transaction);
