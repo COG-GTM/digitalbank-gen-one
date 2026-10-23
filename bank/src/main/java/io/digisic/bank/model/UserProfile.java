@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -18,6 +20,9 @@ import io.digisic.bank.util.Messages;
 import io.digisic.bank.util.Patterns;
 
 @Entity
+@Table(uniqueConstraints = {
+		@UniqueConstraint(name = "UK_sqjkpr2tm75m7wc0e94mbi7r6", columnNames = "email_address"),
+		@UniqueConstraint(name = "UK_ffnvyvxfthcf4w6d1405b88a", columnNames = "ssn") })
 public class UserProfile {
 	
 	@Id
@@ -42,10 +47,11 @@ public class UserProfile {
 	
 	@NotEmpty (message=Messages.USER_SSN_REQUIRED)
 	@Pattern(regexp=Patterns.USER_SSN, message=Messages.USER_SSN_FORMAT)
-	@Column(nullable=false, unique=true)
+	@Column(nullable=false)
 	private String ssn;
 	  
 	@NotNull (message=Messages.USER_DOB_REQUIRED)
+	@Column(nullable=false)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern=Patterns.DATE_FORMAT)
 	@DateTimeFormat(pattern=Patterns.DATE_FORMAT)
 	private Date dob;
@@ -56,7 +62,7 @@ public class UserProfile {
 	
 	@NotEmpty (message=Messages.USER_EMAIL_REQUIRED)
 	@Pattern(regexp=Patterns.USER_EMAIL, message=Messages.USER_EMAIL_FORMAT)
-	@Column(nullable=false, unique=true)
+	@Column(nullable=false)
 	private String emailAddress;
 	
 	@NotEmpty (message=Messages.USER_PHONE_HOME_REQUIRED)

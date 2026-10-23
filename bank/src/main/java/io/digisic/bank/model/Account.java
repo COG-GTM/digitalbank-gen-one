@@ -36,7 +36,9 @@ public class Account {
 	@JsonProperty (access = Access.READ_ONLY)
 	private AccountNumberSeq accountNumber;
 	
+	@Column(precision = 19, scale = 2)
 	private BigDecimal currentBalance;
+	@Column(precision = 19, scale = 2)
 	private BigDecimal openingBalance;
 	private double interestRate;
 	private double paymentAmount;

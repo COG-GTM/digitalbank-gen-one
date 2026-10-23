@@ -20,8 +20,11 @@ public class AccountType {
 	private String category;
 	private String name;
 	private double interestRate;
+	@Column(precision = 19, scale = 2)
 	private BigDecimal minDeposit;
+	@Column(precision = 19, scale = 2)
 	private BigDecimal overdraftLimit;
+	@Column(precision = 19, scale = 2)
 	private BigDecimal overdraftFee;
 	
 	// default constructor

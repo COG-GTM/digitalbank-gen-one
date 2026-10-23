@@ -29,7 +29,9 @@ public class AccountTransaction {
 	@Column(name="id", nullable=false, updatable=false)
 	private Long id;
 	private String description;
+	@Column(precision = 19, scale = 2)
 	private BigDecimal amount;
+	@Column(precision = 19, scale = 2)
 	private BigDecimal runningBalance;
 	
 	@ManyToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
