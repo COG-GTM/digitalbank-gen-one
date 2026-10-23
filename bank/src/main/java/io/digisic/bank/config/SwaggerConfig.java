@@ -1,70 +1,48 @@
 package io.digisic.bank.config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import io.digisic.bank.util.Constants;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.SecurityReference;
-import springfox.documentation.service.SecurityScheme;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.contexts.SecurityContext;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @Configuration
-@EnableSwagger2
 public class SwaggerConfig {
 	
-	private static String JWT_TOKEN_REF	= "Bearer %token";
-	private static String API_REGEX_PATH = "/api.*";
+	private static final String JWT_SCHEME = "bearerAuth";
+	private static final String API_PATHS = "/api/**";
 	
 	@Bean
-    public Docket api() { 
-		
-		List<SecurityScheme> schemeList = new ArrayList<>();
-		schemeList.add(new ApiKey(JWT_TOKEN_REF, Constants.API_AUTH_HEADER, "Header"));
-		
-        return new Docket(DocumentationType.SWAGGER_2)  
-          .select()                                  
-          .apis(RequestHandlerSelectors.basePackage("io.digisic.bank.controller"))              
-          .paths(PathSelectors.regex(API_REGEX_PATH))
-          .build()
-          .apiInfo(apiInfo())
-          .securitySchemes(schemeList)
-          .securityContexts(Arrays.asList(securityContext()));
-    }
-		 
-	private ApiInfo apiInfo() {
-		ApiInfo apiInfo = new ApiInfo ("Digital Bank API",
-									   "Digial Bank API provides Administration and User functionality through API Endpoints.",
-									   "API TOS",
-									   "Terms of Service",
-									   new Contact("Digital Bank",
-											       "www.demo.io", 
-											       "digitalbank@demo.io"),
-									   "License of API",
-									   "API License URL",
-									   Collections.emptyList());
-		return apiInfo;
+	public GroupedOpenApi api() {
+		return GroupedOpenApi.builder()
+				.group("api")
+				.packagesToScan("io.digisic.bank.controller")
+				.pathsToMatch(API_PATHS)
+				.build();
 	}
 	
-	private SecurityContext securityContext() {		
-	    return SecurityContext.builder()
-	      .securityReferences(
-	        Arrays.asList(new SecurityReference(JWT_TOKEN_REF, new AuthorizationScope[0])))
-	      .forPaths(PathSelectors.regex(API_REGEX_PATH))
-	      .build();
+	@Bean
+	public OpenAPI apiInfo() {
+		return new OpenAPI()
+				.info(new Info()
+						.title("Digital Bank API")
+						.description("Digial Bank API provides Administration and User functionality through API Endpoints.")
+						.termsOfService("Terms of Service")
+						.contact(new Contact()
+								.name("Digital Bank")
+								.url("www.demo.io")
+								.email("digitalbank@demo.io")))
+				.components(new Components()
+						.addSecuritySchemes(JWT_SCHEME, new SecurityScheme()
+								.type(SecurityScheme.Type.HTTP)
+								.scheme("bearer")
+								.bearerFormat("JWT")))
+				.addSecurityItem(new SecurityRequirement().addList(JWT_SCHEME));
 	}
-	
 
 }

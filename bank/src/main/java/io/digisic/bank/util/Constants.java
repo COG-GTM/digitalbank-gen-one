@@ -40,8 +40,8 @@ public class Constants {
 	public static final String URI_ERROR_RES 		= "/error/**";
 	public static final String URI_H2_CONSOLE		= "/h2-console/**";
 	public static final String URI_SWAGGER_UI		= "/swagger-ui.html";
-	public static final String URI_SWAGGER_V2		= "/v2/api-docs";
-	public static final String URI_SWAGGER_RES		= "/swagger-resources/**";
+	public static final String URI_SWAGGER_V2		= "/v3/api-docs/**";
+	public static final String URI_SWAGGER_RES		= "/swagger-ui/**";
 	public static final String URI_SWAGGER_CONF		= "/configuration/**";
 	public static final String URI_MANAGER_RES		= "/manager/**";
 

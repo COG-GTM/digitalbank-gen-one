@@ -1,11 +1,12 @@
 package io.digisic.bank.security;
 
-import java.util.Base64;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
+import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,15 +20,16 @@ import io.digisic.bank.model.security.Role;
 import io.digisic.bank.service.UserSecurityService;
 import io.digisic.bank.util.Constants;
 import io.digisic.bank.util.Messages;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenProvider {
 	
 	private String secretKey = Constants.API_SECRET;
+	
+	private SecretKey signingKey;
 	
 	// Token expiration -> 1 hour (3600000)
 	private long validityInMilliseconds = 3600000;
@@ -37,7 +39,7 @@ public class JwtTokenProvider {
 	  
 	@PostConstruct
 	protected void init() {
-		secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+		signingKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 	}
 	
 	/*
@@ -45,17 +47,15 @@ public class JwtTokenProvider {
 	 */
 	public String createToken(String username, List<Role> roles) {
 	
-		Claims claims = Jwts.claims().setSubject(username);
-	    claims.put("auth", roles.stream().map(s -> new SimpleGrantedAuthority(s.getName())).filter(Objects::nonNull).collect(Collectors.toList()));
-	
 	    Date now = new Date();
 	    Date validity = new Date(now.getTime() + validityInMilliseconds);
 	
 	    return Jwts.builder()
-	        .setClaims(claims)
-	        .setIssuedAt(now)
-	        .setExpiration(validity)
-	        .signWith(SignatureAlgorithm.HS256, secretKey)
+	        .subject(username)
+	        .claim("auth", roles.stream().map(s -> new SimpleGrantedAuthority(s.getName())).filter(Objects::nonNull).collect(Collectors.toList()))
+	        .issuedAt(now)
+	        .expiration(validity)
+	        .signWith(signingKey, Jwts.SIG.HS256)
 	        .compact();
 	}
 	
@@ -74,7 +74,7 @@ public class JwtTokenProvider {
 	 */
 	public String getUsername(String token) {
 	    
-		return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+		return Jwts.parser().verifyWith(signingKey).build().parseSignedClaims(token).getPayload().getSubject();
 	}
 	
 	/*
@@ -98,7 +98,7 @@ public class JwtTokenProvider {
 		  
 		try {
 			  
-			Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+			Jwts.parser().verifyWith(signingKey).build().parseSignedClaims(token);
 			return true;
 			  
 	    } catch (JwtException | IllegalArgumentException e) {

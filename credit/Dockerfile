@@ -1,4 +1,4 @@
-FROM tomcat:9.0.48-jdk11-adoptopenjdk-hotspot
+FROM tomcat:9.0.123-jdk11-temurin-jammy
 EXPOSE 8080
 EXPOSE 8443
 COPY /target/credit##2.1.0.4.war /usr/local/tomcat/webapps/
