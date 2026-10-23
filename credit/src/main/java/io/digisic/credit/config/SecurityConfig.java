@@ -5,6 +5,7 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 import java.util.Arrays;
 
 import jakarta.servlet.DispatcherType;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +20,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import io.digisic.credit.security.JwtTokenFilterConfigurer;
@@ -52,6 +54,9 @@ public class SecurityConfig
 	    	"/v3/api-docs/**"
 	};
 	
+	// Set once a request reaches authorisation; mirrors the legacy FilterSecurityInterceptor FILTER_APPLIED flag
+	private static final String AUTHZ_APPLIED = SecurityConfig.class.getName() + ".AUTHZ_APPLIED";
+	
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
        return configuration.getAuthenticationManager();
@@ -73,18 +78,30 @@ public class SecurityConfig
 			.exceptionHandling(e -> e.accessDeniedPage(Constants.URI_API_AUTH))
 			.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authorizeHttpRequests(a -> a
-				// legacy FilterSecurityInterceptor authorised each request once (no FORWARD/ERROR re-checks)
-				.dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
+				// legacy FilterSecurityInterceptor authorised each request once: FORWARD/ERROR dispatches are only
+				// re-checked when the original request never reached it (e.g. rejected JWT -> empty 403)
+				.requestMatchers(SecurityConfig::isAuthorizedRedispatch).permitAll()
 				.requestMatchers(publicMatchers).permitAll()
 				.requestMatchers(antMatcher(HttpMethod.GET, Constants.URI_API_HEALTHCHECK)).permitAll()
 				.requestMatchers(antMatcher(HttpMethod.POST, Constants.URI_API_AUTH)).permitAll()
 				.anyRequest().hasRole(Patterns.ROLE_API))
 			.with(new JwtTokenFilterConfigurer(jwtTokenProvider), c -> {})
+			.addFilterBefore((request, response, chain) -> {
+				if (request.getDispatcherType() == DispatcherType.REQUEST) {
+					request.setAttribute(AUTHZ_APPLIED, Boolean.TRUE);
+				}
+				chain.doFilter(request, response);
+			}, AuthorizationFilter.class)
 			// Needed to support the h2-console interface
 			.headers(h -> h.frameOptions(f -> f.disable()));
 		
 		return http.build();
   }
+	
+	private static boolean isAuthorizedRedispatch(HttpServletRequest request) {
+		DispatcherType type = request.getDispatcherType();
+		return (type == DispatcherType.FORWARD || type == DispatcherType.ERROR) && request.getAttribute(AUTHZ_APPLIED) != null;
+	}
   
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth, UserSecurityService userSecurityService) throws Exception {
