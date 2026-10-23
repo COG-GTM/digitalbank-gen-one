@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.digisic.bank.model.Account;
+import io.digisic.bank.exception.RestForbiddenException;
 import io.digisic.bank.model.AccountStanding;
 import io.digisic.bank.model.AccountTransaction;
 import io.digisic.bank.model.AccountType;
@@ -32,6 +34,7 @@ import io.digisic.bank.repository.TransactionCategoryRepository;
 import io.digisic.bank.repository.TransactionStateRepository;
 import io.digisic.bank.repository.TransactionTypeRepository;
 import io.digisic.bank.util.Constants;
+import io.digisic.bank.util.Messages;
 
 @Service
 @Transactional
@@ -531,6 +534,32 @@ public class AccountService {
 			return act.get();
 		}else {
 			return null;
+		}
+	}
+	
+	/*
+	 * Returns true if the user is the owner or co-owner of the account
+	 */
+	public boolean isOwnerOrCoowner(Account account, Users user) {
+		
+		if (account == null || user == null || user.getId() == null) {
+			return false;
+		}
+		
+		return (account.getOwner() != null && Objects.equals(account.getOwner().getId(), user.getId()))
+				|| (account.getCoowner() != null && Objects.equals(account.getCoowner().getId(), user.getId()));
+	}
+	
+	/*
+	 * Shared authorisation guard for every channel that reads or moves money on an account.
+	 * Throws a 403 if the user is not the owner or co-owner of the account.
+	 */
+	public void checkOwnerOrCoowner(Account account, Users user) {
+		
+		if (!isOwnerOrCoowner(account, user)) {
+			LOG.warn("Account access denied: user id " + (user == null ? null : user.getId())
+					 + " is not an owner or co-owner of account id " + (account == null ? null : account.getId()));
+			throw new RestForbiddenException(Messages.ACCESS_FORBIDDEN);
 		}
 	}
 	

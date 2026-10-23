@@ -364,6 +364,9 @@ public class WebAccountController extends WebCommonController {
 		
 		Users user = userService.findByUsername(principal.getName());
 		
+		// Make sure the account belongs to the authenticated user
+		accountService.checkOwnerOrCoowner(account, user);
+		
 		// Check amount is greater than zero
 		if (accountTransaction.getAmount().signum() != 1) {
 			
@@ -447,6 +450,9 @@ public class WebAccountController extends WebCommonController {
 		boolean bError = false;
 		
 		Users user = userService.findByUsername(principal.getName());
+		
+		// Make sure the account belongs to the authenticated user
+		accountService.checkOwnerOrCoowner(account, user);
 		
 		// Check amount is greater than zero
 		if (accountTransaction.getAmount().signum() != 1) {
@@ -559,6 +565,10 @@ public class WebAccountController extends WebCommonController {
 		Account toAcct = accountService.getAccountById(toAccount);
 		
 		Users user = userService.findByUsername(principal.getName());
+		
+		// Transfers are between the authenticated user's own accounts
+		accountService.checkOwnerOrCoowner(fromAcct, user);
+		accountService.checkOwnerOrCoowner(toAcct, user);
 		
 		if (fromAcct.getId() != toAcct.getId()) {
 			
