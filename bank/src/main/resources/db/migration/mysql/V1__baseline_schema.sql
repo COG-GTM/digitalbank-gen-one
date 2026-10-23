@@ -1,5 +1,5 @@
 -- V1 baseline: Digital Bank schema as previously created by Hibernate ddl-auto=update (mysql).
--- Generated for org.hibernate.dialect.MySQL55Dialect, the dialect configured in application.properties and deploy/docker-compose/docker-compose-mysql.yml.
+-- Generated for org.hibernate.dialect.MySQL55Dialect (InnoDB). Also validated with org.hibernate.dialect.MySQL5Dialect, which deploy/docker-compose/docker-compose-mysql.yml sets for the bank service.
 -- Existing databases are baselined at version 1 (spring.flyway.baseline-on-migrate) and skip this script.
 -- Do not edit after release; add a new V<n>__<description>.sql for every schema change.
 
