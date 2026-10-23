@@ -272,6 +272,8 @@
   "docs/migration/parity/raw/baseline-vs-migrated.json - committed baseline vs migrated",
   "docs/migration/parity/raw/suite-counts.json - test-suite counts both sides",
   "docs/migration/parity/raw/report-meta.json - environment and classification input for the report",
-  "tools/parity/report_html.py - renders this report"
+  "docs/migration/parity/screenshots/{legacy,migrated}/*.png - source screenshots embedded in this report",
+  "tools/parity/screens.py - headless-Chrome screenshot driver (usage: screens.py <label> <bank_url> <outdir>)",
+  "tools/parity/report_html.py - renders this report (--shots docs/migration/parity/screenshots)"
  ]
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Render the self-contained parity HTML report (inline CSS, base64 screenshots).
 
-  python3 tools/parity/report_html.py --raw docs/migration/parity/raw --shots <dir with legacy/ migrated/> \
+  python3 tools/parity/report_html.py --raw docs/migration/parity/raw --shots docs/migration/parity/screenshots \
       --meta docs/migration/parity/raw/report-meta.json --out docs/migration/parity/parity-report.html
 
 raw/ must contain legacy.json, migrated.json, diff.json (diff.py legacy vs migrated) and optionally
@@ -75,6 +75,12 @@ def snap_summary(v):
         bits = ["%s=%s" % (k, j[k]) for k in ("accountNumber", "name", "currentBalance", "openingBalance") if k in j]
         return "HTTP %s, %s" % (v.get("status"), esc(", ".join(bits)))
     return "HTTP %s" % v.get("status")
+
+
+def owner_key(field, keys):
+    """Longest snapshot key the flattened diff field belongs to (x.transactions must not taint x)."""
+    hits = [k for k in keys if field == k or field.startswith((k + ".", k + "["))]
+    return max(hits, key=len) if hits else None
 
 
 def main():
@@ -158,9 +164,11 @@ def main():
              "applications, Digital Credit users), normalised the same way on both sides and diffed field by field: "
              "<b class='%s'>%d differing fields</b>.</p>" % ("pass" if not D["db_snapshot"] else "fail", len(D["db_snapshot"])))
     rows = []
-    for k in L["db_snapshot"]:
+    keys = list(L["db_snapshot"])
+    diff_keys = {owner_key(d["field"], keys) for d in D["db_snapshot"]}
+    for k in keys:
         rows.append([esc(k), snap_summary(L["db_snapshot"][k]), snap_summary(M["db_snapshot"].get(k)),
-                     "<span class='pass'>identical</span>" if not [d for d in D["db_snapshot"] if d["field"].startswith(k)] else "<span class='fail'>DIFF</span>"])
+                     "<span class='fail'>DIFF</span>" if k in diff_keys else "<span class='pass'>identical</span>"])
     h.append(table(["Snapshot", "Legacy", "Migrated", "Result"], rows))
     lm, mm = L["meta"].get("mock_requests") or [], M["meta"].get("mock_requests") or []
     h.append("<p>Outbound calls to the external-service mock (ATM / VISA / OBP): legacy %d, migrated %d.</p>" % (len(lm), len(mm)))
