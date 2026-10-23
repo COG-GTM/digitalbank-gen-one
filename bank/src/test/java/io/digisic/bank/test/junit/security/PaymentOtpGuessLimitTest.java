@@ -1,12 +1,19 @@
 package io.digisic.bank.test.junit.security;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -92,6 +99,38 @@ public class PaymentOtpGuessLimitTest {
 		failOnce(user);
 
 		assertTrue(userService.findByUsername(username).isAccountNonLocked(), "unlock must reset the payment OTP failure budget");
+	}
+
+	@Test
+	public void concurrentUseOfOneCodeAuthorisesExactlyOnePayment() throws Exception {
+
+		String username = createUser();
+		Users user = userService.findByUsername(username);
+		BigDecimal amount = new BigDecimal("5.00");
+		PaymentOtpService.Challenge c = paymentOtpService.issue(user, PaymentOtpService.OP_WITHDRAW, 1L,
+				PaymentOtpService.PAYEE_CASH, amount, "test");
+		String otp = lastOtp();
+
+		int threads = 8;
+		ExecutorService pool = Executors.newFixedThreadPool(threads);
+		CountDownLatch start = new CountDownLatch(1);
+		List<Future<Boolean>> results = new ArrayList<>();
+		for (int i = 0; i < threads; i++) {
+			results.add(pool.submit(() -> {
+				start.await();
+				return paymentOtpService.verify(c.getId(), otp, username, PaymentOtpService.OP_WITHDRAW, 1L,
+						PaymentOtpService.PAYEE_CASH, amount);
+			}));
+		}
+		start.countDown();
+
+		int accepted = 0;
+		for (Future<Boolean> f : results) {
+			accepted += f.get() ? 1 : 0;
+		}
+		pool.shutdown();
+
+		assertEquals(1, accepted, "a single-use code must authorise exactly one payment");
 	}
 
 	private void failOnce(Users user) {
