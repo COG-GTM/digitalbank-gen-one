@@ -133,7 +133,8 @@ public class UserService {
 		
 		String normalizedSSN = normalizeSSNFormat(ssn);
 	    
-		if (userProfileRepository.findBySsn(normalizedSSN) != null) {
+		if (userProfileRepository.findBySsn(normalizedSSN) != null
+				|| userProfileRepository.countByStoredSsn(normalizedSSN) > 0) {
 			
 			return true;
 	    }

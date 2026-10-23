@@ -22,6 +22,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
+import io.digisic.bank.config.data.PiiDataMigration;
 import io.digisic.bank.model.UserProfile;
 import io.digisic.bank.repository.UserProfileRepository;
 import io.digisic.bank.service.UserService;
@@ -82,6 +83,32 @@ public class PiiDataProtectionTest {
 	}
 
 	@Test
+	public void legacyPlaintextSsnIsStillDetectedAsDuplicate() {
+
+		Long id = saveLegacyPlaintextProfile();
+
+		UserService userService = new UserService();
+		ReflectionTestUtils.setField(userService, "userProfileRepository", userProfileRepository);
+
+		assertEquals(SSN, rawSsn(id));
+		assertTrue(userService.checkSsnExists(SSN), "Plaintext legacy SSN must block duplicate registration");
+	}
+
+	@Test
+	public void migrationEncryptsLegacyPlaintextSsns() {
+
+		Long id = saveLegacyPlaintextProfile();
+
+		PiiDataMigration migration = new PiiDataMigration();
+		ReflectionTestUtils.setField(migration, "userProfileRepository", userProfileRepository);
+		migration.run();
+		entityManager.clear();
+
+		assertTrue(rawSsn(id).startsWith("enc:v1:"), "Legacy SSN must be encrypted: " + rawSsn(id));
+		assertEquals(SSN, userProfileRepository.findBySsn(SSN).getSsn());
+	}
+
+	@Test
 	public void ssnIsMaskedInUserServiceDebugLogs() {
 
 		Logger logger = (Logger) LoggerFactory.getLogger(UserService.class);
@@ -125,6 +152,27 @@ public class PiiDataProtectionTest {
 
 		assertFalse(text.contains(SSN), text);
 		assertTrue(text.contains(MASKED_SSN), text);
+	}
+
+	private Long saveLegacyPlaintextProfile() {
+
+		Long id = userProfileRepository.save(newProfile(SSN, new Date())).getId();
+		entityManager.flush();
+		entityManager.createNativeQuery("update user_profile set ssn = ?1 where id = ?2")
+				.setParameter(1, SSN)
+				.setParameter(2, id)
+				.executeUpdate();
+		entityManager.clear();
+
+		return id;
+	}
+
+	private String rawSsn(Long id) {
+
+		return String.valueOf(entityManager
+				.createNativeQuery("select ssn from user_profile where id = ?1")
+				.setParameter(1, id)
+				.getSingleResult());
 	}
 
 	private static UserProfile newProfile(String ssn, Date dob) {

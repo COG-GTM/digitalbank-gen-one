@@ -12,6 +12,7 @@ import java.util.Base64;
 import java.util.Date;
 import org.junit.jupiter.api.Test;
 
+import io.digisic.bank.config.PiiEncryptionConfig;
 import io.digisic.bank.model.converter.EncryptedDateConverter;
 import io.digisic.bank.model.converter.EncryptedStringConverter;
 import io.digisic.bank.util.PiiCipher;
@@ -20,6 +21,16 @@ import io.digisic.bank.util.PiiMasker;
 public class PiiCipherTest {
 
 	private static final String SSN = "123-45-6789";
+
+	@Test
+	public void startupFailsWithoutKeyForPersistentDatabase() {
+
+		assertThrows(IllegalStateException.class, () -> new PiiEncryptionConfig("", "jdbc:h2:file:/tmp/digitalbank"));
+		assertThrows(IllegalStateException.class, () -> new PiiEncryptionConfig(null, "jdbc:mysql://localhost:3306/digitalbank"));
+
+		new PiiEncryptionConfig("", "");
+		new PiiEncryptionConfig("", "jdbc:h2:mem:testdb");
+	}
 
 	@Test
 	public void cipherRoundTripsAndHidesPlaintext() {
