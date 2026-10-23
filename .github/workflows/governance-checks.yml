@@ -1,0 +1,23 @@
+name: governance-checks
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  codeowners-coverage:
+    name: CODEOWNERS coverage (ITGC-CM-07)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '11'
+      - name: Validate CODEOWNERS, PR template and branch-protection doc
+        run: scripts/governance/check-codeowners.sh
