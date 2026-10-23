@@ -2,21 +2,21 @@
 
 <html class="no-js" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"> 
 
-<head th:replace="common/sections :: header-css"/>
+<head th:replace="~{common/sections :: header-css}"/>
 
 	 			
 <body>
 
 
 	<!-- Left Panel -->
-	<aside th:replace="common/menus :: left-panel"></aside>
+	<aside th:replace="~{common/menus :: left-panel}"></aside>
 
     <!-- Right Panel -->
 	<div id="right-panel" class="right-panel">
 	
-		<header th:replace="common/menus :: rp-header"/>
+		<header th:replace="~{common/menus :: rp-header}"/>
 		
-		<div th:replace="common/menus :: rp-breadcrumbs (pageTitle='View Savings Accounts')"/>
+		<div th:replace="~{common/menus :: rp-breadcrumbs (pageTitle='View Savings Accounts')}"/>
     
     	<!-- Page Content Begin -->
     	
@@ -119,7 +119,7 @@
     </div>
       	 
 	<!-- Footer -->
-	<div th:replace="common/sections :: footer-scripts"></div>
+	<div th:replace="~{common/sections :: footer-scripts}"></div>
 	
 	<script th:src="@{/js/lib/data-table/datatables.min.js}"></script>
     <script th:src="@{/js/lib/data-table/dataTables.bootstrap.min.js}"></script>

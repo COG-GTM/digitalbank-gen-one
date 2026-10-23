@@ -1,7 +1,7 @@
 package io.digisic.bank.controller;
 
 import java.util.List;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

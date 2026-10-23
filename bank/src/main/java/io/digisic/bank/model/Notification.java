@@ -2,18 +2,20 @@ package io.digisic.bank.model;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.digisic.bank.model.enums.NotificationType;
+import io.digisic.bank.model.enums.NotificationTypeOrdinalConverter;
 import io.digisic.bank.model.security.Users;
 
 @Entity
@@ -25,6 +27,7 @@ public class Notification {
 	private Long id;
 	
 	String content;
+	@Convert(converter = NotificationTypeOrdinalConverter.class)
 	NotificationType notificationType;
 
 	@JsonFormat(pattern="yyyy-MM-dd'T'hh:mm")

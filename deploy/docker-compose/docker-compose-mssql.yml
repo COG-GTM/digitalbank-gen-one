@@ -1,168 +1,60 @@
-version: "3.5"
+# =====================================================================
+# Microsoft SQL Server variant - overlay on the top-level docker-compose.yml
+#   docker compose -f docker-compose.yml -f deploy/docker-compose/docker-compose-mssql.yml up -d --build
+#   (or ./digitalbank.sh up mssql)
+# Paths are relative to the repository root (the first compose file).
+# The image is pinned to a 2019 CU that still ships /opt/mssql-tools, which
+# scripts/mssql/init.sh uses; databases are created ~90s after start.
+# =====================================================================
 services:
 
 # =====================================================================
-# Database Service: MS SQL Server
+# Database Service: Microsoft SQL Server
 # =====================================================================
   mssql:
-    image: mcr.microsoft.com/mssql/server:latest
+    image: mcr.microsoft.com/mssql/server:2019-CU27-ubuntu-20.04
     container_name: mssql
     hostname: mssql
-    privileged: true
     command: sh -c '/usr/src/init.sh & /opt/mssql/bin/sqlservr'
     environment:
       ACCEPT_EULA: 'Y'
-      SA_PASSWORD: Demo123!
+      MSSQL_SA_PASSWORD: Demo123!
     ports:
       - "1433:1433"
     networks:
       - digitalnet
     volumes:
-      - ./scripts/mssql:/usr/src
+      - ./deploy/docker-compose/scripts/mssql:/usr/src:ro
       - mssqldata:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U digitaluser -P 'Demo123!' -d digitalcredit -Q 'SELECT 1' -b -o /dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 100s
     restart: unless-stopped
 
-# =====================================================================
-# Digital Broker Service Configuration
-# =====================================================================
-  broker:
-    image: digisic/digitalbroker:latest
-    container_name: broker
-    hostname: broker
-    ports:
-      - "8161:8161"
-      - "61616:61616"
-    networks:
-      - digitalnet
-    restart: unless-stopped
-
-# =====================================================================
-# Digital Credit Service Configuration
-# =====================================================================    
   credit:
-    image: digisic/digitalcredit:latest
-    container_name: credit
-    hostname: credit
     environment:
-    
-      # Logging Options
-      LOGGING_LEVEL_IO_DIGISIC_CREDIT: INFO
-
-      # Digital Broker Connection
-      SPRING_ARTEMIS_MODE: native
-      SPRING_ARTEMIS_HOST: broker
-      SPRING_ARTEMIS_PORT: 61616
-      SPRING_ARTEMIS_USER: admin
-      SPRING_ARTEMIS_PASSWORD: admin
-
-      # Credit Application Process
-      IO_DIGISIC_CREDIT_APP_PROCESS_ENABLED: 'true'
-      IO_DIGISIC_CREDIT_APP_PROCESS_TIME: 20
-
-      # Digital Credit Application Process JMS Queues
-      IO_DIGISIC_PARTNER_CREDIT_APP_REQUEST: CREDIT.APP.REQUEST
-      IO_DIGISIC_PARTNER_CREDIT_APP_RESPONSE: CREDIT.APP.RESPONSE
-
-      # Database Configuration
-      SPRING_DATASOURCE_PLATFORM: mssql
       SPRING_DATASOURCE_USERNAME: digitaluser
       SPRING_DATASOURCE_PASSWORD: Demo123!
-      SPRING_DATASOURCE_URL: jdbc:sqlserver://mssql:1433;databaseName=digitalcredit 
+      SPRING_DATASOURCE_URL: jdbc:sqlserver://mssql:1433;databaseName=digitalcredit;encrypt=false
+      # mapped by JpaSchemaParityConfig to LegacySQLServerDialect (legacy hibernate_sequence tables, numeric(19,0) ids)
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.SQLServerDialect
-
-    ports:
-      - "3500:8080" # HTTP
-      - "3535:8443" # HTTPS
-    networks:
-      - digitalnet
-    volumes:
-      - digitalcredit:/usr/local/tomcat/conf
     depends_on:
-      - mssql
-      - broker
-    restart: unless-stopped
+      mssql:
+        condition: service_healthy
 
-# =====================================================================
-# Digital Bank Service Configuration
-# =====================================================================
   bank:
-    image: digisic/digitalbank:latest
-    container_name: bank
-    hostname: bank
     environment:
-
-      # Session Management
-      SERVER_SERVLET_SESSION_TIMEOUT: 5m
-      IO_DIGISIC_MAX_SESSIONS: 10000 # Set to 1 for single concurrent user session
-
-      # Logging Options
-      LOGGING_LEVEL_IO_DIGISIC_BANK: INFO
-      
-      # Digital Broker connection
-      SPRING_ARTEMIS_MODE: native
-      SPRING_ARTEMIS_HOST: broker
-      SPRING_ARTEMIS_PORT: 61616
-      SPRING_ARTEMIS_USER: admin
-      SPRING_ARTEMIS_PASSWORD: admin
-
-      # Digital Credit Connection
-      IO_DIGISIC_CREDIT_ENABLED: 'true'
-      IO_DIGISIC_CREDIT_PROTOCOL: http
-      IO_DIGISIC_CREDIT_HOST: credit
-      IO_DIGISIC_CREDIT_PORT: 8080
-      IO_DIGISIC_CREDIT_CONTEXT-PATH: /credit
-      IO_DIGISIC_CREDIT_USERNAME: admin@demo.io
-      IO_DIGISIC_CREDIT_PASSWORD: Demo123!
-
-      # Digital Credit Application Process JMS Queues
-      IO_DIGISIC_PARTNER_CREDIT_APP_REQUEST: CREDIT.APP.REQUEST
-      IO_DIGISIC_PARTNER_CREDIT_APP_RESPONSE: CREDIT.APP.RESPONSE
-
-      # ATM Location Service Connection 
-      IO_DIGISIC_BANK_ATM_PROTOCOL: https
-      IO_DIGISIC_BANK_ATM_HOST: bankingservices.io # uat-api.synapsefi.com #
-      IO_DIGISIC_BANK_ATM_PORT: 
-
-      # VISA Direct Payment Service
-      IO_DIGISIC_BANK_VISA_PROTOCOL: https
-      IO_DIGISIC_BANK_VISA_HOST: creditservices.io
-      IO_DIGISIC_BANK_VISA_PORT:
-
-      # Open Banking API Service
-      IO_DIGISIC_BANK_OBP_ENABLED: 'true'
-      IO_DIGISIC_BANK_OBP_CONSUMER_KEY: vwfpvwfr1kngt0up2jelebzmvxrhst4vhxvw1jm3
-      IO_DIGISIC_BANK_OBP_VERSION: v4.0.0
-      IO_DIGISIC_BANK_OBP_PROTOCOL: https
-      IO_DIGISIC_BANK_OBP_HOST: 
-      IO_DIGISIC_BANK_OBP_PORT:
-      
-      # Database Configuration
-      SPRING_DATASOURCE_PLATFORM: mssql
       SPRING_DATASOURCE_USERNAME: digitaluser
       SPRING_DATASOURCE_PASSWORD: Demo123!
-      SPRING_DATASOURCE_URL: jdbc:sqlserver://mssql:1433;databaseName=digitalbank 
+      SPRING_DATASOURCE_URL: jdbc:sqlserver://mssql:1433;databaseName=digitalbank;encrypt=false
+      # mapped by JpaSchemaParityConfig to LegacySQLServerDialect (legacy hibernate_sequence tables, numeric(19,0) ids)
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.SQLServerDialect
-
-    ports:
-      - "8080:8080" # HTTP
-      - "8443:8443" # HTTPS
-    networks:
-      - digitalnet
-    volumes:
-      - digitalbank:/usr/local/tomcat/conf
     depends_on:
-      - mssql
-      - broker
-      - credit
-    restart: unless-stopped
-      
-# =====================================================================
-# Docker Network Configuration
-# =====================================================================
-networks:
-  digitalnet:
-volumes:
-  digitalcredit:
-  digitalbank:
-  mssqldata:
+      mssql:
+        condition: service_healthy
 
+volumes:
+  mssqldata:

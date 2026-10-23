@@ -2,11 +2,11 @@ package io.digisic.bank.model;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class AccountType {
@@ -20,8 +20,11 @@ public class AccountType {
 	private String category;
 	private String name;
 	private double interestRate;
+	@Column(precision = 19, scale = 2)
 	private BigDecimal minDeposit;
+	@Column(precision = 19, scale = 2)
 	private BigDecimal overdraftLimit;
+	@Column(precision = 19, scale = 2)
 	private BigDecimal overdraftFee;
 	
 	// default constructor

@@ -1,198 +1,111 @@
 package io.digisic.bank.test.junit.search;
 
-import static com.ca.codesv.protocols.http.fluent.HttpFluentInterface.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.notFound;
+import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 import java.util.List;
-import org.junit.jupiter.api.AfterAll;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledOnJre;
-import org.junit.jupiter.api.condition.JRE;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.HttpStatusCodeException;
-import com.ca.codesv.engine.junit5.VirtualServerResolver;
+
+import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 
 import io.digisic.bank.model.AtmLocation;
 import io.digisic.bank.service.SearchService;
-
-
+import io.digisic.bank.util.Constants;
 
 /**
  * Tests integration between <code>SearchService</code> of Digital Bank and synapsefi ATM locator service.
- *
+ * The ATM service is virtualized with WireMock (formerly CodeSV).
  */
-
-@SpringBootTest
-@ContextConfiguration(classes = SearchService.class)
-@ExtendWith(SpringExtension.class)
-@ExtendWith(VirtualServerResolver.class)
+@SpringBootTest(classes = SearchService.class)
 public class AtmLocationSearchTest {
 
-	private static final Logger LOG = LoggerFactory.getLogger(AtmLocationSearchTest.class);
-	
-	// CodeSV Java Key Store Properties
-	protected static final String KEYSTORE_PATH = AtmLocationSearchTest.class.getClassLoader().getResource("keystore.jks").getPath();
-    protected static final String KEYSTORE_PASSWORD = "password";
-    protected static final String TLS = "TLS";
-	
-    public VirtualServerResolver vs = new VirtualServerResolver();
-    
-    @Autowired
+	@RegisterExtension
+	static WireMockExtension atmService = WireMockExtension.newInstance()
+			.options(wireMockConfig().dynamicPort())
+			.build();
+
+	@Autowired
 	private SearchService searchService;
-    
-    
-    @BeforeAll
-    public static void testSetup() {
-    	setUpAppKeystoreForTest();
-    }
-    
-    @AfterAll
-    public static void testTearDown() {
-    	resetKeystore();
-    }
-    
-    /**
-     * This method calls method requesting synapsefi API and tests whether it can handle synapsefi response correctly.
-     *
-     * In this test case, the scenario expects correct response from the synapsefi API.
-     *
-     * @throws Exception
-     */
-    @Test
-    @EnabledOnJre({JRE.JAVA_8})
-    public void positiveResultTest() throws Exception {
-    	
-    	final String zipcode = "94203";
-    	final int expResultSize = 2;
-    	
-    	try { // Setup Virtual Service with Code SV
 
-	        forGet("https://bankingservices.io/v3.1/nodes/atms")
-	        	.matchesQuery("zip", zipcode)
-	        	.usingHttps(withSecureProtocol(TLS).keystorePath(KEYSTORE_PATH)
-	                							     .keystorePassword(KEYSTORE_PASSWORD)
-	                							     .keyPassword(KEYSTORE_PASSWORD))
-	        	
-	            .doReturn(okMessage().withJsonBody(POSITIVE_RESULTS_OK));
+	@DynamicPropertySource
+	static void atmServiceProperties(DynamicPropertyRegistry registry) {
+		registry.add(Constants.APP_ATM_PROTOCOL, () -> "http");
+		registry.add(Constants.APP_ATM_HOST, () -> "localhost");
+		registry.add(Constants.APP_ATM_PORT, atmService::getPort);
+	}
 
-    	} catch (Exception ex) {
-    		LOG.error("Error setting up Virtual Service: " + ex.getMessage());
-    		
-    		if (LOG.isDebugEnabled()) {
-    			ex.printStackTrace();
-    		}
-    		throw new Exception(ex);
-    	} // end try/catch
-    	
+	@BeforeAll
+	static void resetServiceUrl() {
+		// SearchService caches its base URL statically; force it to be rebuilt for this test's virtual service
+		ReflectionTestUtils.setField(SearchService.class, "apiBaseUrl", null);
+	}
+
+	/**
+	 * Validate a positive result returned from the ATM location service.
+	 */
+	@Test
+	public void positiveResultTest() throws Exception {
+
+		final String zipcode = "94203";
+		final int expResultSize = 2;
+
+		atmService.stubFor(get(urlPathEqualTo(Constants.APP_ATM_URI_API_BASE))
+				.withQueryParam("zip", equalTo(zipcode))
+				.willReturn(okJson(POSITIVE_RESULTS_OK)));
 
 		List<AtmLocation> locations = searchService.searchATMLocations(zipcode);
 
-    	Assertions.assertEquals(expResultSize, locations.size());
-    }
+		Assertions.assertEquals(expResultSize, locations.size());
+	}
 
-    /**
-	 * This method calls method requesting synapsefi API and tests whether it can handle synapsefi response correctly.
-	 *
-	 * In this test case, the scenario expects correct response, but with no ATMs found.
-	 *
-	 * @throws Exception
+	/**
+	 * Validate zero results returned from the ATM location service.
 	 */
 	@Test
-	@EnabledOnJre({JRE.JAVA_8})
 	public void zeroResultTest() throws Exception {
-	  
+
 		final String zipcode = "12345";
-	  
-		try { // Setup Virtual Service with Code SV
-			forGet("https://bankingservices.io/v3.1/nodes/atms")
-				.matchesQuery("zip", zipcode)
-				.usingHttps(withSecureProtocol(TLS).keystorePath(KEYSTORE_PATH)
-												   .keystorePassword(KEYSTORE_PASSWORD) 
-												   .keyPassword(KEYSTORE_PASSWORD))
-	  
-				.doReturn(okMessage().withJsonBody(ZERO_RESULTS_OK));
-	  
-		} catch (Exception ex) { 
-			
-			LOG.error("Error setting up Virtual Service: " + ex.getMessage());
-	  
-			if (LOG.isDebugEnabled()) { 
-				ex.printStackTrace(); 
-			} 
-			
-			throw new Exception(ex);
-		} // end try/catch
-	  
+
+		atmService.stubFor(get(urlPathEqualTo(Constants.APP_ATM_URI_API_BASE))
+				.withQueryParam("zip", equalTo(zipcode))
+				.willReturn(okJson(ZERO_RESULTS_OK)));
+
 		List<AtmLocation> locations = searchService.searchATMLocations(zipcode);
 
 		Assertions.assertTrue(locations.isEmpty());
 	}
 
 	/**
-	 * This method calls method requesting synapsefi API and tests whether it can handle synapsefi response correctly.
-	 *
-	 * In this test case, the scenario expects the API returns 404 and application should throw expected <code>HttpStatusCodeException</code>.
-	 *
-	 * @throws Exception
+	 * Validate the ATM location service being unavailable.
 	 */
 	@Test
-	@EnabledOnJre({JRE.JAVA_8})
-	public void unavilableServiceTest() throws Exception {
-	  
+	public void unavilableServiceTest() {
+
 		final String zipcode = "94203";
-	  
-		try { // Setup Virtual Service with Code SV
-			
-			forGet("https://bankingservices.io/v3.1/nodes/atms")
-				.matchesQuery("zip", zipcode)
-				.usingHttps(withSecureProtocol(TLS).keystorePath(KEYSTORE_PATH)
-												   .keystorePassword(KEYSTORE_PASSWORD) 
-												   .keyPassword(KEYSTORE_PASSWORD))
-	  
-				.doReturn(notFoundMessage());
-			
-	  
-		} catch (Exception ex) { 
-			
-			LOG.error("Error setting up Virtual Service: " + ex.getMessage());
-	  
-			if (LOG.isDebugEnabled()) { 
-				ex.printStackTrace(); 
-			} 
-			
-			throw new Exception(ex);
-		} // end try/catch
+
+		atmService.stubFor(get(urlPathEqualTo(Constants.APP_ATM_URI_API_BASE))
+				.withQueryParam("zip", equalTo(zipcode))
+				.willReturn(notFound()));
 
 		Assertions.assertThrows(HttpStatusCodeException.class, () -> {
 			searchService.searchATMLocations(zipcode);
 		});
-		
 	}
-	
-	/*
-     * Configure Key Store for Tests
-     */
-    public static void setUpAppKeystoreForTest() {	
-        System.setProperty("javax.net.ssl.trustStore", KEYSTORE_PATH);
-        System.setProperty("javax.net.ssl.trustStorePassword", KEYSTORE_PASSWORD);
-    }
-    
-    /*
-     * Clear configuration
-     */
-    public static void resetKeystore() {
-        System.clearProperty("javax.net.ssl.trustStore");
-        System.clearProperty("javax.net.ssl.trustStorePassword");
-    }
 
-	
 	private static final String ZERO_RESULTS_OK = 	"{\n" + "    \"atms\": [],\n" +
 													"    \"atms_count\": 0,\n" + "    \"error_code\": \"0\",\n" +
 													"    \"http_code\": \"200\",\n" + "    \"limit\": 20,\n" +
@@ -263,5 +176,4 @@ public class AtmLocationSearchTest {
 											            "    \"page_count\": 1,\n" +
 											            "    \"success\": true\n" +
 											            "}";
-
 }

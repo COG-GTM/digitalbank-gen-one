@@ -2,7 +2,7 @@
 
 <html class="no-js" lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"> 
 
-<head th:replace="common/sections :: header-css"/>
+<head th:replace="~{common/sections :: header-css}"/>
 
 <body class="bg-dark">
 
@@ -70,7 +70,7 @@
         </div> <!-- End Container -->
     </div> <!-- End Sufee -->
 
-	<div th:replace="common/sections :: footer-scripts"></div>
+	<div th:replace="~{common/sections :: footer-scripts}"></div>
 
 </body>
 </html>

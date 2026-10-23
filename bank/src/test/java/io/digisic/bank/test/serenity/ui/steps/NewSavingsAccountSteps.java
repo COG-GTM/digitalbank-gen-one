@@ -1,11 +1,11 @@
 package io.digisic.bank.test.serenity.ui.steps;
 
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.digisic.bank.test.serenity.ui.pom.NewSavingsAccountPage;
-import net.thucydides.core.annotations.Step;
+import net.serenitybdd.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 
 

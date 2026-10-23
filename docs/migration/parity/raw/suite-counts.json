@@ -1,0 +1,92 @@
+[
+ {
+  "suite": "Bank JUnit (surefire)",
+  "side": "legacy",
+  "run": 0,
+  "passed": 0,
+  "failed": 0,
+  "errors": "compile error",
+  "skipped": "6 not run",
+  "notes": "testCompile fails: package com.ca.codesv.* does not exist (CodeSV jar unobtainable). Log: legacy-bank-junit.log"
+ },
+ {
+  "suite": "Bank JUnit (surefire)",
+  "side": "migrated",
+  "run": 6,
+  "passed": 6,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "notes": "AtmLocationSearchTest 3, AtmLocationSearchTrnxRepoTest 3 (CodeSV replaced by MockRestServiceServer fixtures)"
+ },
+ {
+  "suite": "Serenity API (failsafe)",
+  "side": "legacy",
+  "run": 4,
+  "passed": 2,
+  "failed": 2,
+  "errors": 0,
+  "skipped": 0,
+  "notes": "2 x 503: suite expects a CodeSV-virtualised ATM upstream"
+ },
+ {
+  "suite": "Serenity API (failsafe)",
+  "side": "migrated",
+  "run": 4,
+  "passed": 4,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "notes": "ATM upstream served from the recorded fixtures"
+ },
+ {
+  "suite": "Serenity UI (failsafe, Chrome)",
+  "side": "legacy",
+  "run": 107,
+  "passed": 105,
+  "failed": 2,
+  "errors": 0,
+  "skipped": 0,
+  "notes": "First legacy UI run that actually executes: Chrome for Testing 137 + chromedriver 137 pre-seeded into the webdrivermanager 3.8.1 cache (-Dwdm.chromeDriverVersion=137.0.7118.2 -Dwdm.forceCache=true). The 2 failures are the ATM Location Search UI scenarios with valid zip codes (no CodeSV-virtualised ATM upstream)."
+ },
+ {
+  "suite": "Serenity UI (failsafe, Chrome)",
+  "side": "migrated",
+  "run": 107,
+  "passed": 107,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "notes": "headless Chrome via Selenium Manager"
+ },
+ {
+  "suite": "Credit JUnit (surefire)",
+  "side": "legacy",
+  "run": 0,
+  "passed": 0,
+  "failed": 0,
+  "errors": 0,
+  "skipped": "1 (pom skip)",
+  "notes": "credit/pom.xml hard-codes surefire <skip>true</skip>"
+ },
+ {
+  "suite": "Credit JUnit (surefire)",
+  "side": "migrated",
+  "run": 1,
+  "passed": 1,
+  "failed": 0,
+  "errors": 0,
+  "skipped": 0,
+  "notes": "DigitalCreditApplicationTests"
+ },
+ {
+  "suite": "Parity replay (123 steps + DB snapshot)",
+  "side": "both",
+  "run": 123,
+  "passed": 122,
+  "failed": 0,
+  "errors": 0,
+  "skipped": "1 INFO",
+  "notes": "identical = 122, INFO = docs.api_docs.v3, DB snapshot diffs = 0"
+ }
+]

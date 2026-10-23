@@ -4,20 +4,20 @@ import java.util.HashMap;
 import java.util.Map;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import cucumber.api.Result;
-import cucumber.api.Scenario;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.When;
+import io.cucumber.java.Status;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
 import io.digisic.bank.test.serenity.common.TestDataService;
 import io.digisic.bank.test.serenity.ui.steps.LoginSteps;
 import io.digisic.bank.test.serenity.ui.steps.MenuNavigationSteps;
 import io.digisic.bank.test.serenity.util.BlazeGridDriver;
-import net.thucydides.core.annotations.Steps;
-import net.thucydides.core.util.EnvironmentVariables;
-import net.thucydides.core.util.SystemEnvironmentVariables;
+import net.serenitybdd.annotations.Steps;
+import net.thucydides.model.util.EnvironmentVariables;
+import net.thucydides.model.environment.SystemEnvironmentVariables;
 import net.thucydides.core.webdriver.ThucydidesWebDriverSupport;
 
 public class SharedScenarioTests {
@@ -55,7 +55,7 @@ public class SharedScenarioTests {
 				
 				 Map<String, String> map = new HashMap<>();
 		         map.put("testCaseName", scenario.getName());
-		         map.put("testSuiteName", scenario.getId().substring(scenario.getId().lastIndexOf("/") + 1, scenario.getId().lastIndexOf(".")));
+		         map.put("testSuiteName", scenario.getUri().getPath().substring(scenario.getUri().getPath().lastIndexOf("/") + 1, scenario.getUri().getPath().lastIndexOf(".")));
 		         
 		         remoteDriver.executeAsyncScript("/* FLOW_MARKER test-case-start */", map);
 			}
@@ -72,11 +72,11 @@ public class SharedScenarioTests {
 		
 				Map<String, String> map = new HashMap<>();
 				
-				if (scenario.getStatus().equals(Result.Type.FAILED)){
+				if (scenario.getStatus().equals(Status.FAILED)){
 					map.put("status", "failed");
 	                map.put("message", scenario.getStatus().toString());
 				} 
-				else if (scenario.getStatus().equals(Result.Type.PASSED)) {
+				else if (scenario.getStatus().equals(Status.PASSED)) {
 					map.put("status", "passed");
 	                map.put("message", scenario.getStatus().toString());
 				} else {

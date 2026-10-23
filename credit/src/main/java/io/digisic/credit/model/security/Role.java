@@ -3,13 +3,13 @@ package io.digisic.credit.model.security;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 
 @Entity
@@ -26,7 +26,7 @@ public class Role {
 	private Long id;
 	private String name;
   
-	@OneToMany(mappedBy="role", cascade={javax.persistence.CascadeType.ALL}, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="role", cascade={jakarta.persistence.CascadeType.ALL}, fetch=FetchType.LAZY)
 	private Set<UserRole> userRoles = new HashSet<>();
 
 	// default constructor

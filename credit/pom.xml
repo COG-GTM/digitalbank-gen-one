@@ -5,7 +5,7 @@
 	
 	<artifactId>digitalcredit</artifactId>
 	<version>${revision}</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	
 	<name>Digital Credit</name>
 	<description>Digital Online Credit Card Sample Application</description>
@@ -20,11 +20,10 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>8</java.version>
-		<serenity.version>2.0.40</serenity.version>
-		<serenity.maven.version>2.0.40</serenity.maven.version>
-		<serenity.spring.version>2.0.40</serenity.spring.version>
-        <serenity.cucumber.version>1.9.31</serenity.cucumber.version>
+		<java.version>21</java.version>
+		<jjwt.version>0.12.6</jjwt.version>
+		<springdoc.version>2.6.0</springdoc.version>
+		<serenity.maven.version>4.2.34</serenity.maven.version>
         <tags></tags>
         <parallel.tests>1</parallel.tests>
         <buildNumber>local</buildNumber>
@@ -50,19 +49,30 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
-    		<groupId>io.jsonwebtoken</groupId>
-    		<artifactId>jjwt</artifactId>
-    		<version>0.9.1</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 		<dependency>
-    		<groupId>io.springfox</groupId>
-    		<artifactId>springfox-swagger2</artifactId>
-    		<version>2.9.2</version>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>${jjwt.version}</version>
 		</dependency>
 		<dependency>
-    		<groupId>io.springfox</groupId>
-    		<artifactId>springfox-swagger-ui</artifactId>
-    		<version>2.9.2</version>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>${jjwt.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>${jjwt.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -75,8 +85,8 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
@@ -109,58 +119,16 @@
    		</dependency>
    		<dependency>
       		<groupId>org.apache.activemq</groupId>
-      		<artifactId>artemis-jms-client</artifactId>
+      		<artifactId>artemis-jakarta-client</artifactId>
    		</dependency>
    		<dependency> 
         	<groupId>com.fasterxml.jackson.core</groupId> 
         	<artifactId>jackson-databind</artifactId> 
 		</dependency>
    
-		<!-- Serenity BDD Cucumber -->		
-        <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-core</artifactId>
-            <version>${serenity.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-    		<groupId>net.serenity-bdd</groupId>
-    		<artifactId>serenity-spring</artifactId>
-    		<version>${serenity.spring.version}</version>
-    		<scope>test</scope>
-		</dependency>
-        <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-junit</artifactId>
-            <version>${serenity.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-cucumber</artifactId>
-            <version>${serenity.cucumber.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.serenity-bdd</groupId>
-            <artifactId>serenity-reports</artifactId>
-            <version>${serenity.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <version>1.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -195,53 +163,21 @@
 			          </goals>
 			        </execution>
 				</executions>
-			</plugin>  
-			<plugin>
-            	<groupId>org.apache.maven.plugins</groupId>
-            	<artifactId>maven-war-plugin</artifactId>
-            	<configuration>
-                <archive>
-                	<addMavenDescriptor>false</addMavenDescriptor>
-                    <manifest>
-                        <addClasspath>true</addClasspath>
-                        <classpathPrefix>lib/</classpathPrefix>
-                    </manifest>
-                </archive>
-                <warName>${contextPathName}##${revision}</warName>
-            </configuration>
-        	</plugin>  
+			</plugin>    
 			<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M3</version><!--$NO-MVN-MAN-VER$-->
                 <configuration>
-                    <skip>true</skip>
-                    <forkCount>0</forkCount>
-                    <threadCount>1</threadCount>
                     <argLine></argLine>
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version><!--$NO-MVN-MAN-VER$-->
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.0.0-M3</version><!--$NO-MVN-MAN-VER$-->
                 <configuration>
+                    <!-- unit tests run in surefire; no credit integration suites exist yet -->
                     <includes>
-                        <include>**/*Test*.java</include>
+                        <include>**/*IT.java</include>
                     </includes>
-                    <systemPropertyVariables>
-                        <webdriver.base.url>${webdriver.base.url}</webdriver.base.url>
-                    </systemPropertyVariables>
-                    <parallel>classes</parallel>
-                    <threadCount>${parallel.tests}</threadCount>
                     <forkCount>${parallel.tests}</forkCount>
                 </configuration>
                 <executions>

@@ -1,0 +1,279 @@
+{
+ "subtitle": "Round 1, 2026-10-23. Legacy master 59d94a6 (JDK 8, Spring Boot 2.1.7) vs migrated devin/java21-boot3-digitalbank 8660176 (JDK 21, Spring Boot 3.3.13). Both estates ran concurrently on the same VM with their own brokers and fixture mocks.",
+ "regressions": [],
+ "verified": [
+  "All 123 replay steps ran on both stacks. 122 match exactly after normalisation (110 full, 6 seed, 3 credit-decision, 3 status-only compare). The one remaining step, docs.api_docs.v3, is informational only and is not counted as identical.",
+  "0 missing steps and 0 extra steps on either side. Both replays finished without errors.",
+  "DB state after the flows is identical on both sides: 0 differing fields across bank users, the seed and parity accounts, balances, transactions, credit applications (decision Approved on both) and Digital Credit users.",
+  "The JMS credit flow (bank -> Artemis -> credit -> Artemis -> bank) is identical, including the final application status and the credit references.",
+  "The external-service integrations (ATM search, VISA, Open Banking) send the same outbound requests to the fixture mock and produce identical results.",
+  "Determinism: this round's live legacy run matches the committed baseline docs/migration/baseline/legacy-run.json on all 123 steps, with 0 DB diffs.",
+  "Headless-browser walkthrough (login, home/accounts, open account, deposit, withdraw, transfer, history, credit application/status): all 14 stages render on both sides with the same pages, form fields and messages.",
+  "Migrated test suites from a fresh clean verify: bank JUnit 6/6, Serenity API 4/4, Serenity UI 107/107, credit JUnit 1/1, BUILD SUCCESS."
+ ],
+ "limitations": [
+  "docs.api_docs.v3 (INFO, not a regression): legacy has no /v3/api-docs, so the unauthenticated request redirects 302 to /login. The migrated springdoc serves OpenAPI 3 JSON (200). /v2/api-docs and swagger-ui are compared by status only, because the documentation stack changed from springfox to springdoc.",
+  "Legacy bank JUnit (6 tests) does not compile. The com.broadcom.codesv:codesv-dist-jar classes are no longer obtainable (dead bintray repo) and the stub jar only satisfies dependency resolution. This is a pre-existing legacy defect.",
+  "Legacy credit JUnit (1 test) never runs, because credit/pom.xml hard-codes <skip>true</skip> in maven-surefire-plugin. Pre-existing legacy defect.",
+  "Legacy Serenity API: 2 of 4 scenarios fail with 503. They expect a CodeSV-virtualised ATM upstream, and the POM-started app has none configured. Environment/pre-existing. Against the parity stack's fixture mock the same calls return 200 on both sides (api.atm.search*).",
+  "Legacy Serenity UI: 107 run / 105 passed / 2 failed. The two failures are 'ATM Location Search with Valid Zip Code with/without Results' (failed at 'Validate returned (zero) results'), caused by the same missing CodeSV-virtualised ATM upstream as the API failures. This is an environment/pre-existing legacy test dependency. The baseline run reported 0/107 because webdrivermanager resolved ChromeDriver 114. This round worked around that by pre-seeding chromedriver 137 into the WDM cache.",
+  "Cosmetic Spring Security 6 / Jackson 2.17 differences are masked by the harness: logout cookie Path=/bank; Secure, error timestamp offset +00:00 vs +0000, and 1-based column numbers in Jackson parse errors.",
+  "External ATM, VISA and Open Banking services are unreachable from the VM. Both sides use the same recorded fixtures (bank/src/test/resources/spec/**/vs), and the live upstreams were not tested. The OBP fixture links only RBOS Gold Checking, once per fresh stack.",
+  "Only the H2 profile was exercised in this round. The MySQL, Postgres and MSSQL overlays were covered by T-09. IPv6 broker hosts were not tested.",
+  "Screenshot pixel values differ because DataInitializer seeds Faker-random money, account numbers and transaction numbers on every boot. Page structure, fields and messages match. Functional equality is established by the normalised replay and DB diff, not by pixels."
+ ],
+ "scope": [
+  "Goal: prove that the Java 8 / Spring Boot 2.1 -> Java 21 / Spring Boot 3.3 migration preserved functional behaviour, meaning the same URLs, context paths, ports, pages, form fields, REST payloads and status codes, seed data and JMS flow.",
+  "Method: tools/parity/start_stack.sh started a fresh legacy stack (unmodified master built with the documented CodeSV stub workaround and run as exploded WARs on JDK 8) and a fresh migrated stack (executable jars built from the integration tip on JDK 21). The two ran concurrently on separate ports, each with its own Artemis broker and its own instance of the same fixture mock. tools/parity/replay.py drove all 123 UI, REST and JMS steps against each stack and then captured a DB snapshot through the admin REST API. tools/parity/diff.py compared the two runs step by step after normalisation (JWTs, session ids, timestamps, surrogate ids, base URLs, Faker seed money, Math.random credit terms and card details are masked) and compared the DB snapshots field by field.",
+  "A flow is reported as identical only if it ran on both sides and its normalised diff was empty. INFO steps are listed separately and are not counted as identical.",
+  "Test suites: JUnit, Serenity API and Serenity UI ran for both sides. Migrated: repo-root `mvn clean verify` (Boot start -> failsafe in headless Chrome -> stop). Legacy: an out-of-repo copy of master's bank module with the two CodeSV JUnit classes removed, run with `mvn verify` on JDK 8. Screenshots were taken with Playwright and Chrome for Testing 137 on fresh stacks, logged in as jsmith@demo.io."
+ ],
+ "environment": [
+  [
+   "Commit",
+   [
+    "master 59d94a6eb58860508886b73f8d455cc89a02271a",
+    "devin/java21-boot3-digitalbank 8660176e039b26877010396fb0b0d9d492157bb9"
+   ]
+  ],
+  [
+   "JDK",
+   [
+    "OpenJDK 1.8.0_504",
+    "OpenJDK 21.0.12.1"
+   ]
+  ],
+  [
+   "Spring Boot / Spring Framework",
+   [
+    "2.1.7.RELEASE / 5.1.9.RELEASE",
+    "3.3.13 / 6.1.21"
+   ]
+  ],
+  [
+   "Spring Security",
+   [
+    "5.1.6.RELEASE",
+    "6.3.10"
+   ]
+  ],
+  [
+   "Hibernate ORM",
+   [
+    "5.3.10.Final (javax.persistence)",
+    "6.5.3.Final (jakarta.persistence)"
+   ]
+  ],
+  [
+   "Servlet container",
+   [
+    "Tomcat 9.0.22 (javax.servlet)",
+    "Tomcat 10.1.42 (jakarta.servlet)"
+   ]
+  ],
+  [
+   "Thymeleaf / Jackson / H2",
+   [
+    "3.0.11 / 2.9.9 / 1.4.199",
+    "3.1.3 / 2.17.3 / 2.2.224"
+   ]
+  ],
+  [
+   "API docs",
+   [
+    "springfox-swagger2 2.9.2",
+    "springdoc-openapi 2.6.0"
+   ]
+  ],
+  [
+   "JMS client / broker",
+   [
+    "artemis-jms-client 2.6.4 / Apache Artemis 2.17.0 :61616",
+    "artemis-jakarta-client 2.33.0 / Apache Artemis 2.31.2 :61617"
+   ]
+  ],
+  [
+   "Packaging / launch",
+   [
+    "WAR (exploded, java -cp WEB-INF)",
+    "executable jar (java -jar)"
+   ]
+  ],
+  [
+   "Bank URL",
+   [
+    "https://localhost:8443/bank",
+    "https://localhost:9443/bank"
+   ]
+  ],
+  [
+   "Credit URL",
+   [
+    "https://localhost:3500/credit",
+    "https://localhost:4500/credit"
+   ]
+  ],
+  [
+   "Fixture mock (ATM/VISA/OBP)",
+   [
+    "http://127.0.0.1:8099",
+    "http://127.0.0.1:8199"
+   ]
+  ],
+  [
+   "Database",
+   [
+    "H2 in-memory, fresh DataInitializer seed",
+    "H2 in-memory, fresh DataInitializer seed"
+   ]
+  ]
+ ],
+ "suites": [
+  {
+   "suite": "Bank JUnit (surefire)",
+   "side": "legacy",
+   "run": 0,
+   "passed": 0,
+   "failed": 0,
+   "errors": "compile error",
+   "skipped": "6 not run",
+   "notes": "testCompile fails: package com.ca.codesv.* does not exist (CodeSV jar unobtainable). Log: legacy-bank-junit.log"
+  },
+  {
+   "suite": "Bank JUnit (surefire)",
+   "side": "migrated",
+   "run": 6,
+   "passed": 6,
+   "failed": 0,
+   "errors": 0,
+   "skipped": 0,
+   "notes": "AtmLocationSearchTest 3, AtmLocationSearchTrnxRepoTest 3 (CodeSV replaced by MockRestServiceServer fixtures)"
+  },
+  {
+   "suite": "Serenity API (failsafe)",
+   "side": "legacy",
+   "run": 4,
+   "passed": 2,
+   "failed": 2,
+   "errors": 0,
+   "skipped": 0,
+   "notes": "2 x 503: suite expects a CodeSV-virtualised ATM upstream"
+  },
+  {
+   "suite": "Serenity API (failsafe)",
+   "side": "migrated",
+   "run": 4,
+   "passed": 4,
+   "failed": 0,
+   "errors": 0,
+   "skipped": 0,
+   "notes": "ATM upstream served from the recorded fixtures"
+  },
+  {
+   "suite": "Serenity UI (failsafe, Chrome)",
+   "side": "legacy",
+   "run": 107,
+   "passed": 105,
+   "failed": 2,
+   "errors": 0,
+   "skipped": 0,
+   "notes": "First legacy UI run that actually executes: Chrome for Testing 137 + chromedriver 137 pre-seeded into the webdrivermanager 3.8.1 cache (-Dwdm.chromeDriverVersion=137.0.7118.2 -Dwdm.forceCache=true). The 2 failures are the ATM Location Search UI scenarios with valid zip codes (no CodeSV-virtualised ATM upstream)."
+  },
+  {
+   "suite": "Serenity UI (failsafe, Chrome)",
+   "side": "migrated",
+   "run": 107,
+   "passed": 107,
+   "failed": 0,
+   "errors": 0,
+   "skipped": 0,
+   "notes": "headless Chrome via Selenium Manager"
+  },
+  {
+   "suite": "Credit JUnit (surefire)",
+   "side": "legacy",
+   "run": 0,
+   "passed": 0,
+   "failed": 0,
+   "errors": 0,
+   "skipped": "1 (pom skip)",
+   "notes": "credit/pom.xml hard-codes surefire <skip>true</skip>"
+  },
+  {
+   "suite": "Credit JUnit (surefire)",
+   "side": "migrated",
+   "run": 1,
+   "passed": 1,
+   "failed": 0,
+   "errors": 0,
+   "skipped": 0,
+   "notes": "DigitalCreditApplicationTests"
+  },
+  {
+   "suite": "Parity replay (123 steps + DB snapshot)",
+   "side": "both",
+   "run": 123,
+   "passed": 122,
+   "failed": 0,
+   "errors": 0,
+   "skipped": "1 INFO",
+   "notes": "identical = 122, INFO = docs.api_docs.v3, DB snapshot diffs = 0"
+  }
+ ],
+ "screens_note": "Fresh stacks, Playwright + Chrome for Testing 137 headless, user jsmith@demo.io. Each row shows the same step on legacy (left) and migrated (right). Balances, account numbers and transaction numbers differ because they come from Faker-random seed data generated on each boot.",
+ "screen_captions": {
+  "01-login": "Login page",
+  "02-home": "Home / accounts overview",
+  "03-open-account-form": "Open account (checking) form",
+  "04-open-account-result": "Open account result",
+  "05-deposit-form": "Deposit form",
+  "06-deposit-result": "Deposit result",
+  "07-withdraw-form": "Withdraw form",
+  "08-withdraw-result": "Withdraw result",
+  "09-transfer-form": "Transfer between accounts form",
+  "10-transfer-result": "Transfer result",
+  "11-history": "Account transaction history",
+  "12-credit-app-form": "Credit application form",
+  "13-credit-app-submitted": "Credit application submitted",
+  "14-credit-status": "Credit application status"
+ },
+ "differences": [
+  {
+   "item": "docs.api_docs.v3",
+   "class": "Known difference (INFO), not a regression",
+   "cause": "Springfox 2.9.2 (legacy) exposes only /v2/api-docs. Springdoc 2.6 (migrated, required for Boot 3) adds /v3/api-docs. Legacy answers 302 -> /login, migrated 200 JSON. Additive only, no existing contract changed."
+  },
+  {
+   "item": "/v2/api-docs body format",
+   "class": "Known difference (masked, status-only compare)",
+   "cause": "Springfox is incompatible with Spring Boot 3. The migrated /v2/api-docs path still returns 200, but the body is OpenAPI 3.0.1 instead of Swagger 2.0."
+  },
+  {
+   "item": "Logout Set-Cookie attributes, error timestamp offset, Jackson parse-error column",
+   "class": "Known cosmetic difference (normalised)",
+   "cause": "Spring Security 6 / Spring Boot 3 / Jackson 2.17 framework defaults. Status codes, redirects and payload fields are unchanged."
+  },
+  {
+   "item": "Legacy JUnit / Serenity failures",
+   "class": "Pre-existing legacy defect / environment",
+   "cause": "CodeSV dependency unobtainable, credit surefire hard-skipped, ATM upstream virtualisation missing; the 2 legacy UI failures are the ATM search scenarios, for the same reason. None of these failures occur on the migrated side, and all of them stem from legacy test infrastructure rather than application behaviour."
+  },
+  {
+   "item": "Screenshot pixel deltas",
+   "class": "Environment (non-deterministic seed)",
+   "cause": "Faker-random seed balances, account numbers and transaction numbers. Masked by the replay normaliser, and the DB snapshot diff is 0."
+  }
+ ],
+ "raw_files": [
+  "docs/migration/parity/raw/legacy.json - legacy replay (123 steps + DB snapshot)",
+  "docs/migration/parity/raw/migrated.json - migrated replay",
+  "docs/migration/parity/raw/diff.json - diff.py legacy vs migrated",
+  "docs/migration/parity/raw/legacy-vs-baseline.json - determinism check vs committed baseline",
+  "docs/migration/parity/raw/baseline-vs-migrated.json - committed baseline vs migrated",
+  "docs/migration/parity/raw/suite-counts.json - test-suite counts both sides",
+  "docs/migration/parity/raw/report-meta.json - environment and classification input for the report",
+  "docs/migration/parity/screenshots/{legacy,migrated}/*.png - source screenshots embedded in this report",
+  "tools/parity/screens.py - headless-Chrome screenshot driver (usage: screens.py <label> <bank_url> <outdir>)",
+  "tools/parity/report_html.py - renders this report (--shots docs/migration/parity/screenshots)"
+ ]
+}
