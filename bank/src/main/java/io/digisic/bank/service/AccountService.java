@@ -374,6 +374,7 @@ public class AccountService {
 	 * Delete an Account
 	 */
 	public void deleteAccount (Account account) {
+		pendingTransactionRepository.deleteByAccountOrToAccount(account, account);
 		accountRepository.delete(account);
 	}
 	
@@ -381,6 +382,9 @@ public class AccountService {
 	 * Delete All Accounts for User
 	 */
 	public void deleteAllAccounts(Users user) {
+		for (Account account : accountRepository.findByOwner(user)) {
+			pendingTransactionRepository.deleteByAccountOrToAccount(account, account);
+		}
 		accountRepository.deleteByOwner(user);
 	}
 	
@@ -459,7 +463,8 @@ public class AccountService {
 		
 		LOG.debug("Debit Transaction from Account:");
 		
-		account = this.getAccountById(account.getId());
+		// Lock the account row so concurrent debits are validated against the latest balance and daily total
+		account = this.getAccountByIdForUpdate(account.getId());
 		
 		validateDebit(account, accountTransaction.getAmount(), accountTransaction.getTransactionDate());
 		
@@ -722,7 +727,7 @@ public class AccountService {
 	
 	private PendingTransaction getPendingForDecision(Long id, Users checker) {
 		
-		PendingTransaction pending = pendingTransactionRepository.findById(id).orElse(null);
+		PendingTransaction pending = pendingTransactionRepository.findByIdForUpdate(id).orElse(null);
 		
 		if (pending == null) {
 			throw new RestObjectNotFoundException("Object Not Found. Unable to locate object with id " + id);
@@ -747,6 +752,11 @@ public class AccountService {
 		LOG.info("Maker-Checker: pending transaction " + pending.getId() + " " + status + ".");
 		
 		return pendingTransactionRepository.save(pending);
+	}
+	
+	private Account getAccountByIdForUpdate(Long id) {
+		Optional<Account> act = accountRepository.findByIdForUpdate(id);
+		return act.isPresent() ? act.get() : getAccountById(id);
 	}
 	
 	/*

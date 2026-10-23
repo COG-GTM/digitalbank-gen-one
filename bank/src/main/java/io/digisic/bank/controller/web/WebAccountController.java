@@ -587,7 +587,15 @@ public class WebAccountController extends WebCommonController {
 				
 					// Execute Transfer (payment limits are enforced by AccountService)
 					try {
-						accountService.transfer(fromAcct, toAcct, accountTransaction);
+						if (accountService.requiresApproval(accountTransaction.getAmount())) {
+							accountService.submitForApproval(fromAcct, toAcct, accountTransaction, true, user);
+							bError = true;
+							model.addAttribute(MODEL_ATT_ERROR_MSG, "The transfer amount ($" + accountTransaction.getAmount()
+																	 + ") is above the approval threshold and has been held PENDING"
+																	 + " until a bank administrator approves it.");
+						} else {
+							accountService.transfer(fromAcct, toAcct, accountTransaction);
+						}
 					} catch (TransactionLimitException e) {
 						bError = true;
 						model.addAttribute(MODEL_ATT_ERROR_MSG, e.getMessage());

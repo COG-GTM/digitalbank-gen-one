@@ -289,6 +289,15 @@ public class AccountServiceLimitsTest {
 		verify(accountRepository, never()).save(any());
 	}
 
+	@Test
+	public void deletingAccountRemovesItsPendingTransactionsFirst() {
+		accountService.deleteAccount(account);
+
+		org.mockito.InOrder order = org.mockito.Mockito.inOrder(pendingTransactionRepository, accountRepository);
+		order.verify(pendingTransactionRepository).deleteByAccountOrToAccount(account, account);
+		order.verify(accountRepository).delete(account);
+	}
+
 	// --- helpers ---------------------------------------------------------------------------------
 
 	private void givenDebitsToday(String... amounts) {
@@ -312,7 +321,7 @@ public class AccountServiceLimitsTest {
 		pending.setDescription("Admin posting");
 		pending.setMaker(maker);
 		pending.setStatus(PendingTransaction.STATUS_PENDING);
-		when(pendingTransactionRepository.findById(1L)).thenReturn(Optional.of(pending));
+		when(pendingTransactionRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(pending));
 		return pending;
 	}
 

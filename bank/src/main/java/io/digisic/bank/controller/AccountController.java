@@ -258,11 +258,18 @@ public class AccountController extends CommonController {
 			OwnershipType ot = accountService.getOwnershipTypeByCode(account.getOwnerTypeCode());
 			
 			newAccount.setName(account.getAccountName());
-			newAccount.setOpeningBalance(account.getOpeningDeposit());
+			newAccount.setOpeningBalance(BigDecimal.ZERO);
 			newAccount.setAccountType(at);
 			newAccount.setOwnershipType(ot);
 			newAccount.setOwner(getUserById(id));
 			accountService.createNewAccount(newAccount);
+			
+			// Admin-initiated opening deposit is held for a second approver (maker-checker)
+			AccountTransaction openingDeposit = new AccountTransaction();
+			openingDeposit.setAmount(account.getOpeningDeposit());
+			openingDeposit.setDescription("Opening Deposit");
+			openingDeposit.setTransactionType(accountService.getTransactionTypeByCode(Constants.ACCT_TRAN_TYPE_DEPOSIT_CODE));
+			accountService.submitForApproval(newAccount, null, openingDeposit, false, getAuthenticatedUser());
 			
 		} else {
 			throw new RestNotAcceptableException("The initial deposit ($" 

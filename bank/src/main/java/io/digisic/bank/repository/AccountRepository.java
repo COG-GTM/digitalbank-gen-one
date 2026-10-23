@@ -1,7 +1,14 @@
 package io.digisic.bank.repository;
 
 import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.LockModeType;
+
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import io.digisic.bank.model.Account;
 import io.digisic.bank.model.AccountType;
@@ -29,4 +36,8 @@ public interface AccountRepository extends CrudRepository<Account, Long> {
 	List<Account> findByCoownerAndAccountType_Category (Users user, String category);
 	
 	void deleteByOwner(Users user);
+	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Query("select a from Account a where a.id = :id")
+	Optional<Account> findByIdForUpdate(@Param("id") Long id);
 }
