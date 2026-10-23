@@ -215,7 +215,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M3</version><!--$NO-MVN-MAN-VER$-->
                 <configuration>
-                    <skip>true</skip>
+                    <skip>${skipUnitTests}</skip>
                     <forkCount>0</forkCount>
                     <threadCount>1</threadCount>
                     <argLine></argLine>

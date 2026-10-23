@@ -1,0 +1,186 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JAVA_VERSION: "11"
+  # Serenity UI/API acceptance suites (failsafe) need a running app and a Selenium grid,
+  # so CI runs the surefire unit tests and skips the integration-test lifecycle.
+  MVN_VERIFY_FLAGS: >-
+    -B -ntp verify
+    -DskipITs
+    -Dspring-boot.run.skip=true
+    -Dspring-boot.stop.skip=true
+    -Dserenity.skip=true
+
+jobs:
+  build-test:
+    name: Build & unit test (${{ matrix.module }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module: [bank, credit]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: maven
+      - name: mvnw verify (unit tests, AccountService coverage gate)
+        working-directory: ${{ matrix.module }}
+        run: ./mvnw $MVN_VERIFY_FLAGS -DbuildNumber=${{ github.run_number }}
+      - name: Upload test and coverage reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: reports-${{ matrix.module }}
+          path: |
+            ${{ matrix.module }}/target/surefire-reports/
+            ${{ matrix.module }}/target/site/jacoco/
+          if-no-files-found: ignore
+      - name: Upload WAR (built from ${{ github.sha }})
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: war-${{ matrix.module }}-${{ github.sha }}
+          path: ${{ matrix.module }}/target/*.war
+
+  dependency-check:
+    name: SCA (OWASP dependency-check)
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+      DC_PLUGIN: org.owasp:dependency-check-maven:12.2.2
+      DC_DATA: ${{ github.workspace }}/.dependency-check-data
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: maven
+      - name: Restore NVD data
+        id: nvd-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .dependency-check-data
+          key: dependency-check-data-${{ github.run_id }}
+          restore-keys: dependency-check-data-
+      - name: Update NVD data
+        id: nvd-update
+        working-directory: bank
+        # A cancelled run can leave odc.update.lock in the cached data dir; it is never valid at job start.
+        run: >-
+          rm -f "$DC_DATA/odc.update.lock" &&
+          ./mvnw -B -ntp $DC_PLUGIN:update-only
+          -DdataDirectory="$DC_DATA"
+          ${NVD_API_KEY:+-DnvdApiKey=$NVD_API_KEY}
+      - name: Save NVD data
+        if: steps.nvd-update.outcome == 'success'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .dependency-check-data
+          key: dependency-check-data-${{ github.run_id }}
+      - name: dependency-check bank (fail on CVSS >= 7)
+        id: dc-bank
+        working-directory: bank
+        run: >-
+          ./mvnw -B -ntp $DC_PLUGIN:check
+          -DdataDirectory="$DC_DATA" -DautoUpdate=false
+          -DossindexAnalyzerEnabled=false -DskipTestScope=true
+          -Dformats=HTML,JSON,SARIF -DfailBuildOnCVSS=7
+      - name: dependency-check credit (fail on CVSS >= 7)
+        if: always() && steps.dc-bank.outcome != 'skipped'
+        working-directory: credit
+        run: >-
+          ./mvnw -B -ntp $DC_PLUGIN:check
+          -DdataDirectory="$DC_DATA" -DautoUpdate=false
+          -DossindexAnalyzerEnabled=false -DskipTestScope=true
+          -Dformats=HTML,JSON,SARIF -DfailBuildOnCVSS=7
+      - name: Upload dependency-check reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: dependency-check-reports
+          path: |
+            bank/target/dependency-check-report.*
+            credit/target/dependency-check-report.*
+          if-no-files-found: ignore
+
+  secret-scan:
+    name: Secret scan (gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: gitleaks (full git history up to ${{ github.sha }})
+        run: >-
+          docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.30.1
+          git /repo --redact --no-banner --exit-code 1
+          --report-format sarif --report-path /repo/gitleaks.sarif
+      - name: Upload gitleaks report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: gitleaks-report
+          path: gitleaks.sarif
+          if-no-files-found: ignore
+
+  docker-image:
+    name: Docker image (${{ matrix.module }})
+    runs-on: ubuntu-latest
+    # Always build the image from source once tests pass; only publish when every gate is green.
+    needs: [build-test, dependency-check, secret-scan]
+    if: ${{ !cancelled() && needs.build-test.result == 'success' }}
+    env:
+      PUBLISH: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && needs.dependency-check.result == 'success' && needs.secret-scan.result == 'success' }}
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        module: [bank, credit]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Image name
+        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/digital${{ matrix.module }}" >> "$GITHUB_ENV"
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - name: Log in to GHCR
+        if: env.PUBLISH == 'true'
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build from ${{ github.sha }} (push on master only, after all gates pass)
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          file: ${{ matrix.module }}/Dockerfile
+          build-args: |
+            GIT_SHA=${{ github.sha }}
+            BUILD_NUMBER=${{ github.run_number }}
+          tags: ${{ env.IMAGE }}:${{ github.sha }}
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+          push: ${{ env.PUBLISH == 'true' }}
+          provenance: ${{ env.PUBLISH == 'true' && 'mode=max' || 'false' }}
+          sbom: ${{ env.PUBLISH == 'true' }}
+          cache-from: type=gha,scope=${{ matrix.module }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.module }}

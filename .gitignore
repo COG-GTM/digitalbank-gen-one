@@ -47,3 +47,6 @@ local.properties
 .settings/
 .loadpath
 .temp-DigitalBankApplication*.txt
+
+### Maven Wrapper (downloaded on first run) ###
+.mvn/wrapper/maven-wrapper.jar
