@@ -13,10 +13,10 @@ def submit(page, field):
     page.locator(field).locator("xpath=ancestor::form").locator("button[type=submit]").first.click()
     page.wait_for_load_state("networkidle")
 
-def shot(page, name):
+def shot(page, name, full_page=False):
     page.wait_for_load_state("networkidle")
     p = os.path.join(out, "%s.png" % name)
-    page.screenshot(path=p, full_page=False)
+    page.screenshot(path=p, full_page=full_page)
     log.append((name, page.url.replace(base, ""), page.title()))
 
 with sync_playwright() as pw:
@@ -58,10 +58,11 @@ with sync_playwright() as pw:
     page.locator("input[name=cashAdvance][value=No]").check()
     page.locator("input[name=balanceTransfer][value=No]").check()
     page.locator("#agreeTerms").check()
-    shot(page, "12-credit-app-form")
+    shot(page, "12-credit-app-form", full_page=True)
     submit(page, "#annualIncome"); shot(page, "13-credit-app-submitted")
     deadline = time.time() + 60
     while time.time() < deadline:
+        # Declined references are deleted on first view, so capture this page as-is (shot() never navigates).
         page.goto(base + "/credit/credit-app-status")
         if re.search(r">\s*(Approved|Declined)\s*<", page.content()):
             break
