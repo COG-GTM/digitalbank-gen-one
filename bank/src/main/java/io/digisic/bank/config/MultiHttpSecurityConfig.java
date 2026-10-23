@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import io.digisic.bank.security.JwtTokenFilterConfigurer;
@@ -46,14 +49,20 @@ public class MultiHttpSecurityConfig {
 	    	Constants.URI_ERROR_RES,
 	    	Constants.URI_ROOT,
 	    	Constants.URI_SIGNUP,
-	    	Constants.URI_H2_CONSOLE,
-	    	Constants.URI_SWAGGER_UI,
-	    	Constants.URI_SWAGGER_V2,
-	    	Constants.URI_SWAGGER_RES,
-	    	Constants.URI_SWAGGER_CONF,
-	    	Constants.URI_MANAGER_RES,
 	    	Constants.URI_FAVICON_RES
 	    	
+	};
+	
+	// Developer tooling; only public when the "dev" profile is active
+	private static final String[] DEV_PUBLIC = {
+			
+			Constants.URI_H2_CONSOLE,
+			Constants.URI_SWAGGER_UI,
+			Constants.URI_SWAGGER_V2,
+			Constants.URI_SWAGGER_RES,
+			Constants.URI_SWAGGER_CONF,
+			Constants.URI_MANAGER_RES
+			
 	};
 	
 	@Bean
@@ -107,6 +116,9 @@ public class MultiHttpSecurityConfig {
 		@Value("${io.digisic.max.sessions}")
 		private String propMaxSessions;
 		
+		@Autowired
+		private Environment environment;
+		
 		@Override
         protected void configure(HttpSecurity http) throws Exception {
 			
@@ -117,8 +129,18 @@ public class MultiHttpSecurityConfig {
         	
         	LOG.info("Max Sessions: " + iMaxSessions);
         	
-        	http.csrf().disable()
-				.cors().disable()
+        	boolean devProfile = environment.acceptsProfiles(Profiles.of(Constants.PROFILE_DEV));
+        	
+        	http.csrf()
+        		.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+        	
+        	if (devProfile) {
+        		LOG.warn("'" + Constants.PROFILE_DEV + "' profile active: H2 console, Swagger and /manager are publicly accessible");
+        		http.csrf().ignoringAntMatchers(Constants.URI_H2_CONSOLE);
+        		http.authorizeRequests().antMatchers(DEV_PUBLIC).permitAll();
+        	}
+        	
+        	http.cors().disable()
 				.authorizeRequests()
 					.antMatchers(PUBLIC).permitAll()
 					.anyRequest().hasRole(Patterns.ROLE_USER)
@@ -142,8 +164,8 @@ public class MultiHttpSecurityConfig {
 					.maximumSessions(iMaxSessions).maxSessionsPreventsLogin(true);
 		
 		
-			// Needed to support the h2-console interface
-			http.headers().frameOptions().disable();
+			// SAMEORIGIN (not DENY) so the h2-console frames still work in the dev profile
+			http.headers().frameOptions().sameOrigin();
         }
     }
 	
