@@ -1,0 +1,739 @@
+{
+ "bank.users": {
+  "status": 200,
+  "json": [
+   {
+    "accountNonExpired": true,
+    "accountNonLocked": true,
+    "credentialsNonExpired": true,
+    "enabled": true,
+    "id": "{USER:admin@demo.io}",
+    "userProfile": {
+     "address": "97371 Nikolaus Ville",
+     "country": "US",
+     "dob": "11/01/1972",
+     "dom": "{DATE}",
+     "emailAddress": "admin@demo.io",
+     "firstName": "Maybelle",
+     "gender": "M",
+     "homePhone": "437-027-6757",
+     "id": "{ID}",
+     "lastName": "Jakubowski",
+     "locality": "South Jeffshire",
+     "mobilePhone": "346-782-8582",
+     "postalCode": "77481",
+     "region": "SC",
+     "ssn": "885-91-5403",
+     "title": "Mr.",
+     "workPhone": "832-771-1392"
+    },
+    "username": "admin@demo.io"
+   },
+   {
+    "accountNonExpired": true,
+    "accountNonLocked": true,
+    "credentialsNonExpired": true,
+    "enabled": true,
+    "id": "{USER:jsmith@demo.io}",
+    "userProfile": {
+     "address": "3750 Mitchell Turnpike",
+     "country": "US",
+     "dob": "09/24/2002",
+     "dom": "{DATE}",
+     "emailAddress": "jsmith@demo.io",
+     "firstName": "Josh",
+     "gender": "M",
+     "homePhone": "193-339-5637",
+     "id": "{ID}",
+     "lastName": "Smith",
+     "locality": "Reichelfurt",
+     "mobilePhone": "046-183-3534",
+     "postalCode": "64070",
+     "region": "CT",
+     "ssn": "108-61-6747",
+     "title": "Mr.",
+     "workPhone": "933-072-2614"
+    },
+    "username": "jsmith@demo.io"
+   },
+   {
+    "accountNonExpired": true,
+    "accountNonLocked": true,
+    "credentialsNonExpired": true,
+    "enabled": true,
+    "id": "{USER:nsmith@demo.io}",
+    "userProfile": {
+     "address": "3750 Mitchell Turnpike",
+     "country": "US",
+     "dob": "12/27/1999",
+     "dom": "{DATE}",
+     "emailAddress": "nsmith@demo.io",
+     "firstName": "Nicole",
+     "gender": "F",
+     "homePhone": "193-339-5637",
+     "id": "{ID}",
+     "lastName": "Smith",
+     "locality": "Reichelfurt",
+     "mobilePhone": "371-332-5987",
+     "postalCode": "64070",
+     "region": "CT",
+     "ssn": "083-47-4778",
+     "title": "Mrs.",
+     "workPhone": "603-741-8436"
+    },
+    "username": "nsmith@demo.io"
+   },
+   {
+    "accountNonExpired": true,
+    "accountNonLocked": true,
+    "credentialsNonExpired": true,
+    "enabled": true,
+    "id": "{USER:parity.tester@demo.io}",
+    "userProfile": {
+     "address": "1 Parity Way",
+     "country": "US",
+     "dob": "01/15/1980",
+     "dom": "{DATE}",
+     "emailAddress": "parity.tester@demo.io",
+     "firstName": "Parity",
+     "gender": "M",
+     "homePhone": "(512) 555-0100",
+     "id": "{ID}",
+     "lastName": "Tester",
+     "locality": "Austin",
+     "mobilePhone": "(512) 555-0199",
+     "postalCode": "78701",
+     "region": "TX",
+     "ssn": "123-45-6789",
+     "title": "Mr.",
+     "workPhone": "(512) 555-0102"
+    },
+    "username": "parity.tester@demo.io"
+   }
+  ]
+ },
+ "bank.accounts.seed_masked": {
+  "status": 200,
+  "json": [
+   {
+    "accountNumber": 486130001,
+    "accountStanding": {
+     "code": "A1",
+     "id": "{ID}",
+     "name": "Open"
+    },
+    "accountType": {
+     "category": "SAV",
+     "code": "MMA",
+     "id": "{ACCT_TYPE:savings-1}",
+     "interestRate": "{MONEY}",
+     "minDeposit": "{MONEY}",
+     "name": "Money Market",
+     "overdraftFee": "{MONEY}",
+     "overdraftLimit": "{MONEY}"
+    },
+    "currentBalance": "{MONEY}",
+    "dateClosed": null,
+    "dateOpened": "{TS}",
+    "id": "{ID}",
+    "interestRate": "{MONEY}",
+    "name": "Indiviudal Savings",
+    "openingBalance": "{MONEY}",
+    "ownershipType": {
+     "code": "IND",
+     "id": "{OWN_TYPE:0}",
+     "name": "Individual"
+    },
+    "paymentAmount": "{MONEY}",
+    "paymentDue": null,
+    "paymentTerm": 0
+   },
+   {
+    "accountNumber": 486130002,
+    "accountStanding": {
+     "code": "A1",
+     "id": "{ID}",
+     "name": "Open"
+    },
+    "accountType": {
+     "category": "SAV",
+     "code": "MMA",
+     "id": "{ACCT_TYPE:savings-1}",
+     "interestRate": "{MONEY}",
+     "minDeposit": "{MONEY}",
+     "name": "Money Market",
+     "overdraftFee": "{MONEY}",
+     "overdraftLimit": "{MONEY}"
+    },
+    "currentBalance": "{MONEY}",
+    "dateClosed": null,
+    "dateOpened": "{TS}",
+    "id": "{ID}",
+    "interestRate": "{MONEY}",
+    "name": "Indiviudal Savings",
+    "openingBalance": "{MONEY}",
+    "ownershipType": {
+     "code": "IND",
+     "id": "{OWN_TYPE:0}",
+     "name": "Individual"
+    },
+    "paymentAmount": "{MONEY}",
+    "paymentDue": null,
+    "paymentTerm": 0
+   },
+   {
+    "accountNumber": 486130003,
+    "accountStanding": {
+     "code": "A1",
+     "id": "{ID}",
+     "name": "Open"
+    },
+    "accountType": {
+     "category": "CHK",
+     "code": "SCK",
+     "id": "{ACCT_TYPE:checking-0}",
+     "interestRate": "{MONEY}",
+     "minDeposit": "{MONEY}",
+     "name": "Standard Checking",
+     "overdraftFee": "{MONEY}",
+     "overdraftLimit": "{MONEY}"
+    },
+    "currentBalance": "{MONEY}",
+    "dateClosed": null,
+    "dateOpened": "{TS}",
+    "id": "{ID}",
+    "interestRate": "{MONEY}",
+    "name": "Individual Checking",
+    "openingBalance": "{MONEY}",
+    "ownershipType": {
+     "code": "IND",
+     "id": "{OWN_TYPE:0}",
+     "name": "Individual"
+    },
+    "paymentAmount": "{MONEY}",
+    "paymentDue": null,
+    "paymentTerm": 0
+   },
+   {
+    "accountNumber": 486130004,
+    "accountStanding": {
+     "code": "A1",
+     "id": "{ID}",
+     "name": "Open"
+    },
+    "accountType": {
+     "category": "SAV",
+     "code": "SAV",
+     "id": "{ACCT_TYPE:savings-0}",
+     "interestRate": "{MONEY}",
+     "minDeposit": "{MONEY}",
+     "name": "Savings",
+     "overdraftFee": "{MONEY}",
+     "overdraftLimit": "{MONEY}"
+    },
+    "currentBalance": "{MONEY}",
+    "dateClosed": null,
+    "dateOpened": "{TS}",
+    "id": "{ID}",
+    "interestRate": "{MONEY}",
+    "name": "Joint Savings",
+    "openingBalance": "{MONEY}",
+    "ownershipType": {
+     "code": "JNT",
+     "id": "{OWN_TYPE:1}",
+     "name": "Joint"
+    },
+    "paymentAmount": "{MONEY}",
+    "paymentDue": null,
+    "paymentTerm": 0
+   },
+   {
+    "accountNumber": 486130005,
+    "accountStanding": {
+     "code": "A1",
+     "id": "{ID}",
+     "name": "Open"
+    },
+    "accountType": {
+     "category": "CHK",
+     "code": "SCK",
+     "id": "{ACCT_TYPE:checking-0}",
+     "interestRate": "{MONEY}",
+     "minDeposit": "{MONEY}",
+     "name": "Standard Checking",
+     "overdraftFee": "{MONEY}",
+     "overdraftLimit": "{MONEY}"
+    },
+    "currentBalance": "{MONEY}",
+    "dateClosed": null,
+    "dateOpened": "{TS}",
+    "id": "{ID}",
+    "interestRate": "{MONEY}",
+    "name": "Joint Checking",
+    "openingBalance": "{MONEY}",
+    "ownershipType": {
+     "code": "JNT",
+     "id": "{OWN_TYPE:1}",
+     "name": "Joint"
+    },
+    "paymentAmount": "{MONEY}",
+    "paymentDue": null,
+    "paymentTerm": 0
+   },
+   {
+    "accountNumber": 486130006,
+    "accountStanding": {
+     "code": "A1",
+     "id": "{ID}",
+     "name": "Open"
+    },
+    "accountType": {
+     "category": "CHK",
+     "code": "SCK",
+     "id": "{ACCT_TYPE:checking-0}",
+     "interestRate": "{MONEY}",
+     "minDeposit": "{MONEY}",
+     "name": "Standard Checking",
+     "overdraftFee": "{MONEY}",
+     "overdraftLimit": "{MONEY}"
+    },
+    "currentBalance": "{MONEY}",
+    "dateClosed": null,
+    "dateOpened": "{TS}",
+    "id": "{ACCT:parity-checking}",
+    "interestRate": "{MONEY}",
+    "name": "Parity Checking Renamed",
+    "openingBalance": "{MONEY}",
+    "ownershipType": {
+     "code": "IND",
+     "id": "{OWN_TYPE:0}",
+     "name": "Individual"
+    },
+    "paymentAmount": "{MONEY}",
+    "paymentDue": null,
+    "paymentTerm": 0
+   },
+   {
+    "accountNumber": 486130007,
+    "accountStanding": {
+     "code": "A1",
+     "id": "{ID}",
+     "name": "Open"
+    },
+    "accountType": {
+     "category": "SAV",
+     "code": "SAV",
+     "id": "{ACCT_TYPE:savings-0}",
+     "interestRate": "{MONEY}",
+     "minDeposit": "{MONEY}",
+     "name": "Savings",
+     "overdraftFee": "{MONEY}",
+     "overdraftLimit": "{MONEY}"
+    },
+    "currentBalance": "{MONEY}",
+    "dateClosed": null,
+    "dateOpened": "{TS}",
+    "id": "{ACCT:parity-savings}",
+    "interestRate": "{MONEY}",
+    "name": "Parity Savings",
+    "openingBalance": "{MONEY}",
+    "ownershipType": {
+     "code": "JNT",
+     "id": "{OWN_TYPE:1}",
+     "name": "Joint"
+    },
+    "paymentAmount": "{MONEY}",
+    "paymentDue": null,
+    "paymentTerm": 0
+   },
+   {
+    "accountNumber": 486130008,
+    "accountStanding": {
+     "code": "A1",
+     "id": "{ID}",
+     "name": "Open"
+    },
+    "accountType": {
+     "category": "CHK",
+     "code": "SCK",
+     "id": "{ACCT_TYPE:checking-0}",
+     "interestRate": "{MONEY}",
+     "minDeposit": "{MONEY}",
+     "name": "Standard Checking",
+     "overdraftFee": "{MONEY}",
+     "overdraftLimit": "{MONEY}"
+    },
+    "currentBalance": "{MONEY}",
+    "dateClosed": null,
+    "dateOpened": "{TS}",
+    "id": "{ACCT:api-checking}",
+    "interestRate": "{MONEY}",
+    "name": "API Checking 2",
+    "openingBalance": "{MONEY}",
+    "ownershipType": {
+     "code": "IND",
+     "id": "{OWN_TYPE:0}",
+     "name": "Individual"
+    },
+    "paymentAmount": "{MONEY}",
+    "paymentDue": null,
+    "paymentTerm": 0
+   }
+  ]
+ },
+ "bank.account.parity-checking": {
+  "status": 200,
+  "json": {
+   "accountNumber": 486130006,
+   "accountStanding": {
+    "code": "A1",
+    "id": "{ID}",
+    "name": "Open"
+   },
+   "accountType": {
+    "category": "CHK",
+    "code": "SCK",
+    "id": "{ACCT_TYPE:checking-0}",
+    "interestRate": 0.0,
+    "minDeposit": 25.0,
+    "name": "Standard Checking",
+    "overdraftFee": 10.0,
+    "overdraftLimit": 25.0
+   },
+   "currentBalance": 1000929.25,
+   "dateClosed": null,
+   "dateOpened": "{TS}",
+   "id": "{ACCT:parity-checking}",
+   "interestRate": 0.0,
+   "name": "Parity Checking Renamed",
+   "openingBalance": 500.0,
+   "ownershipType": {
+    "code": "IND",
+    "id": "{OWN_TYPE:0}",
+    "name": "Individual"
+   },
+   "paymentAmount": 0.0,
+   "paymentDue": null,
+   "paymentTerm": 0
+  }
+ },
+ "bank.account.parity-checking.transactions": {
+  "status": 200,
+  "json": [
+   {
+    "amount": 999999.0,
+    "description": "Transfer from Account (486130008)",
+    "id": "{ID}",
+    "runningBalance": 1000929.25,
+    "transactionCategory": {
+     "code": "INC",
+     "id": "{ID}",
+     "name": "Income"
+    },
+    "transactionDate": "{TS}",
+    "transactionNumber": 845320087,
+    "transactionState": {
+     "code": "COM",
+     "id": "{ID}",
+     "name": "Complete"
+    },
+    "transactionType": {
+     "category": "EITHER",
+     "code": "TRN",
+     "id": "{ID}",
+     "name": "Transfer"
+    }
+   },
+   {
+    "amount": 25.0,
+    "description": "Transfer from Account (486130008)",
+    "id": "{ID}",
+    "runningBalance": 930.25,
+    "transactionCategory": {
+     "code": "INC",
+     "id": "{ID}",
+     "name": "Income"
+    },
+    "transactionDate": "{TS}",
+    "transactionNumber": 845320084,
+    "transactionState": {
+     "code": "COM",
+     "id": "{ID}",
+     "name": "Complete"
+    },
+    "transactionType": {
+     "category": "EITHER",
+     "code": "TRN",
+     "id": "{ID}",
+     "name": "Transfer"
+    }
+   },
+   {
+    "amount": 300.0,
+    "description": "Transfer from Account (486130007)",
+    "id": "{ID}",
+    "runningBalance": 905.25,
+    "transactionCategory": {
+     "code": "INC",
+     "id": "{ID}",
+     "name": "Income"
+    },
+    "transactionDate": "{TS}",
+    "transactionNumber": 845320080,
+    "transactionState": {
+     "code": "COM",
+     "id": "{ID}",
+     "name": "Complete"
+    },
+    "transactionType": {
+     "category": "EITHER",
+     "code": "TRN",
+     "id": "{ID}",
+     "name": "Transfer"
+    }
+   },
+   {
+    "amount": -20.25,
+    "description": "Online Withdrawl",
+    "id": "{ID}",
+    "runningBalance": 605.25,
+    "transactionCategory": {
+     "code": "MIS",
+     "id": "{ID}",
+     "name": "Misc"
+    },
+    "transactionDate": "{TS}",
+    "transactionNumber": 845320078,
+    "transactionState": {
+     "code": "COM",
+     "id": "{ID}",
+     "name": "Complete"
+    },
+    "transactionType": {
+     "category": "DEBIT",
+     "code": "WTH",
+     "id": "{ID}",
+     "name": "Withdrawl"
+    }
+   },
+   {
+    "amount": 125.5,
+    "description": "Online Deposit",
+    "id": "{ID}",
+    "runningBalance": 625.5,
+    "transactionCategory": {
+     "code": "INC",
+     "id": "{ID}",
+     "name": "Income"
+    },
+    "transactionDate": "{TS}",
+    "transactionNumber": 845320077,
+    "transactionState": {
+     "code": "COM",
+     "id": "{ID}",
+     "name": "Complete"
+    },
+    "transactionType": {
+     "category": "CREDIT",
+     "code": "DPT",
+     "id": "{ID}",
+     "name": "Deposit"
+    }
+   },
+   {
+    "amount": 500.0,
+    "description": "Deposit",
+    "id": "{ID}",
+    "runningBalance": 500.0,
+    "transactionCategory": {
+     "code": "INC",
+     "id": "{ID}",
+     "name": "Income"
+    },
+    "transactionDate": "{TS}",
+    "transactionNumber": 845320075,
+    "transactionState": {
+     "code": "COM",
+     "id": "{ID}",
+     "name": "Complete"
+    },
+    "transactionType": {
+     "category": "CREDIT",
+     "code": "DPT",
+     "id": "{ID}",
+     "name": "Deposit"
+    }
+   }
+  ]
+ },
+ "bank.account.parity-savings": {
+  "status": 200,
+  "json": {
+   "accountNumber": 486130007,
+   "accountStanding": {
+    "code": "A1",
+    "id": "{ID}",
+    "name": "Open"
+   },
+   "accountType": {
+    "category": "SAV",
+    "code": "SAV",
+    "id": "{ACCT_TYPE:savings-0}",
+    "interestRate": 1.85,
+    "minDeposit": 25.0,
+    "name": "Savings",
+    "overdraftFee": 10.0,
+    "overdraftLimit": 25.0
+   },
+   "currentBalance": 2200.0,
+   "dateClosed": null,
+   "dateOpened": "{TS}",
+   "id": "{ACCT:parity-savings}",
+   "interestRate": 1.85,
+   "name": "Parity Savings",
+   "openingBalance": 2500.0,
+   "ownershipType": {
+    "code": "JNT",
+    "id": "{OWN_TYPE:1}",
+    "name": "Joint"
+   },
+   "paymentAmount": 0.0,
+   "paymentDue": null,
+   "paymentTerm": 0
+  }
+ },
+ "bank.account.parity-savings.transactions": {
+  "status": 200,
+  "json": [
+   {
+    "amount": -300.0,
+    "description": "Transfer to Account (486130006)",
+    "id": "{ID}",
+    "runningBalance": 2200.0,
+    "transactionCategory": {
+     "code": "MIS",
+     "id": "{ID}",
+     "name": "Misc"
+    },
+    "transactionDate": "{TS}",
+    "transactionNumber": 845320079,
+    "transactionState": {
+     "code": "COM",
+     "id": "{ID}",
+     "name": "Complete"
+    },
+    "transactionType": {
+     "category": "EITHER",
+     "code": "TRN",
+     "id": "{ID}",
+     "name": "Transfer"
+    }
+   },
+   {
+    "amount": 2500.0,
+    "description": "Deposit",
+    "id": "{ID}",
+    "runningBalance": 2500.0,
+    "transactionCategory": {
+     "code": "INC",
+     "id": "{ID}",
+     "name": "Income"
+    },
+    "transactionDate": "{TS}",
+    "transactionNumber": 845320076,
+    "transactionState": {
+     "code": "COM",
+     "id": "{ID}",
+     "name": "Complete"
+    },
+    "transactionType": {
+     "category": "CREDIT",
+     "code": "DPT",
+     "id": "{ID}",
+     "name": "Deposit"
+    }
+   }
+  ]
+ },
+ "bank.credit.references": {
+  "status": 200,
+  "json": [
+   {
+    "accountOpenDate": null,
+    "accountStatus": null,
+    "applicationDate": "{DATE}",
+    "applicationId": "{ID}",
+    "applicationNumber": "728934001",
+    "applicationStatus": "Approved",
+    "applicationStatusDetail": "Thank you for your interest in a Digital Credit account. Digital Credit has reviewed your application, and it has been approved for a new credit line of {MONEY} with a qualified APR of {MONEY}%.",
+    "bankUserId": "{USER:parity.tester@demo.io}",
+    "correlationId": "{UUID}",
+    "creditCardId": "{ID}",
+    "creditScore": "555",
+    "creditUserId": null,
+    "id": "{ID}",
+    "riskScore": "10"
+   }
+  ]
+ },
+ "credit.users": {
+  "status": 200,
+  "json": [
+   {
+    "accountNonExpired": true,
+    "accountNonLocked": true,
+    "credentialsNonExpired": true,
+    "enabled": true,
+    "id": "{USER:admin@demo.io}",
+    "userProfile": {
+     "address": "123 Digital Lane",
+     "country": "United States",
+     "dob": "12/30/1984",
+     "dom": "{DATE}",
+     "emailAddress": "admin@demo.io",
+     "firstName": "Admin",
+     "gender": "M",
+     "homePhone": "123-456-7890",
+     "id": "{ID}",
+     "lastName": "User",
+     "locality": "Internet City",
+     "mobilePhone": "123-456-7890",
+     "postalCode": "94302",
+     "region": "CA",
+     "ssn": "000-00-0000",
+     "title": "Mr.",
+     "workPhone": "123-456-7890"
+    },
+    "username": "admin@demo.io"
+   },
+   {
+    "accountNonExpired": true,
+    "accountNonLocked": true,
+    "credentialsNonExpired": true,
+    "enabled": true,
+    "id": "{ID}",
+    "userProfile": {
+     "address": "1 Parity Way",
+     "country": "US",
+     "dob": "01/15/1980",
+     "dom": "{DATE}",
+     "emailAddress": "parity.tester@demo.io",
+     "firstName": "Parity",
+     "gender": "M",
+     "homePhone": "(512) 555-0100",
+     "id": "{ID}",
+     "lastName": "Tester",
+     "locality": "Austin",
+     "mobilePhone": "(512) 555-0101",
+     "postalCode": "78701",
+     "region": "TX",
+     "ssn": "123-45-6789",
+     "title": "Mr.",
+     "workPhone": "(512) 555-0102"
+    },
+    "username": "parity.tester@demo.io"
+   }
+  ]
+ },
+ "credit_decision": "Approved"
+}

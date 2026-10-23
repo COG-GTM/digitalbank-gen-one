@@ -1,0 +1,865 @@
+{
+ "summary": {
+  "legacy": "legacy-run.json (fresh stack A)",
+  "migrated": "second fresh legacy stack B",
+  "steps": 121,
+  "pass": 121,
+  "fail": 0,
+  "info": 0,
+  "missing_in_migrated": [],
+  "extra_in_migrated": [],
+  "db_snapshot_diffs": 0,
+  "legacy_errors": null,
+  "migrated_errors": null
+ },
+ "steps": [
+  {
+   "id": "ui.root.anonymous",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.home.anonymous",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.login.page",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.login.bad",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.login.error.page",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.signup.page",
+   "flow": "ui.register",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.signup.submit",
+   "flow": "ui.register",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.register.submit",
+   "flow": "ui.register",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.signup.duplicate_email",
+   "flow": "ui.register",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.login.good",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.home.no_accounts",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.checking.add.page",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.checking.add.below_min",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.checking.add",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.savings.add.page",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.savings.add",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.checking.view",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.savings.view",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.deposit.page",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.deposit",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.deposit.zero",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.withdraw.page",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.withdraw",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.withdraw.insufficient_funds",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.xfer.page",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.xfer",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.xfer.insufficient_funds",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.checking.history",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.savings.history",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.account.rename",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.home.accounts",
+   "flow": "ui.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.profile.page",
+   "flow": "ui.user",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.profile.update",
+   "flow": "ui.user",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.password.page",
+   "flow": "ui.user",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.password.wrong_current",
+   "flow": "ui.user",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.password.mismatch",
+   "flow": "ui.user",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.password.change",
+   "flow": "ui.user",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.atm.search.results",
+   "flow": "ui.atm",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.atm.search.zero_results",
+   "flow": "ui.atm",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.atm.search.service_unavailable",
+   "flow": "ui.atm",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.visa.page",
+   "flow": "ui.visa",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.visa.approved",
+   "flow": "ui.visa",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.visa.not_approved",
+   "flow": "ui.visa",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.visa.insufficient_funds",
+   "flow": "ui.visa",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.visa.invalid_merchant",
+   "flow": "ui.visa",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.obp.add.page",
+   "flow": "ui.obp",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.obp.add",
+   "flow": "ui.obp",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.obp.add_account",
+   "flow": "ui.obp",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.obp.view",
+   "flow": "ui.obp",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.home.with_obp",
+   "flow": "ui.obp",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.credit.app.page",
+   "flow": "ui.credit",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.credit.app.submit",
+   "flow": "ui.credit",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.credit.status.final",
+   "flow": "ui.credit",
+   "compare": "credit-decision",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.credit.view",
+   "flow": "ui.credit",
+   "compare": "credit-decision",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.logout",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.logout.page",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.home.after_logout",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.login.old_password",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.login.new_password",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.error.404",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.promotions",
+   "flow": "ui.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.seed.login",
+   "flow": "ui.seed",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.seed.home",
+   "flow": "ui.seed",
+   "compare": "seed",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.seed.checking.view",
+   "flow": "ui.seed",
+   "compare": "seed",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.seed.savings.view",
+   "flow": "ui.seed",
+   "compare": "seed",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "ui.seed.h2_console",
+   "flow": "ui.seed",
+   "compare": "status",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.health",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.auth.bad_password",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.auth.missing_params",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.auth.admin",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.auth.seed",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.auth.parity",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.no_token",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.bad_token",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.parity_user_no_api_role",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.users.forbidden_for_user",
+   "flow": "api.auth",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.users",
+   "flow": "api.users",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.user.current",
+   "flow": "api.users",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.user.find",
+   "flow": "api.users",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.user.profile.current",
+   "flow": "api.users",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.user.role.current",
+   "flow": "api.users",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.type",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.type.checking",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.type.savings",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.standing",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.ownership.type",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.transaction.state",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.transaction.type",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.transaction.category",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.data.type.as_user",
+   "flow": "api.static",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.accounts.all",
+   "flow": "api.accounts",
+   "compare": "seed",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.accounts.checking",
+   "flow": "api.accounts",
+   "compare": "seed",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.user.accounts.current",
+   "flow": "api.accounts",
+   "compare": "seed",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.create",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.create.invalid",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.get",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.not_found",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.transaction.deposit",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.transaction.withdraw_insufficient",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.transfer",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.transfer.insufficient",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.transactions",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.parity_checking.transactions",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.rename",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.account.owner",
+   "flow": "api.accounts",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.promotions.eligible",
+   "flow": "api.promotions",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.promotions.none",
+   "flow": "api.promotions",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.promotions.invalid",
+   "flow": "api.promotions",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.atm.search",
+   "flow": "api.external",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.atm.search.zero",
+   "flow": "api.external",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.atm.search.unavailable",
+   "flow": "api.external",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.atm.search.invalid_zip",
+   "flow": "api.external",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.visa.approved",
+   "flow": "api.external",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.visa.invalid_account",
+   "flow": "api.external",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "api.credit.references",
+   "flow": "api.credit",
+   "compare": "credit-decision",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "credit.api.health",
+   "flow": "credit.api",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "credit.api.auth",
+   "flow": "credit.api",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "credit.api.users",
+   "flow": "credit.api",
+   "compare": "full",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "docs.swagger_ui",
+   "flow": "docs",
+   "compare": "status",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "docs.api_docs.v2",
+   "flow": "docs",
+   "compare": "status",
+   "result": "PASS",
+   "diffs": []
+  },
+  {
+   "id": "docs.api_docs.v3",
+   "flow": "docs",
+   "compare": "info",
+   "result": "PASS",
+   "diffs": []
+  }
+ ],
+ "db_snapshot": []
+}
