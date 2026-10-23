@@ -51,7 +51,7 @@ The whole estate - Digital Broker (Apache Artemis 2.31), Digital Credit and Digi
   * Broker: tcp://localhost:61616 (core/JMS), console http://localhost:8161 (admin/admin); queues CREDIT.APP.REQUEST / CREDIT.APP.RESPONSE
 * Database variants are overlays on the same file:
   * [MySQL](deploy/docker-compose/docker-compose-mysql.yml): "docker compose -f docker-compose.yml -f deploy/docker-compose/docker-compose-mysql.yml up -d --build" or "./digitalbank.sh up mysql"
-  * [PostgreSQL](deploy/docker-compose/docker-compose-postgres.yml): "./digitalbank.sh up postgres"
+  * [PostgreSQL](deploy/docker-compose/docker-compose-postgres.yml): "./digitalbank.sh up postgres" (PostgreSQL 16; [postgres-init](deploy/docker-compose/postgres-init/) hands schema "public" to "digitaluser")
   * [MS SQL Server](deploy/docker-compose/docker-compose-mssql.yml): "./digitalbank.sh up mssql" (databases are initialised ~90 seconds after SQL Server starts)
 * Stop and remove containers/volumes: "./digitalbank.sh down [mysql|postgres|mssql]"
 * Set MAVEN_MIRROR_URL (e.g. https://maven-central.storage-download.googleapis.com/maven2) to build through a Maven Central mirror.
