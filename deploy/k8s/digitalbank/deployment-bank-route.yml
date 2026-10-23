@@ -14,3 +14,15 @@ spec:
     services:
     - name: digital-bank-svc
       port: 8443
+      # The bank serves HTTPS (self-signed digisic certificate) on 8443
+      scheme: https
+      serversTransport: digital-bank-transport
+
+---
+kind: ServersTransport
+apiVersion: traefik.containo.us/v1alpha1
+metadata:
+  name: digital-bank-transport
+  namespace: digibank
+spec:
+  insecureSkipVerify: true

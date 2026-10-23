@@ -17,10 +17,11 @@ spec:
     spec:
       containers:
       - name: digital-bank-credit
-        image: digisic/digitalcredit:latest
+        # Java 21 executable jar on eclipse-temurin:21-jre (credit/Dockerfile)
+        image: digisic/digitalcredit:java21
         ports:
           - name: db-credit-port
-            containerPort: 8443
+            containerPort: 3500
         env:
           # Debug Options
           - name: LOGGING_LEVEL_IO_DIGISIC_CREDIT
@@ -28,10 +29,8 @@ spec:
           # Digital Broker Connection
           - name: SPRING_ARTEMIS_MODE
             value: "native"
-          - name: SPRING_ARTEMIS_HOST
-            value: "digital-bank-broker-svc"
-          - name: SPRING_ARTEMIS_PORT
-            value: "61616"
+          - name: SPRING_ARTEMIS_BROKER_URL
+            value: "tcp://digital-bank-broker-svc:61616"
           - name: SPRING_ARTEMIS_USER
             value: "admin"
           - name: SPRING_ARTEMIS_PASSWORD
@@ -41,11 +40,25 @@ spec:
             value: "true"
           - name: IO_DIGISIC_CREDIT_APP_PROCESS_TIME
             value: "20"
-          # Digital Credit Application Process JMS Queues         
+          # Digital Credit Application Process JMS Queues
           - name: IO_DIGISIC_PARTNER_CREDIT_APP_REQUEST
             value: "CREDIT.APP.REQUEST"
           - name: IO_DIGISIC_PARTNER_CREDIT_APP_RESPONSE
-            value: "CREDIT.APP.RESPONSE"            
+            value: "CREDIT.APP.RESPONSE"
+        readinessProbe:
+          httpGet:
+            scheme: HTTPS
+            path: /credit/api/v1/health
+            port: db-credit-port
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            scheme: HTTPS
+            path: /credit/api/v1/health
+            port: db-credit-port
+          initialDelaySeconds: 120
+          periodSeconds: 20
 
 ---
 
@@ -57,9 +70,7 @@ metadata:
 spec:
   selector:
     app: digital-bank-credit
-    type: NodePort
   ports:
-    - name: http-credit
-      port: 3500  
+    - name: https-credit
+      port: 3500
       targetPort: db-credit-port
-

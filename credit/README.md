@@ -8,8 +8,9 @@ Digital Credit is a sample application that was developed for exploratory purpos
 
 ## Prerequisites
 
-* Install [Java SDK](https://openjdk.java.net/)
-* Install [Apache Maven](https://maven.apache.org/install.html)
+* Install [Java SDK 21](https://adoptium.net/temurin/releases/?version=21) (Eclipse Temurin or any OpenJDK 21 build)
+* Install [Apache Maven](https://maven.apache.org/install.html) 3.9+
+* (Optional) Install [Docker](https://docs.docker.com/get-docker/) with the Compose v2 plugin to run the full estate
 * Install [Eclipse IDE](https://www.eclipse.org/ide/), [Spring Tools Suite](https://spring.io/tools) or [IntelliJ](https://www.jetbrains.com/idea/)
 
 ## Executing Tests
@@ -22,28 +23,26 @@ Digital Credit is a sample application that was developed for exploratory purpos
 
 ## Packaging
 
-* To create a deployment package, execute "mvn clean package -DbuildNumber={###}"
-* To create a new Docker image, update the [Dockerfile](Dockerfile) with the latest build number and then execute "docker build -t {imageName}:{imageTag} ."
+* Build with Java 21: execute "mvn clean package" (add "-DbuildNumber={###}" to stamp a build number). The output is an executable Spring Boot jar, target/digitalcredit-{version}.jar.
+* Run it locally: "java -jar target/digitalcredit-{version}.jar" serves HTTPS on 3500 with context path /credit.
+  * Override any setting with command line properties (e.g. "--spring.artemis.broker-url=tcp://localhost:61616"), environment variables (e.g. "SPRING_ARTEMIS_BROKER_URL") or an application.properties file in ./config next to the jar.
+* To create a Docker image (eclipse-temurin:21-jre running the executable jar, built in a multi-stage Maven build), execute from the repository root: "docker build -f credit/Dockerfile -t {imageName}:{imageTag} ."
+  * Set "--build-arg MAVEN_MIRROR_URL=..." to resolve dependencies through a Maven Central mirror.
 
 ## Deployment
 
 Digital Credit can be deployed as a single standalone application service.
 
-* [WAR Package Deployment](https://dl.bintray.com/digisic/digitalbank/)
-  * Apache Tomcat version 8.5 or higher
-     * Deployment does not work with Apache Tomcat 7.x
-  * Copy the WAR file into an existing Tomcat instance under ${catalina.base}/webapps folder. 
-  * (Optional) Copy the digitalcredit.properites file into the ${catalina.base}/conf folder. 
-    * Use to customize the configuration of the application.
-    * The digitalcredit.properties file is configured to be a "watched resource" in the deployment context. Any updates to the digitalcredit.properties file will automatically trigger Tomcat to recycle the application to pick up the new changes.
-  * Start the Tomcat service.
-  * A digitalcredit.log file will be created within ${catalina.base}/logs.
-* [Docker Deployment](https://hub.docker.com/r/digisic/digitalcredit)
-
+* Executable Jar
+  * "java -jar target/digitalcredit-{version}.jar" (Java 21). The previous Tomcat WAR deployment (digitalcredit.properties watched in ${catalina.base}/conf) is replaced by standard Spring Boot externalized configuration.
+* Docker
+  * "docker run -p 3500:3500 {imageName}:{imageTag}"; the container health check calls https://localhost:3500/credit/api/v1/health.
+* Docker Compose (full estate: broker + credit + bank) - see the [top-level docker-compose.yml](../docker-compose.yml) and the [repository README](../README.md#docker-compose-deployment).
+* Kubernetes - manifests under [deploy/k8s](../deploy/k8s).
 
 ## Interfaces
 
-* Swagger UI @ http://{hostname}:{port}/credit/swagger-ui.html
+* Swagger UI @ https://{hostname}:{port}/credit/swagger-ui.html
   * The API Admin user credentials are as follows:
     * admin@demo.io/Demo123!
 
@@ -52,7 +51,8 @@ Digital Credit can be deployed as a single standalone application service.
 * [Spring Boot](https://spring.io/projects/spring-boot) - Application Framework
 * [Swagger](https://swagger.io/) - API Documentation
 * [Apache Maven](https://maven.apache.org/) - Software Project Management
-* [Apache Tomcat](http://tomcat.apache.org/) - Application Server / Servlet Engine
+* [Apache Tomcat](http://tomcat.apache.org/) - Embedded Servlet Engine
+* [Eclipse Temurin](https://adoptium.net/) - Java 21 Runtime (container images)
 * [Apache Artemis](https://activemq.apache.org/components/artemis/) - Messaging Broker
 * [H2 Database Engine](https://www.h2database.com/html/main.html) - In-Memory Database
 * [MSSQL Server Database Engine](https://www.microsoft.com/en-us/sql-server/default.aspx) - Microsoft SQL Server
