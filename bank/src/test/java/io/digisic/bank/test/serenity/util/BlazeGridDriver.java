@@ -5,8 +5,8 @@ import java.net.URL;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import net.thucydides.core.util.EnvironmentVariables;
-import net.thucydides.core.util.SystemEnvironmentVariables;
+import net.thucydides.model.util.EnvironmentVariables;
+import net.thucydides.model.environment.SystemEnvironmentVariables;
 import net.thucydides.core.webdriver.DriverSource;
 
 public class BlazeGridDriver implements DriverSource {
@@ -14,7 +14,7 @@ public class BlazeGridDriver implements DriverSource {
     private final static String BASE = "a.blazemeter.com";
     private final static String curl = String.format("https://%s/api/v4/grid/wd/hub", BASE);
     private static RemoteWebDriver driver;
-    private final static String buildIdExt = (new Integer((int) ((Math.random() * 90000) + 10000))).toString();
+    private final static String buildIdExt = Integer.toString((int) ((Math.random() * 90000) + 10000));
     private EnvironmentVariables env = SystemEnvironmentVariables.createEnvironmentVariables();
 
 	@Override

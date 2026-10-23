@@ -1,12 +1,12 @@
 package io.digisic.bank.test.serenity.ui;
 
-import cucumber.api.java.en.And;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import io.digisic.bank.test.serenity.ui.steps.LoginSteps;
 import io.digisic.bank.test.serenity.ui.steps.MenuNavigationSteps;
 import io.digisic.bank.test.serenity.ui.steps.NewSavingsAccountSteps;
-import net.thucydides.core.annotations.Steps;
+import net.serenitybdd.annotations.Steps;
 
 
 public class NewSavingsAccountTests {

@@ -1,7 +1,7 @@
 package io.digisic.bank.test.serenity.ui.steps;
 
 import io.digisic.bank.test.serenity.ui.pom.HomePage;
-import net.thucydides.core.annotations.Step;
+import net.serenitybdd.annotations.Step;
 import net.thucydides.core.steps.ScenarioSteps;
 
 public class MenuNavigationSteps extends ScenarioSteps{
