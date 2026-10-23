@@ -196,6 +196,7 @@
 	        	if (valid){
 		        	$.ajax({
 		        		type : "POST",
+		        		headers : { "X-XSRF-TOKEN" : decodeURIComponent((document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]*)/) || [])[1] || "") },
 		        	    contentType : "application/json",
 		        	    url : baseURL + acctId + "&newName=" + acctName,
 		        	    cache : false,

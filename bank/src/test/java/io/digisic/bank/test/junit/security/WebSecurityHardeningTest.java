@@ -46,6 +46,13 @@ public class WebSecurityHardeningTest {
 	}
 
 	@Test
+	public void accountRenameWithoutCsrfTokenIsForbidden() throws Exception {
+		mvc.perform(post("/account/update").with(customer())
+				.param("id", "1").param("newName", "Renamed"))
+			.andExpect(status().isForbidden());
+	}
+
+	@Test
 	public void transferFormRendersCsrfToken() throws Exception {
 		mvc.perform(get("/account/xfer-between").with(customer()))
 			.andExpect(status().isOk())
