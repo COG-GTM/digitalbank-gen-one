@@ -590,9 +590,10 @@ public class WebAccountController extends WebCommonController {
 						if (accountService.requiresApproval(accountTransaction.getAmount())) {
 							accountService.submitForApproval(fromAcct, toAcct, accountTransaction, true, user);
 							bError = true;
-							model.addAttribute(MODEL_ATT_ERROR_MSG, "The transfer amount ($" + accountTransaction.getAmount()
-																	 + ") is above the approval threshold and has been held PENDING"
-																	 + " until a bank administrator approves it.");
+							model.addAttribute(MODEL_ATT_SUCCESS_MSG, "Your transfer of $" + accountTransaction.getAmount()
+																	 + " has been submitted. It is above the approval threshold, so it is held PENDING"
+																	 + " until a bank administrator approves it. Do not submit it again.");
+							accountTransaction = new AccountTransaction();
 						} else {
 							accountService.transfer(fromAcct, toAcct, accountTransaction);
 						}
