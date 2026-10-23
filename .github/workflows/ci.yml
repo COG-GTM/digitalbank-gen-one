@@ -80,13 +80,16 @@ jobs:
           key: dependency-check-data-${{ github.run_id }}
           restore-keys: dependency-check-data-
       - name: Update NVD data
+        id: nvd-update
         working-directory: bank
+        # A cancelled run can leave odc.update.lock in the cached data dir; it is never valid at job start.
         run: >-
+          rm -f "$DC_DATA/odc.update.lock" &&
           ./mvnw -B -ntp $DC_PLUGIN:update-only
           -DdataDirectory="$DC_DATA"
           ${NVD_API_KEY:+-DnvdApiKey=$NVD_API_KEY}
       - name: Save NVD data
-        if: always()
+        if: steps.nvd-update.outcome == 'success'
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .dependency-check-data
