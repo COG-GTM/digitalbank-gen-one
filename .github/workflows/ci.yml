@@ -122,10 +122,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: gitleaks (working tree of ${{ github.sha }})
+        with:
+          fetch-depth: 0
+      - name: gitleaks (full git history up to ${{ github.sha }})
         run: >-
-          docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.30.1
-          dir /repo --redact --no-banner --exit-code 1
+          docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.30.1
+          git /repo --redact --no-banner --exit-code 1
           --report-format sarif --report-path /repo/gitleaks.sarif
       - name: Upload gitleaks report
         if: always()
@@ -138,7 +140,11 @@ jobs:
   docker-image:
     name: Docker image (${{ matrix.module }})
     runs-on: ubuntu-latest
-    needs: build-test
+    # Always build the image from source once tests pass; only publish when every gate is green.
+    needs: [build-test, dependency-check, secret-scan]
+    if: ${{ !cancelled() && needs.build-test.result == 'success' }}
+    env:
+      PUBLISH: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && needs.dependency-check.result == 'success' && needs.secret-scan.result == 'success' }}
     permissions:
       contents: read
       packages: write
@@ -152,25 +158,26 @@ jobs:
         run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/digital${{ matrix.module }}" >> "$GITHUB_ENV"
       - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
       - name: Log in to GHCR
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        if: env.PUBLISH == 'true'
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build from ${{ github.sha }} (push on master only)
+      - name: Build from ${{ github.sha }} (push on master only, after all gates pass)
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: .
           file: ${{ matrix.module }}/Dockerfile
           build-args: |
             GIT_SHA=${{ github.sha }}
+            BUILD_NUMBER=${{ github.run_number }}
           tags: ${{ env.IMAGE }}:${{ github.sha }}
           labels: |
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
-          push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-          provenance: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && 'mode=max' || 'false' }}
-          sbom: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+          push: ${{ env.PUBLISH == 'true' }}
+          provenance: ${{ env.PUBLISH == 'true' && 'mode=max' || 'false' }}
+          sbom: ${{ env.PUBLISH == 'true' }}
           cache-from: type=gha,scope=${{ matrix.module }}
           cache-to: type=gha,mode=max,scope=${{ matrix.module }}
