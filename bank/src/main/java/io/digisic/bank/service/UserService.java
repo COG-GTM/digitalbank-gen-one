@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.digisic.bank.audit.AuditLog;
 import io.digisic.bank.exception.RestInvalidArguementException;
 import io.digisic.bank.model.Notification;
 import io.digisic.bank.model.UserProfile;
@@ -191,6 +192,7 @@ public class UserService {
 	 */
 	public void deleteUser (Users user) {
 		userRepository.delete(user);
+		AuditLog.adminAction("DELETE_USER", user, null, AuditLog.OUTCOME_SUCCESS);
 	}
 	
 	/*
@@ -246,6 +248,7 @@ public class UserService {
 		userRepository.save(user);
 		
 		LOG.debug("Change Password: Password Changed.");
+		AuditLog.adminAction("CHANGE_PASSWORD", user, null, AuditLog.OUTCOME_SUCCESS);
 		
 	}
 	
@@ -264,6 +267,7 @@ public class UserService {
 		userRepository.save(user);
 		
 		LOG.debug("Add Role -> Added new role '" + role + "'");
+		AuditLog.adminAction("ROLE_ADD", user, "role=" + role, AuditLog.OUTCOME_SUCCESS);
 		
 	}
 	
@@ -294,9 +298,11 @@ public class UserService {
 			userRepository.save(user);
 			
 			LOG.debug("Remove Role -> Completed UserRoles iteration.");
+			AuditLog.adminAction("ROLE_REMOVE", user, "role=" + roleName, AuditLog.OUTCOME_SUCCESS);
 		}
 		else {
 			LOG.debug("Remove Role -> User does not have role '" + roleName + "' assigned. Nothing to remove.");
+			AuditLog.adminAction("ROLE_REMOVE", user, "role=" + roleName + " notAssigned", AuditLog.OUTCOME_FAILURE);
 		}
 		
 	}
@@ -433,6 +439,7 @@ public class UserService {
 	public void enableUser (Users user, boolean enabled) {
 		user.setEnabled(enabled);
 		userRepository.save(user);
+		AuditLog.adminAction("USER_ENABLE", user, "enabled=" + enabled, AuditLog.OUTCOME_SUCCESS);
 	}
 	
 	/*
@@ -441,6 +448,7 @@ public class UserService {
 	public void unlockUser (Users user, boolean unlock) {
 		user.setAccountNonLocked(unlock);
 		userRepository.save(user);
+		AuditLog.adminAction("USER_UNLOCK", user, "unlock=" + unlock, AuditLog.OUTCOME_SUCCESS);
 	}
 	
 	/*
@@ -449,6 +457,7 @@ public class UserService {
 	public void unexpireUser (Users user, boolean unexpire) {
 		user.setAccountNonExpired(unexpire);
 		userRepository.save(user);
+		AuditLog.adminAction("USER_UNEXPIRE", user, "unexpire=" + unexpire, AuditLog.OUTCOME_SUCCESS);
 	}
 	
 	/*
@@ -457,6 +466,7 @@ public class UserService {
 	public void unexpirePassword (Users user, boolean unexpire) {
 		user.setCredentialsNonExpired(unexpire);
 		userRepository.save(user);
+		AuditLog.adminAction("PASSWORD_UNEXPIRE", user, "unexpire=" + unexpire, AuditLog.OUTCOME_SUCCESS);
 	}
 
 }

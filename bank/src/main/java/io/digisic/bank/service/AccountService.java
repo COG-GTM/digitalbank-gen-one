@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.digisic.bank.audit.AuditLog;
 import io.digisic.bank.model.Account;
 import io.digisic.bank.model.AccountStanding;
 import io.digisic.bank.model.AccountTransaction;
@@ -351,14 +352,28 @@ public class AccountService {
 	 * Delete an Account
 	 */
 	public void deleteAccount (Account account) {
-		accountRepository.delete(account);
+		Users owner = account == null ? null : account.getOwner();
+		String detail = account == null ? null : "accountId=" + account.getId();
+		try {
+			accountRepository.delete(account);
+		} catch (RuntimeException e) {
+			AuditLog.adminAction("DELETE_ACCOUNT", owner, detail, AuditLog.OUTCOME_FAILURE);
+			throw e;
+		}
+		AuditLog.adminAction("DELETE_ACCOUNT", owner, detail, AuditLog.OUTCOME_SUCCESS);
 	}
 	
 	/*
 	 * Delete All Accounts for User
 	 */
 	public void deleteAllAccounts(Users user) {
-		accountRepository.deleteByOwner(user);
+		try {
+			accountRepository.deleteByOwner(user);
+		} catch (RuntimeException e) {
+			AuditLog.adminAction("DELETE_ALL_ACCOUNTS", user, null, AuditLog.OUTCOME_FAILURE);
+			throw e;
+		}
+		AuditLog.adminAction("DELETE_ALL_ACCOUNTS", user, null, AuditLog.OUTCOME_SUCCESS);
 	}
 	
 	/*
@@ -376,6 +391,18 @@ public class AccountService {
 	 * 		- Transaction Description
 	 */
 	public void creditTransaction(Account account, AccountTransaction accountTransaction) {
+		try {
+			applyCreditTransaction(account, accountTransaction);
+		} catch (RuntimeException e) {
+			AuditLog.moneyMovement(AuditLog.EVT_DEPOSIT, null, account, accountTransaction.getAmount(),
+					typeCode(accountTransaction), AuditLog.OUTCOME_FAILURE, e.getClass().getSimpleName());
+			throw e;
+		}
+		AuditLog.moneyMovement(AuditLog.EVT_DEPOSIT, null, account, accountTransaction.getAmount(),
+				typeCode(accountTransaction), AuditLog.OUTCOME_SUCCESS, null);
+	}
+	
+	private void applyCreditTransaction(Account account, AccountTransaction accountTransaction) {
 		
 		LOG.debug("Credit Transaction to Account:");
 		
@@ -433,6 +460,18 @@ public class AccountService {
 	 * 		- Transaction Description
 	 */
 	public void debitTransaction(Account account, AccountTransaction accountTransaction) {
+		try {
+			applyDebitTransaction(account, accountTransaction);
+		} catch (RuntimeException e) {
+			AuditLog.moneyMovement(AuditLog.EVT_WITHDRAWAL, account, null, accountTransaction.getAmount(),
+					typeCode(accountTransaction), AuditLog.OUTCOME_FAILURE, e.getClass().getSimpleName());
+			throw e;
+		}
+		AuditLog.moneyMovement(AuditLog.EVT_WITHDRAWAL, account, null, accountTransaction.getAmount(),
+				typeCode(accountTransaction), AuditLog.OUTCOME_SUCCESS, null);
+	}
+	
+	private void applyDebitTransaction(Account account, AccountTransaction accountTransaction) {
 		
 		LOG.debug("Debit Transaction from Account:");
 		
@@ -497,6 +536,18 @@ public class AccountService {
 	 * AccountTransaction can be a partial object but must contain the transaction amount.
 	 */
 	public void transfer(Account fromAccount, Account toAccount, AccountTransaction accountTransaction) {
+		try {
+			applyTransfer(fromAccount, toAccount, accountTransaction);
+		} catch (RuntimeException e) {
+			AuditLog.moneyMovement(AuditLog.EVT_TRANSFER, fromAccount, toAccount, accountTransaction.getAmount(),
+					Constants.ACCT_TRAN_TYPE_XFER_CODE, AuditLog.OUTCOME_FAILURE, e.getClass().getSimpleName());
+			throw e;
+		}
+		AuditLog.moneyMovement(AuditLog.EVT_TRANSFER, fromAccount, toAccount, accountTransaction.getAmount(),
+				Constants.ACCT_TRAN_TYPE_XFER_CODE, AuditLog.OUTCOME_SUCCESS, null);
+	}
+	
+	private void applyTransfer(Account fromAccount, Account toAccount, AccountTransaction accountTransaction) {
 		
 		LOG.debug("Transfer Between Accounts:");
 		
@@ -734,7 +785,15 @@ public class AccountService {
 		
 		// Update Account
 		accountRepository.save(account);
+		
+		AuditLog.moneyMovement(AuditLog.EVT_OVERDRAFT_FEE, account, null, overFee,
+				Constants.ACCT_TRAN_TYPE_OVERDRAFT_FEE_CODE, AuditLog.OUTCOME_SUCCESS,
+				"offendingTransaction=" + offender.getTransactionNumber());
 
+	}
+	
+	private static String typeCode(AccountTransaction accountTransaction) {
+		return accountTransaction.getTransactionType() == null ? null : accountTransaction.getTransactionType().getCode();
 	}
 
 }
