@@ -1,0 +1,50 @@
+# CODEOWNERS - control ITGC-CM-07 (change management), Jira EM-137.
+#
+# GitHub uses the LAST matching rule, so specific rules must stay below the
+# default rule. Branch protection on `master` must have "Require review from
+# Code Owners" enabled for these rules to block merges (see
+# docs/governance/branch-protection.md). Validate edits with
+# scripts/governance/check-codeowners.sh.
+
+# Default: every change needs a named maintainer's review.
+*                                           @COG-GTM/digitalbank-maintainers
+
+# Money movement: account, transfer, credit and payment business logic and
+# the REST/web endpoints that invoke it.
+/bank/src/main/java/**/service/             @COG-GTM/digitalbank-payments-owners
+/bank/src/main/java/**/controller/          @COG-GTM/digitalbank-payments-owners
+/credit/src/main/java/**/service/           @COG-GTM/digitalbank-payments-owners
+/credit/src/main/java/**/controller/        @COG-GTM/digitalbank-payments-owners
+
+# Security: authentication, JWT, HTTP security, TLS and data-source config.
+/bank/src/main/java/**/security/            @COG-GTM/digitalbank-security-owners
+/bank/src/main/java/**/config/              @COG-GTM/digitalbank-security-owners
+/bank/src/main/resources/*.properties       @COG-GTM/digitalbank-security-owners
+/credit/src/main/java/**/security/          @COG-GTM/digitalbank-security-owners
+/credit/src/main/java/**/config/            @COG-GTM/digitalbank-security-owners
+/credit/src/main/resources/*.properties     @COG-GTM/digitalbank-security-owners
+
+# Authentication code inside money-movement packages. GitHub accepts approval
+# from ANY listed owner, so these are security-only (not payments + security).
+/bank/src/main/java/**/*Authentication*.java    @COG-GTM/digitalbank-security-owners
+/bank/src/main/java/**/*Security*.java          @COG-GTM/digitalbank-security-owners
+/credit/src/main/java/**/*Authentication*.java  @COG-GTM/digitalbank-security-owners
+/credit/src/main/java/**/*Security*.java        @COG-GTM/digitalbank-security-owners
+
+# TLS: Tomcat connector config, keystores and key material anywhere in the repo.
+/bank/src/main/resources/server.xml         @COG-GTM/digitalbank-security-owners
+/credit/src/main/resources/server.xml       @COG-GTM/digitalbank-security-owners
+/bank/src/main/resources/keystore/          @COG-GTM/digitalbank-security-owners
+/credit/src/main/resources/keystore/        @COG-GTM/digitalbank-security-owners
+*.jks                                       @COG-GTM/digitalbank-security-owners
+*.p12                                       @COG-GTM/digitalbank-security-owners
+*.pfx                                       @COG-GTM/digitalbank-security-owners
+*.pem                                       @COG-GTM/digitalbank-security-owners
+*.key                                       @COG-GTM/digitalbank-security-owners
+*.crt                                       @COG-GTM/digitalbank-security-owners
+
+# Governance controls protect themselves: changing review rules needs security sign-off.
+/.github/                                   @COG-GTM/digitalbank-security-owners
+/docs/governance/                           @COG-GTM/digitalbank-security-owners
+/scripts/governance/                        @COG-GTM/digitalbank-security-owners
+/bank/src/test/java/**/governance/          @COG-GTM/digitalbank-security-owners
