@@ -74,6 +74,22 @@ public class OverdraftInterestTest extends AccountServiceTestSupport {
 	}
 
 	@Test
+	public void accrualChargesAtMostOncePerDay() {
+		newAccount(ukChecking("36.50"), "-25.00");
+		Date today = new Date();
+
+		assertEquals(new BigDecimal("0.03"), accountService.accrueOverdraftInterest(account, today));
+		assertEquals(0, BigDecimal.ZERO.compareTo(accountService.accrueOverdraftInterest(account, today)));
+
+		assertEquals(1, transactionsOfType(Constants.ACCT_TRAN_TYPE_OVERDRAFT_CODE).size());
+		assertEquals(0, new BigDecimal("-25.03").compareTo(account.getCurrentBalance()));
+
+		Date tomorrow = new Date(today.getTime() + 24L * 60 * 60 * 1000);
+		assertEquals(new BigDecimal("0.03"), accountService.accrueOverdraftInterest(account, tomorrow));
+		assertEquals(2, transactionsOfType(Constants.ACCT_TRAN_TYPE_OVERDRAFT_CODE).size());
+	}
+
+	@Test
 	public void accrualPostsNothingWhenInCredit() {
 		newAccount(ukChecking("39.90"), "100.00");
 

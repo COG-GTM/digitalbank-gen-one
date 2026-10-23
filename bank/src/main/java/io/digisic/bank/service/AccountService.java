@@ -738,6 +738,10 @@ public class AccountService {
 		
 		account = this.getAccountById(account.getId());
 		
+		if (hasOverdraftInterestFor(account, accrualDate)) {
+			return BigDecimal.ZERO.setScale(2);
+		}
+		
 		BigDecimal interest = calculateDailyOverdraftInterest(account);
 		
 		if (interest.signum() <= 0) {
@@ -766,6 +770,29 @@ public class AccountService {
 		accountRepository.save(account);
 		
 		return interest;
+	}
+	
+	/*
+	 * At most one overdraft interest charge per account per calendar day.
+	 */
+	private boolean hasOverdraftInterestFor (Account account, Date accrualDate) {
+		
+		Calendar target = Calendar.getInstance();
+		target.setTime(accrualDate);
+		Calendar posted = Calendar.getInstance();
+		
+		for (AccountTransaction trans : account.getAcountTransactionList()) {
+			if (trans.getTransactionType() == null || trans.getTransactionDate() == null
+					|| !Constants.ACCT_TRAN_TYPE_OVERDRAFT_CODE.equals(trans.getTransactionType().getCode())) {
+				continue;
+			}
+			posted.setTime(trans.getTransactionDate());
+			if (posted.get(Calendar.YEAR) == target.get(Calendar.YEAR)
+					&& posted.get(Calendar.DAY_OF_YEAR) == target.get(Calendar.DAY_OF_YEAR)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
