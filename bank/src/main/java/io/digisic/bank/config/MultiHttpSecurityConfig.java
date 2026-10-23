@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -23,11 +25,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.session.ForceEagerSessionCreationFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import io.digisic.bank.security.EagerSessionCreationFilter;
 import io.digisic.bank.security.JwtTokenFilterConfigurer;
 import io.digisic.bank.security.JwtTokenProvider;
+import io.digisic.bank.security.LegacyErrorAttributes;
 import io.digisic.bank.service.UserSecurityService;
 import io.digisic.bank.util.Constants;
 import io.digisic.bank.util.Patterns;
@@ -81,6 +87,12 @@ public class MultiHttpSecurityConfig {
 	}
 	
 	@Bean
+	@ConditionalOnMissingBean(ErrorAttributes.class)
+	public static LegacyErrorAttributes errorAttributes() {
+		return new LegacyErrorAttributes();
+	}
+	
+	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
 		return configuration.getAuthenticationManager();
 	}
@@ -117,6 +129,10 @@ public class MultiHttpSecurityConfig {
     	final int maxSessions = iMaxSessions;
     	RequestMatcher[] publicMatchers = Arrays.stream(PUBLIC).map(p -> antMatcher(p)).toArray(RequestMatcher[]::new);
     	
+    	// legacy saved-request redirects carry no "?continue" marker
+    	HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+    	requestCache.setMatchingRequestParameterName(null);
+    	
     	http.csrf(csrf -> csrf.disable())
 			.cors(cors -> cors.disable())
 			.authorizeHttpRequests(a -> a
@@ -137,6 +153,8 @@ public class MultiHttpSecurityConfig {
 			.sessionManagement(s -> s
 				.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
 				.maximumSessions(maxSessions).maxSessionsPreventsLogin(true))
+			.requestCache(c -> c.requestCache(requestCache))
+			.addFilterAfter(new EagerSessionCreationFilter(), ForceEagerSessionCreationFilter.class)
 			// Needed to support the h2-console interface
 			.headers(h -> h.frameOptions(f -> f.disable()));
     	
