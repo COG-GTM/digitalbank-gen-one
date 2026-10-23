@@ -32,6 +32,7 @@ import io.digisic.bank.repository.UserRoleRepository;
 import io.digisic.bank.security.JwtTokenProvider;
 import io.digisic.bank.util.Messages;
 import io.digisic.bank.util.Patterns;
+import io.digisic.bank.util.PiiMasker;
 
 @Service
 @Transactional
@@ -132,7 +133,8 @@ public class UserService {
 		
 		String normalizedSSN = normalizeSSNFormat(ssn);
 	    
-		if (userProfileRepository.findBySsn(normalizedSSN) != null) {
+		if (userProfileRepository.findBySsn(normalizedSSN) != null
+				|| userProfileRepository.countByStoredSsn(normalizedSSN) > 0) {
 			
 			return true;
 	    }
@@ -327,7 +329,7 @@ public class UserService {
 	 */
 	private String normalizeSSNFormat (String ssn) {
 		
-		LOG.debug("Normalize SSN-> SSN passed in is '" + ssn + "'");
+		LOG.debug("Normalize SSN-> SSN passed in is '" + PiiMasker.maskSsn(ssn) + "'");
 		
 		int firstSeparator = ssn.indexOf('-', 0);
 	    int secondSeparator = ssn.indexOf('-', 4);
@@ -372,7 +374,7 @@ public class UserService {
 	    	}	
 	    }
 	    
-	    LOG.debug("Normalize SSN-> SSN returned is '" + normalizedSSN + "'");
+	    LOG.debug("Normalize SSN-> SSN returned is '" + PiiMasker.maskSsn(normalizedSSN) + "'");
 	    
 	    return normalizedSSN;
 		

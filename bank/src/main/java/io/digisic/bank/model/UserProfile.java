@@ -2,6 +2,7 @@ package io.digisic.bank.model;
 
 import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,8 +15,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import io.digisic.bank.model.converter.EncryptedDateConverter;
+import io.digisic.bank.model.converter.EncryptedStringConverter;
 import io.digisic.bank.util.Messages;
 import io.digisic.bank.util.Patterns;
+import io.digisic.bank.util.PiiMasker;
 
 @Entity
 public class UserProfile {
@@ -42,12 +46,14 @@ public class UserProfile {
 	
 	@NotEmpty (message=Messages.USER_SSN_REQUIRED)
 	@Pattern(regexp=Patterns.USER_SSN, message=Messages.USER_SSN_FORMAT)
+	@Convert(converter=EncryptedStringConverter.class)
 	@Column(nullable=false, unique=true)
 	private String ssn;
 	  
 	@NotNull (message=Messages.USER_DOB_REQUIRED)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern=Patterns.DATE_FORMAT)
 	@DateTimeFormat(pattern=Patterns.DATE_FORMAT)
+	@Convert(converter=EncryptedDateConverter.class)
 	private Date dob;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern=Patterns.DATE_FORMAT)
@@ -404,8 +410,8 @@ public class UserProfile {
 	    userProfile += "\nFrist Name:\t\t" 		+ this.getFirstName();
 	    userProfile += "\nLast Name:\t\t" 		+ this.getLastName();
 	    userProfile += "\nEmail Address:\t\t" 	+ this.getEmailAddress();
-	    userProfile += "\nSSN:\t\t\t" 			+ this.getSsn();
-	    userProfile += "\nDOB:\t\t\t" 			+ this.getDob();
+	    userProfile += "\nSSN:\t\t\t" 			+ PiiMasker.maskSsn(this.getSsn());
+	    userProfile += "\nDOB:\t\t\t" 			+ PiiMasker.maskDate(this.getDob());
 	    userProfile += "\nGender:\t\t\t" 		+ this.getGender();
 	    userProfile += "\nHome Phone:\t\t" 		+ this.getHomePhone();
 	    userProfile += "\nMobile Phone:\t\t" 	+ this.getMobilePhone();
