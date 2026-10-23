@@ -1,5 +1,6 @@
 package io.digisic.credit.security;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -27,7 +29,11 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtTokenProvider {
 	
-	private String secretKey = Constants.API_SECRET;
+	// Minimum HS256 key length (256 bits)
+	static final int MIN_SECRET_BYTES = 32;
+
+	@Value("${" + Constants.API_JWT_SECRET_PROPERTY + ":}")
+	private String secretKey;
 	
 	// Token expiration -> 1 hour (3600000)
 	private long validityInMilliseconds = 3600000;
@@ -37,7 +43,15 @@ public class JwtTokenProvider {
 	  
 	@PostConstruct
 	protected void init() {
-		secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+		if (secretKey == null || secretKey.trim().isEmpty()) {
+			throw new IllegalStateException("JWT signing key is not configured. Set '" + Constants.API_JWT_SECRET_PROPERTY
+					+ "' (environment variable " + Constants.API_JWT_SECRET_ENV + ").");
+		}
+		if (secretKey.getBytes(StandardCharsets.UTF_8).length < MIN_SECRET_BYTES) {
+			throw new IllegalStateException("JWT signing key '" + Constants.API_JWT_SECRET_PROPERTY
+					+ "' must be at least " + MIN_SECRET_BYTES + " bytes.");
+		}
+		secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes(StandardCharsets.UTF_8));
 	}
 	
 	/*

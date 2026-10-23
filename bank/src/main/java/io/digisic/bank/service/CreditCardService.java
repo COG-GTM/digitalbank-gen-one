@@ -52,7 +52,6 @@ public class CreditCardService {
 	private static final String DEFAULT_DIGTIAL_CREDIT_PORT 		= "8080";
 	private static final String DEFAULT_DIGTIAL_CREDIT_CONTEXT_PATH = "/credit";
 	private static final String DEFAULT_DIGTIAL_CREDIT_USERNAME 	= "admin@demo.io";
-	private static final String DEFAULT_DIGTIAL_CREDIT_PASSWORD 	= "Demo123!";
 	
 	@Autowired
 	private CreditCardReferenceRepository ccReferenceRepository;
@@ -532,7 +531,7 @@ public class CreditCardService {
 				 				 	 + Constants.APP_CREDIT_URI_API_BASE;
 		
 		CreditCardService.username 		= environment.getProperty(Constants.APP_CREDIT_USER, DEFAULT_DIGTIAL_CREDIT_USERNAME);
-		CreditCardService.password		= environment.getProperty(Constants.APP_CREDIT_PASSWORD, DEFAULT_DIGTIAL_CREDIT_PASSWORD);
+		CreditCardService.password		= environment.getProperty(Constants.APP_CREDIT_PASSWORD);
 		
 		// Make sure values were passed in for these properties
 		if (CreditCardService.username == null || 

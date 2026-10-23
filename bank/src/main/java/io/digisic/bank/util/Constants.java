@@ -11,7 +11,8 @@ public class Constants {
 	public static final String SESSION_MAX			= "io.digisic.max.sessions";
 	
 	// API
-	public static final String API_SECRET			= "Zq4t7w!z%C&F)J@NcRfUjXn2r5u8x/A?";
+	public static final String API_JWT_SECRET_PROPERTY	= "io.digisic.bank.api.jwt.secret";
+	public static final String API_JWT_SECRET_ENV		= "IO_DIGISIC_BANK_API_JWT_SECRET";
 	public static final String API_AUTH_HEADER		= "Authorization";
 	public static final String API_TOKEN_BEGIN		= "Bearer ";
 	

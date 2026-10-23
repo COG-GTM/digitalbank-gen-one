@@ -47,3 +47,10 @@ local.properties
 .settings/
 .loadpath
 .temp-DigitalBankApplication*.txt
+
+### Secrets (mounted at runtime, never committed) ###
+**/src/main/resources/keystore/
+*.p12
+*.jks
+!**/src/test/resources/*.jks
+.env

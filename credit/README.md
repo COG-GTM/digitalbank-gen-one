@@ -45,7 +45,7 @@ Digital Credit can be deployed as a single standalone application service.
 
 * Swagger UI @ http://{hostname}:{port}/credit/swagger-ui.html
   * The API Admin user credentials are as follows:
-    * admin@demo.io/Demo123!
+    * admin@demo.io (password: `IO_DIGISIC_CREDIT_ADMIN_PASSWORD`, random if unset)
 
 ## Built With
 

@@ -89,7 +89,7 @@
                maxThreads="150" SSLEnabled="true"
                keystoreFile="${catalina.base}/conf/digisic.p12"
                keyAlias="digitalbank"
-               keystorePass="digisic" >
+               keystorePass="${DIGISIC_KEYSTORE_PASSWORD}" >
 <!--         <SSLHostConfig> -->
 <!--             <Certificate certificateKeystoreFile="conf/localhost-rsa.jks" -->
 <!--                          type="RSA" /> -->

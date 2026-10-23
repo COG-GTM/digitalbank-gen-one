@@ -28,7 +28,11 @@ BROKER_HOME=/var/lib/
 CONFIG_PATH=$BROKER_HOME/etc
 export BROKER_HOME OVERRIDE_PATH CONFIG_PATH
 
-echo CREATE_ARGUMENTS=${CREATE_ARGUMENTS}
+if [ -z "${CREATE_ARGUMENTS}" ]; then
+    : "${ARTEMIS_USER:?ARTEMIS_USER must be set}"
+    : "${ARTEMIS_PASSWORD:?ARTEMIS_PASSWORD must be set}"
+    CREATE_ARGUMENTS="--user ${ARTEMIS_USER} --password ${ARTEMIS_PASSWORD} --silent --http-host 0.0.0.0 --relax-jolokia"
+fi
 
 if ! [ -f ./etc/broker.xml ]; then
     /opt/activemq-artemis/bin/artemis create ${CREATE_ARGUMENTS} .

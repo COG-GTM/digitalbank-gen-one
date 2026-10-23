@@ -22,6 +22,22 @@ spec:
           - name: db-bank-port
             containerPort: 8443  
         env:
+            # Secrets: create with deploy/k8s/digitalbank/README.md (never commit values)
+            - name: IO_DIGISIC_BANK_API_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: digibank-secrets
+                  key: bank-jwt-secret
+            - name: IO_DIGISIC_BANK_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: digibank-secrets
+                  key: bank-admin-password
+            - name: DIGISIC_KEYSTORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: digibank-secrets
+                  key: keystore-password
             # Debug Options
             - name: LOGGING_LEVEL_IO_DEMO_BANK
               value: "INFO"
@@ -33,9 +49,15 @@ spec:
             - name: SPRING_ARTEMIS_PORT
               value: "61616"
             - name: SPRING_ARTEMIS_USER
-              value: "admin"
+              valueFrom:
+                secretKeyRef:
+                  name: digibank-secrets
+                  key: artemis-user
             - name: SPRING_ARTEMIS_PASSWORD
-              value: "admin"
+              valueFrom:
+                secretKeyRef:
+                  name: digibank-secrets
+                  key: artemis-password
             # Digital Credit Connection
             - name: IO_DIGISIC_CREDIT_ENABLED
               value: "true"
@@ -50,7 +72,10 @@ spec:
             - name: IO_DIGISIC_CREDIT_USERNAME
               value: "admin@demo.io"
             - name: IO_DIGISIC_CREDIT_PASSWORD
-              value: "Demo123!"
+              valueFrom:
+                secretKeyRef:
+                  name: digibank-secrets
+                  key: credit-admin-password
             # Digital Credit Application Process JMS Queues
             - name: IO_DIGISIC_PARTNER_CREDIT_APP_REQUEST
               value: "CREDIT.APP.REQUEST"
@@ -74,7 +99,10 @@ spec:
             - name: IO_DIGISIC_BANK_OBP_ENABLED
               value: "true"  
             - name: IO_DIGISIC_BANK_OBP_CONSUMER_KEY
-              value: "vwfpvwfr1kngt0up2jelebzmvxrhst4vhxvw1jm3"  
+              valueFrom:
+                secretKeyRef:
+                  name: digibank-secrets
+                  key: obp-consumer-key
             - name: IO_DIGISIC_BANK_OBP_VERSION
               value: "v4.0.0"  
             - name: IO_DIGISIC_BANK_OBP_PROTOCOL
@@ -82,7 +110,16 @@ spec:
             - name: IO_DIGISIC_BANK_OBP_HOST
               value: ""     
             - name: IO_DIGISIC_BANK_OBP_PORT
-              value: ""             
+              value: ""
+        volumeMounts:
+          - name: keystore
+            mountPath: /usr/local/tomcat/conf/digisic.p12
+            subPath: digisic.p12
+            readOnly: true
+      volumes:
+        - name: keystore
+          secret:
+            secretName: digibank-keystore
 
 ---
 

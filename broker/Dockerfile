@@ -23,10 +23,8 @@ LABEL maintainer="Apache ActiveMQ Team"
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 WORKDIR /opt
 
-ENV ARTEMIS_USER artemis
-ENV ARTEMIS_PASSWORD artemis
+# ARTEMIS_USER / ARTEMIS_PASSWORD must be supplied at runtime (see docker-run.sh)
 ENV ANONYMOUS_LOGIN false
-ENV CREATE_ARGUMENTS --user ${ARTEMIS_USER} --password ${ARTEMIS_PASSWORD} --silent --http-host 0.0.0.0 --relax-jolokia
 
 # add user and group for artemis
 RUN apt-get update && apt-get install -y libaio1
