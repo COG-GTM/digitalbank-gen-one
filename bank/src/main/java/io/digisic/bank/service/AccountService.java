@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -102,6 +104,9 @@ public class AccountService {
 		// get the available categories
 		List<TransactionCategory> categories = getTransactionCategory();
 		
+		// Load the recent transactions for all accounts once instead of once per account and category
+		Map<Long, List<AccountTransaction>> recentByAccount = getTransactionsByAccountAfter(accounts, monthlyCalendar.getTime());
+		
 		LOG.debug("Chart Data - Transaction By Category: Total Accounts Found: " + accounts.size());
 		
 		// For each category get transactions and sum them
@@ -114,8 +119,7 @@ public class AccountService {
 			
 			// For each account
 			for (int j = 0; j < accounts.size(); j++) {
-				List<AccountTransaction> atl = accountTransactionRepository
-											  .findAllByAccountAndTransactionCategoryAndTransactionDateAfter(accounts.get(j), categories.get(i), monthlyCalendar.getTime());
+				List<AccountTransaction> atl = filterByCategory(recentByAccount.get(accounts.get(j).getId()), categories.get(i));
 				
 				LOG.debug("Chart Data - Transaction By Category: Account: " + accounts.get(j).getName());
 				LOG.debug("Chart Data - Transaction By Category: Category: " + categories.get(i).getName());
@@ -241,13 +245,17 @@ public class AccountService {
 		// Used for query greater and less than zerp
 		BigDecimal zero = new BigDecimal(0);
 		
+		// Load the recent transactions for all accounts once instead of twice per account
+		Map<Long, List<AccountTransaction>> recentByAccount = getTransactionsByAccountAfter(accounts, monthlyCalendar.getTime());
+		
 		// For each account, get the data
 		for (int i = 0; i < accounts.size(); i++) {
 			names.add(accounts.get(i).getName());
 			
+			List<AccountTransaction> recent = recentByAccount.get(accounts.get(i).getId());
+			
 			// Get Credit Transactions and sum them
-			List<AccountTransaction> allCredits = accountTransactionRepository
-					.findAllByAccountAndAmountGreaterThanAndTransactionDateAfter(accounts.get(i), zero, monthlyCalendar.getTime());
+			List<AccountTransaction> allCredits = filterByAmountSign(recent, zero, 1);
 			
 			float sumCredits = 0;
 			for (int j = 0; j < allCredits.size(); j++)
@@ -256,8 +264,7 @@ public class AccountService {
 			credits.add(new BigDecimal(sumCredits).setScale(2, RoundingMode.HALF_EVEN).toString());
 			
 			// Get debit Transactions and sum them
-			List<AccountTransaction> allDebits = accountTransactionRepository
-					.findAllByAccountAndAmountLessThanAndTransactionDateAfter(accounts.get(i), zero, monthlyCalendar.getTime());
+			List<AccountTransaction> allDebits = filterByAmountSign(recent, zero, -1);
 			
 			float sumDebits = 0;
 			for (int j = 0; j < allDebits.size(); j++)
@@ -273,6 +280,53 @@ public class AccountService {
 		data.add(debits);
 		
 		return data;
+	}
+	
+	/*
+	 * Get the transactions dated after the given date for the accounts, grouped by account id
+	 */
+	private Map<Long, List<AccountTransaction>> getTransactionsByAccountAfter(List<Account> accounts, Date after) {
+		
+		Map<Long, List<AccountTransaction>> byAccount = new HashMap<Long, List<AccountTransaction>>();
+		
+		if (accounts.isEmpty())
+			return byAccount;
+		
+		for (AccountTransaction transaction : accountTransactionRepository.findAllByAccountInAndTransactionDateAfter(accounts, after)) {
+			byAccount.computeIfAbsent(transaction.getAccount().getId(), id -> new ArrayList<AccountTransaction>()).add(transaction);
+		}
+		
+		return byAccount;
+	}
+	
+	private List<AccountTransaction> filterByCategory(List<AccountTransaction> transactions, TransactionCategory category) {
+		
+		List<AccountTransaction> matches = new ArrayList<AccountTransaction>();
+		
+		if (transactions == null)
+			return matches;
+		
+		for (AccountTransaction transaction : transactions) {
+			if (transaction.getTransactionCategory() != null && category.getId().equals(transaction.getTransactionCategory().getId()))
+				matches.add(transaction);
+		}
+		
+		return matches;
+	}
+	
+	private List<AccountTransaction> filterByAmountSign(List<AccountTransaction> transactions, BigDecimal zero, int sign) {
+		
+		List<AccountTransaction> matches = new ArrayList<AccountTransaction>();
+		
+		if (transactions == null)
+			return matches;
+		
+		for (AccountTransaction transaction : transactions) {
+			if (transaction.getAmount() != null && transaction.getAmount().compareTo(zero) == sign)
+				matches.add(transaction);
+		}
+		
+		return matches;
 	}
 	
 	/*

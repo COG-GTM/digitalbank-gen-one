@@ -1,6 +1,7 @@
 package io.digisic.bank.repository;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
@@ -24,5 +25,7 @@ public interface AccountTransactionRepository extends CrudRepository<AccountTran
 	
 	public List<AccountTransaction> findAllByAccountAndTransactionCategory (Account account, TransactionCategory category);
 	public List<AccountTransaction> findAllByAccountAndTransactionCategoryAndTransactionDateAfter (Account account, TransactionCategory category, Date date);
+
+	public List<AccountTransaction> findAllByAccountInAndTransactionDateAfter (Collection<Account> accounts, Date date);
 
 }
